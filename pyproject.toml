@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "aineopintojen-harjoitusty-algoritmit-ja-teko-ly-"
+version = "0.1.0"
+description = ""
+authors = ["xavier <x@xavier.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+coverage = "^7.4.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

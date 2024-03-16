@@ -1,4 +1,4 @@
-## specification document = definition document = määrittelydokumentti<br />
+## Specification document = Määrittelydokumentti<br />
 
 I chose my programming language to be `Python`, because I have the most familiarity with it. Other languages I know reasonably well are `Javascript` and `React`, which are naturally not suitable for algorithm oriented applications. I occasionally learn `bash` and `C` though, so I can to a certain extent preview that sort of code, but I would prefer to peer review `Python` only.<br />
 

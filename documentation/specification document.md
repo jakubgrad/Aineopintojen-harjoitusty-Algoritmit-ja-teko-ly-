@@ -9,8 +9,8 @@ I belong to the Bachelor’s Programme in Science. I’ll document my work in En
 
 To answer the required questions:<br />
 
-What algorithms and data structures do you implement in your work?<br />
-- [x] I’m going to use Jump Point Search and Djikstra algorithms. Jump Point Search requires no memory overhead, and so no specific data structure apart from the returned path is needed to implement it to my understanding [Harabar et al., 2011, p. 1](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf). Dijkstra's algorithm requires a priority queue data structure, which I hope to implement using `PriorityQueue` from Python’s `queue` library. <br />
+1. What algorithms and data structures do you implement in your work?<br />
+   - [x] I’m going to use Jump Point Search and Djikstra algorithms. Jump Point Search requires no memory overhead, and so no specific data structure apart from the returned path is needed to implement it to my understanding [Harabar et al., 2011, p. 1](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf). Dijkstra's algorithm requires a priority queue data structure, which I hope to implement using `PriorityQueue` from Python’s `queue` library. <br />
 What problem are you solving?
 - [x] 1. Finding whether JPS or Djikstra is better at finding optimal paths in a short time in a grid-like environment, 2. Whether this is always so or if there is cases in which the less optimal algorithm outperforms anyway (a mathematical proof would be required for that, so instead I’ll test various scenarios), 3. *Optionally* find which algorithm performs better at finding shortest paths in a hexagonal network mapped onto a globe.<br />
 What inputs does the program receive and how are they used?<br />
@@ -19,6 +19,6 @@ Targeted time and space requirements (e.g. O-analyses)
 - [x] JPS: I found it hard to find time and space complexities for JPS. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. 
 <br />
 Djikstra:
-[O(V+E*log V).](https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20)%20.) with min-priority queue
+Time complexity of [O(V+E*log V)](https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20) when implemented with min-priority queue
 
 

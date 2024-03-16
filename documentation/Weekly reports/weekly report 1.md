@@ -1,5 +1,4 @@
 # Weekly Report 1
-<div style="text-align: justify"> 
 I chose my programming language to be `Python`, because i have the most familiarity with it. I can review other `Python` coded repositories and to a lesser extent `C` and `bash` code. <br />
 1. What have I been up to this week? <br />
    - [x] The first week I decided to look at the available topics. Using Markov chains looked appealing at first, but it seems too late to talk to the instructor about it and I had two better ideas. <br />
@@ -17,7 +16,4 @@ I chose my programming language to be `Python`, because i have the most familiar
 **Other considerations:** <br />
 I spent around **13** hours this week working on the project. <br />
 I also want to hear from the **instructor** in the **weekly feedback** if my project will be better graded or if it's worth taking the risk and implementing an algorithm that could find shortest routes on a hexagonal version of the globe (as in my [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md), because that strays away quite far from the initial topic. Perhaps it would've been better in the first place to focus on finding the shortest route on a hexagonal earth. *What are your opinions, course instructor?*
- </div>
-
-
- </div>
+ 

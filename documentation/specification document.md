@@ -7,7 +7,7 @@ Video games are not *real real* life though, and I think it's possible to use th
 
 I belong to the Bachelor’s Programme in Science. I’ll document my work in English as I’m more proficient in it than in Finnish. <br />
 
-To answer at the required questions:<br />
+To answer the required questions:<br />
 
 What algorithms and data structures do you implement in your work?<br />
 - [x] I’m going to use Jump Point Search and Djikstra algorithms. Jump Point Search requires no memory overhead, and so no specific data structure apart from the returned path is needed to implement it to my understanding [Harabar et al., 2011, p. 1](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf). Dijkstra's algorithm requires a priority queue data structure, which I hope to implement using `PriorityQueue` from Python’s `queue` library. <br />

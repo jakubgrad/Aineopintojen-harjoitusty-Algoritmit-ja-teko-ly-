@@ -1,4 +1,4 @@
-**specification document = definition document = määrittelydokumentti**<br />
+## specification document = definition document = määrittelydokumentti**<br />
 
 I chose my programming language to be Python, because I have the most familiarity with it. Other languages I know reasonably well are Javascript and React, which are naturally not suitable for algorithm oriented applications. I occasionally learn bash and C though, so I can to a certain extent preview that sort of code, but I would prefer to peer review Python only.<br />
 
@@ -23,4 +23,9 @@ To answer the required questions:<br />
      - Time complexity of [O(V+E*log V)](https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20) when implemented with min-priority queue
      - Space complexity of [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/)
 
+# References
+JPS http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf <br />
+Space and time complexity of JPS https://en.wikipedia.org/wiki/A*_search_algorithm <br />
+Time complexity of Djikstra https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20 <br />
+Space complexity of Djikstra https://en.wikipedia.org/wiki/A*_search_algorithm <br />
 

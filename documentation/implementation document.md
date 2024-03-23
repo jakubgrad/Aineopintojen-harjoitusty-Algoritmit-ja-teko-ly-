@@ -1,17 +1,18 @@
 ## Implementation document = Toteutusdokumentti<br />
 
 The program is written in `Python`. It has the following structure at the moment:<br />
-
-├── documentation           # documentation files 
-├── maps                    # maps used to test the tool
-├── src                     # code files 
+<br /> 
+├── documentation           # documentation files <br />
+├── maps                    # maps used to test the tool <br />
+├── src                     # code files <br />
 │   ├── __pychache_     
-│   ├── tests               # test files 
-│   ├── create_array.py     # turns a map into an array of rows 
-│   ├── dijkstra.py         # turns an array of rows into a graph and executes dijkstrak
-│   └── main.py             # allows running the tool as a user
-└── ...
-
+│   ├── tests               # test files <br />
+│   ├── create_array.py     # turns a map into an array of rows <br />
+│   ├── dijkstra.py         # turns an array of rows into a graph<br /> 
+│   │                       # and executes dijkstrak<br /> 
+│   └── main.py             # allows running the tool as a user<br /> 
+└── ...<br /> 
+<br /> 
 
 
 # Targeted time and space requirements (e.g. O-analyses)**

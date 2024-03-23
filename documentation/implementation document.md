@@ -2,8 +2,8 @@
 
 The program is written in `Python`. It has the following structure at the moment:<br />
 <br /> 
-├── documentation           emsp# documentation files <br />
-├── maps                    emsp# maps used to test the tool <br />
+├── documentation           &emsp;# documentation files <br />
+├── maps                    &emsp;# maps used to test the tool <br />
 ├── src                     emsp# code files <br />
 │   ├── __pychache_     
 │   ├── tests               # test files <br />

@@ -2,15 +2,15 @@
 
 The program is written in `Python`. It has the following structure at the moment:<br />
 <br /> 
-├── documentation           &emsp;# documentation files <br />
-├── maps                    &emsp;# maps used to test the tool <br />
-├── src                     &emsp;# code files <br />
+├── documentation           &emsp;&emsp;&emsp;# documentation files <br />
+├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool <br />
+├── src                     &emsp;&emsp;&emsp;# code files <br />
 │   ├── __pychache_     
-│   ├── tests               &emsp;#test files <br />
-│   ├── create_array.py     &emsp;# turns a map into an array of rows <br />
-│   ├── dijkstra.py         &emsp;# turns an array of rows into a graph<br /> 
-│   │                       &emsp;# and executes dijkstrak<br /> 
-│   └── main.py             &emsp;# allows running the tool as a user<br /> 
+│   ├── tests               &emsp;&emsp;&emsp;#test files <br />
+│   ├── create_array.py     &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
+│   ├── dijkstra.py         &emsp;&emsp;&emsp;# turns an array of rows into a graph<br /> 
+│   │                       &emsp;&emsp;&emsp;# and executes dijkstrak<br /> 
+│   └── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br /> 
 └── ...<br /> 
 <br /> 
 

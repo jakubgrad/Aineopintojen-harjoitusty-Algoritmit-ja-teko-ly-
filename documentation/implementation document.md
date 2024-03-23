@@ -15,7 +15,7 @@ The program is written in `Python`. It has the following structure at the moment
 <br /> 
 
 
-# Targeted time and space requirements (e.g. O-analyses)**
+# Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />
      - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
      - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)

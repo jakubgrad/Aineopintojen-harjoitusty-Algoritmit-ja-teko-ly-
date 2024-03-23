@@ -5,6 +5,11 @@ import argparse
 
 
 if __name__ == "__main__":
+    """Main part of the program, that takes parameters such as user-chosen algorithm, map, starting and terminating nodes.
+
+    Prints the shortest path calculated by the chosen algorithm
+    """
+
     parser = argparse.ArgumentParser(description='JPS vs Djikstra.')
     parser.add_argument('-m', '--file', type=str, default="arena.map",help='Name of the file inside map folder, e.g. arena.map')
     parser.add_argument('-a', '--start_node', type=int, default=47, help='Start node, e.g. 47')
@@ -19,14 +24,3 @@ if __name__ == "__main__":
         algorithm = Dijkstra(lines)
         print(algorithm.find_shortest_path(a,b))
 
-    '''
-    b.add_edge(1,2,2)
-    print(b.dijkstra(1,3)) # -1
-    b.add_edge(1,3,5)
-    print(b.dijkstra(1,3)) # 5
-    b.add_edge(2,3,1)
-    print(b.dijkstra(1,3)) # 3
-       '''
-
-
-#print(dijkstra(0,lines))

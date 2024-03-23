@@ -1,4 +1,13 @@
 def create_array(path):
+    """A handy function that takes a map from the folder maps in the root directory and returns it as an array of rows
+    
+    Args:
+        Path to the map, e.g. map/arena.map
+
+    Returns:
+        An array of rows such as ....TTT..TT where T is an obstacle, . is a free square
+    """
+
     with open(path, "r") as file:
             lines = []
             file.readline()

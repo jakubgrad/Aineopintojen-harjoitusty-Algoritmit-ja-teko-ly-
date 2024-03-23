@@ -1,20 +1,21 @@
 ## Implementation document = Toteutusdokumentti<br />
 
 The program is written in `Python`. It has the following structure at the moment:<br />
-
-├── documentation           # documentation files 
-├── maps                    # maps used to test the tool
-├── src                     # code files 
+<br /> 
+├── documentation           &emsp;&emsp;&emsp;# documentation files <br />
+├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool <br />
+├── src                     &emsp;&emsp;&emsp;# code files <br />
 │   ├── __pychache_     
-│   ├── tests               # test files 
-│   ├── create_array.py     # turns a map into an array of rows 
-│   ├── dijkstra.py         # turns an array of rows into a graph and executes dijkstrak
-│   └── main.py             # allows running the tool as a user
-└── ...
+│   ├── tests               &emsp;&emsp;&emsp;#test files <br />
+│   ├── create_array.py     &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
+│   ├── dijkstra.py         &emsp;&emsp;&emsp;# turns an array of rows into a graph<br /> 
+│   │                       &emsp;&emsp;&emsp;# and executes dijkstrak<br /> 
+│   └── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br /> 
+└── ...<br /> 
+<br /> 
 
 
-
-# Targeted time and space requirements (e.g. O-analyses)**
+# Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />
      - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
      - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)

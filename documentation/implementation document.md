@@ -2,9 +2,9 @@
 
 The program is written in `Python`. It has the following structure at the moment:<br />
 <br /> 
-├── documentation           # documentation files <br />
-├── maps                    # maps used to test the tool <br />
-├── src                     # code files <br />
+├── documentation           emsp# documentation files <br />
+├── maps                    emsp# maps used to test the tool <br />
+├── src                     emsp# code files <br />
 │   ├── __pychache_     
 │   ├── tests               # test files <br />
 │   ├── create_array.py     # turns a map into an array of rows <br />

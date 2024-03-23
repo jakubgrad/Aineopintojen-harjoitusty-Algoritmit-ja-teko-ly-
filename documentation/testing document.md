@@ -1,16 +1,7 @@
 # Testing document = Testatusdokumentti
 
 1. Unit testing coverage report.<br />
-   - [x] <br />
-
-Name                  Stmts   Miss Branch BrPart  Cover   Missing
------------------------------------------------------------------
-src/create_array.py      13      0      4      0   100%
-src/dijkstra.py          56      0     28      2    98%   87->90, 90->83
------------------------------------------------------------------
-TOTAL                    69      0     32      2    98%
-<br />
-<br />
+   - [x] [Here!](http://jakubgrad.ddns.net:2231/HTML%20coverage/) <br />
 2. What has been tested, how was this done?<br />
    - [x] The algorithm dijkstra and create_array were tested, create_array somewhat indirectly. 
 <br />

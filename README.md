@@ -9,7 +9,7 @@ cd src <br />
 poetry shell <br />
 python3 main.py
 ```
-You should get 7.41, which is the shortest path when assuming `$\sqrt{2}$ = 1.41` between the default start square 200 and end square 256, rounded to two digits. Under the hood, main.py has called create_array to turn an example map maps/arena.map into an array, and then called dijkstra.py which in turn created a graph based on the array. Finally, the shortest path on the map is printed using dijkstra's algorith, *voilà* 🥖!<br /><br />
+You should get 7.41, which is the shortest path when assuming $\sqrt{2}$ = 1.41 between the default start square 200 and end square 256, rounded to two digits. Under the hood, main.py has called create_array to turn an example map maps/arena.map into an array, and then called dijkstra.py which in turn created a graph based on the array. Finally, the shortest path on the map is printed using dijkstra's algorith, *voilà* 🥖!<br /><br />
 To explore the functions of the tool deeper, make sure to also run
 ```
 python3 main.py --help

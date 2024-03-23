@@ -12,15 +12,16 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='JPS vs Djikstra.')
     parser.add_argument('-m', '--file', type=str, default="arena.map",help='Name of the file inside map folder, e.g. arena.map')
-    parser.add_argument('-a', '--start_node', type=int, default=47, help='Start node, e.g. 47')
-    parser.add_argument('-b', '--end_node', type=int, default=93, help='End node, e.g. 93')
+    parser.add_argument('-a', '--start_node', type=int, default=200, help='Start node, e.g. 200')
+    parser.add_argument('-b', '--end_node', type=int, default=256, help='End node, e.g. 256')
     parser.add_argument('-d', '--dijkstra',action='store_true', help='You want to try dijkstra')
+    parser.add_argument('-j', '--jps',action='store_true', help='You want to try JPS (not working yet)')
     args = parser.parse_args()
     path = "../maps/"+args.file
     lines = create_array(path)
     a = args.start_node
     b = args.end_node
-    if args.dijkstra:
+    if args.dijkstra or True:
         algorithm = Dijkstra(lines)
         print(algorithm.find_shortest_path(a,b))
 

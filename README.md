@@ -2,6 +2,7 @@
 A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly (period 4) Laboratoriotyöskentely<br /><br />
 
 Currently the tool is still under production 🛠️ and is in a dire need of a visualization 🕶️. The goal is to have a tool that can show to the user the functioning of the algorithms and that can compare the two algorithms in terms of time complexity. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) 📎<br /><br />
+To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
 To test out the app simply download the repository, then <br />
 ```
 cd Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/ <br />

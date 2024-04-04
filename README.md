@@ -5,9 +5,9 @@ Currently the tool is still under production 🛠️ and is in a dire need of a 
 To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
 To test out the app simply download the repository, then <br />
 ```
-cd Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/ <br />
-cd src <br />
-poetry shell <br />
+cd Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/ 
+cd src 
+poetry shell 
 python3 main.py
 ```
 You should get 7.41, which is the shortest path when assuming $\sqrt{2}$ = 1.41 between the default start square 200 and end square 256, rounded to two digits. Under the hood, main.py has called create_array to turn an example map maps/arena.map into an array, and then called dijkstra.py which in turn created a graph based on the array. Finally, the shortest path on the map is printed using dijkstra's algorith, *voilà*!<br /><br />

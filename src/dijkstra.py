@@ -59,7 +59,7 @@ class Dijkstra:
         self.adjacencylist[b].append(Edge(a,x))
 
     def edge_number(self, i,j):
-        """A handy function for converting a position of a square on the map into a node
+        """A handy function for converting a position of a square on the map into a node number
     
         Args:
             i: row of the square
@@ -93,7 +93,7 @@ class Dijkstra:
                         if self.map[i+1][j+1] == ".":
                             self.add_edge(self.edge_number(i,j),self.edge_number(i+1,j+1),1.41)
 
-    def find_shortest_path(self,a,b):
+    def find_shortest_path(self,start_coordinates,end_coordinates):
         """Actual implementation of the Dijkstra algorithm
 
         Args:
@@ -104,6 +104,8 @@ class Dijkstra:
             The shortest path to 2 decimal digits
         """
 
+        a = self.edge_number(*start_coordinates)
+        b = self.edge_number(*end_coordinates)
         processed = [False] * self.number_of_nodes
         distance = [10000] * self.number_of_nodes
         distance[a]=0

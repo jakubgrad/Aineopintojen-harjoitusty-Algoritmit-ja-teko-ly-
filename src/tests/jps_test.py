@@ -16,7 +16,7 @@ class TestJPS(unittest.TestCase):
         
     def test_node_class_works_correctly(self):
         node = Node((0,0))
-        self.assertEqual(node.position(), (0,0))
+        self.assertEqual(node.position, (0,0))
 
     def test_subtracting_tuples_works_correctly(self):
         tuple1 = (8,6)
@@ -68,10 +68,8 @@ class TestJPS(unittest.TestCase):
         start_node = self.start_node 
         goal_node = self.goal_node
 
-        self.assertEqual(self.algorithm.start_node.i, 0)
-        self.assertEqual(self.algorithm.start_node.j, 0)
-        self.assertEqual(self.algorithm.goal_node.i, 4)
-        self.assertEqual(self.algorithm.goal_node.j, 7)
+        self.assertEqual(self.algorithm.start_node.position, (0,0))
+        self.assertEqual(self.algorithm.goal_node.position, (4,7))
 
     def test_open_set_initializes_as_empty(self):
         self.assertEqual(len(self.algorithm.open_set), 0)

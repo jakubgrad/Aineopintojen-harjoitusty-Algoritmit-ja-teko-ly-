@@ -19,4 +19,3 @@ map = [
 
 colored_map = ColoredMap(map)
 colored_map.print_map()
-

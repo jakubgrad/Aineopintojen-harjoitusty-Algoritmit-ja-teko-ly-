@@ -175,23 +175,7 @@ class JPS:
         c1 = self.subtract_tuples(self.add_tuples(b2,b2),a3)
 
         return (a1,a2,a3,b1,b2,b3,c1,c2,c3)
-
-
-    def produce_neighbours_for_scan_straight(self,current_node):
-        '''I imagine the scan going rightward in this grid:
-        c ■ 	
-        b ■  →          The black squares were already covered
-        a ■	
-          1  2  3 
-        '''
-        a2 = self.add_tuples(current_node.position, self.turn_clockwise_90_degrees(current_node.direction)) 
-        a3 = self.add_tuples(a2, current_node.direction)
-        b2 = current_node.position
-        b3 = self.add_tuples(current_node.position,current_node.direction)
-        c2 = self.add_tuples(current_node.position, self.turn_counterclockwise_90_degrees(current_node.direction)) 
-        c3 = self.add_tuples(c2, current_node.direction)
-        return (a2,a3,b2,b3,c2,c3)
-
+    
     def print_map(self):
         for row in reversed(self.map):
             print(row)
@@ -248,38 +232,17 @@ class JPS:
 
     def turn_clockwise_90_degrees(self,coordinates):
         return (coordinates[1], -coordinates[0])
-
-    def produce_neighbours_for_scan_diagonal(self,current_node):
-        b1 =  self.add_tuples(current_node.position,  self.turn_45_counterclockwise(self.turn_counterclockwise_90_degrees( current_node.direction)))
-        b2 = current_node.position
-        c3 = self.add_tuples(current_node.position, current_node.direction)
-        c2 = self.add_tuples(current_node.position, self.turn_45_counterclockwise( current_node.direction))
-        c1 = self.add_tuples(current_node.position,  self.turn_counterclockwise_90_degrees(current_node.direction))
-        b3 = self.add_tuples(current_node.position, self.turn_45_clockwise( current_node.direction))
-        a2 =  self.add_tuples(current_node.position,  self.turn_45_clockwise(self.turn_clockwise_90_degrees( current_node.direction)))
-        a3 = self.add_tuples(current_node.position,   self.turn_clockwise_90_degrees( current_node.direction))
-
-        return a2,a3,b1,b2,b3,c1,c2,c3
-        
+            
     def scan_diagonally(self, current_node):
         '''I imagine it as going right and up in this grid:
         c ■  	
         b ■  ↗          The black squares were already covered.
         a ■  ■	■       They are the so-called natural neigbours.
-          1  2  3 
-
-        '''
-        if current_node.direction[1] != 0:
-            self.put_character_on_map((current_node.position),"x")
-        else:
-            self.put_character_on_map((current_node.position),"x")
-
+          1  2  3'''
+        self.put_character_on_map((current_node.position),"|" if current_node.direction[0] != 0 else "-")
         self.print_map()
         print("Scanning diagonally from node "+str(current_node))
-        #a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours_for_scan_diagonal(current_node)
-
         a1,a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours(current_node)
-
         scan_right_node = current_node.copy()
         scan_right_node.direction=self.subtract_tuples(b3,b2)
         print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")

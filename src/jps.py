@@ -27,28 +27,24 @@ class Node:
             j: node's column in the grid
             parent: node's parent, so the node from which JPS has reached this node
         """
-        self.i, self.j = coordinates 
         self.parent = parent
         self.direction = direction
+        self.position = coordinates
 
     def __str__(self):
-        return f"coordinates ({self.i}, {self.j}), parent coordinates {self.parent.position() if self.parent else None}, direction {self.direction}"
+        return f"coordinates {self.position}, parent coordinates {self.parent.position if self.parent else None}, direction {self.direction}"
 
     def copy(self):
-        return Node((self.i,self.j),parent=self.parent,direction=self.direction)
+        return Node(self.position,parent=self.parent,direction=self.direction)
 
     def __lt__(self, other):
         if isinstance(other, Node):
             priorities = {(0,1):8, (1,0):7, (0,-1):6, (-1,0):5, (1,1):4,(1,-1):3,(-1,-1):2,(-1,1):1}
             return priorities[self.direction] > priorities[other.direction]
 
-    def position(self):
-        return (self.i,self.j)
-
     def __eq__(self, other):
         if isinstance(other, Node):
             return str(self) == str(other)
-            #return self.i == other.i and self.j == other.j and self.parent.i == other.parent.i and self.parent.j == other.parent.j and self.direction == other.direction
         return False
 
 class JPS:
@@ -79,26 +75,20 @@ class JPS:
 
         return f'Number of rows: {self.num_rows}, Length of a row: {self.len_row}'
 
-
-    def jump(self, node):
-        #need to tell if jumping straight or horizontally
-        pass
-
     def recreate_path(self,final_node):
-        print(final_node.position())
-        ans = str(final_node.position())
+        print(final_node.position)
+        ans = str(final_node.position)
         last_node = final_node
         while True:
             i = last_node.parent
             if i == None:
                 break 
             else:
-                print(i.position())
-                ans = ans + str(i.position())
+                print(i.position)
+                ans = ans + str(i.position)
                 last_node = i
         return ans
 
-    #def scan_horizontally()
     def within_map(self, coordinates):
         i,j = coordinates
         return True if 0 <= i < self.num_rows and 0 <= j < self.len_row else False
@@ -131,7 +121,7 @@ class JPS:
         nodes = [
           Node(
             self.add_tuples(
-                self.start_node.position(),
+                self.start_node.position,
                 x
             ), 
             parent=self.start_node,
@@ -140,20 +130,52 @@ class JPS:
           for x in surrounding_squares 
             if self.within_map(
                 self.add_tuples(
-                    self.start_node.position(), 
+                    self.start_node.position, 
                     x
                 )
                ) 
             and 
-              self.free(self.add_tuples(self.start_node.position(), x))]
-
-        #print(nodes)
+              self.free(self.add_tuples(self.start_node.position, x))]
         print([str(node) for node in nodes])
-
         self.open_set.extend(nodes)
 
     def straight(self, coordinates):
         return coordinates[0]*coordinates[1] == 0
+
+    def turn_counterclockwise_90_degrees(self, coordinates):
+        return (-coordinates[1], coordinates[0])
+
+    def turn_clockwise_90_degrees(self,coordinates):
+        return (coordinates[1], -coordinates[0])
+
+    def produce_neighbours(self,current_node):
+        '''Straight scan:
+        c ■ 	
+        b ■  →          
+        a ■	
+          1  2  3 
+        Diagonal scan:
+        c ■  	
+        b ■  ↗          
+        a ■  ■	■      
+          1  2  3   '''
+
+        #copying the node to not introduce changes to the original one
+        node = current_node.copy()
+        if not self.straight(node.direction):
+            node.direction= self.turn_45_clockwise(node.direction)
+        b1 = self.subtract_tuples(node.position,node.direction)
+        b2 = node.position
+        b3 = self.add_tuples(node.position,node.direction)
+        c2 = self.add_tuples(node.position, self.turn_counterclockwise_90_degrees(node.direction)) 
+        c3 = self.add_tuples(c2, node.direction)
+        a1 = self.subtract_tuples(self.add_tuples(b2,b2),c3)
+        a2 = self.add_tuples(node.position, self.turn_clockwise_90_degrees(node.direction)) 
+        a3 = self.add_tuples(a2, node.direction)
+        c1 = self.subtract_tuples(self.add_tuples(b2,b2),a3)
+
+        return (a1,a2,a3,b1,b2,b3,c1,c2,c3)
+
 
     def produce_neighbours_for_scan_straight(self,current_node):
         '''I imagine the scan going rightward in this grid:
@@ -162,23 +184,13 @@ class JPS:
         a ■	
           1  2  3 
         '''
-        
-        turn_counterclockwise_90_degrees = (
-            lambda coordinates: (-coordinates[1], coordinates[0])
-        )
-
-        turn_clockwise_90_degrees = (
-            lambda coordinates: (coordinates[1], -coordinates[0])
-        )
-
-        a2 = self.add_tuples(current_node.position(), turn_clockwise_90_degrees(current_node.direction)) 
+        a2 = self.add_tuples(current_node.position, self.turn_clockwise_90_degrees(current_node.direction)) 
         a3 = self.add_tuples(a2, current_node.direction)
-        b2 = current_node.position()
-        b3 = self.add_tuples(current_node.position(),current_node.direction)
-        c2 = self.add_tuples(current_node.position(), turn_counterclockwise_90_degrees(current_node.direction)) 
+        b2 = current_node.position
+        b3 = self.add_tuples(current_node.position,current_node.direction)
+        c2 = self.add_tuples(current_node.position, self.turn_counterclockwise_90_degrees(current_node.direction)) 
         c3 = self.add_tuples(c2, current_node.direction)
         return (a2,a3,b2,b3,c2,c3)
-
 
     def print_map(self):
         for row in reversed(self.map):
@@ -190,87 +202,62 @@ class JPS:
         map_list[j] = character
         self.map[i] = ''.join(map_list)  
 
+    def available(self,square):
+        return self.within_map(square) and self.free(square)
+
     def scan_straight(self, current_node):
+        print("Scanning straight from node "+str(current_node))
         '''I imagine it as going rightward in this grid:
         c ■ 	
         b ■  →          The black squares were already covered
         a ■	
-          1  2  3 
-
-        '''
-        if current_node.direction[0] != 0:
-            self.put_character_on_map((current_node.i,current_node.j),"|")
-        else:
-            self.put_character_on_map((current_node.i,current_node.j),"-")
-
+          1  2  3       '''
+        self.put_character_on_map((current_node.position),"|" if current_node.direction[0] != 0 else "-")
         self.print_map()
-        turn_counterclockwise_90_degrees = (
-            lambda coordinates: (-coordinates[1], coordinates[0])
-        )
-        turn_counterclockwise_90_degrees = lambda coordinates: (-coordinates[1], coordinates[0])
+#        a2,a3,b2,b3,c2,c3 = self.produce_neighbours_for_scan_straight(current_node)
 
-        turn_clockwise_90_degrees = (
-            lambda coordinates: (coordinates[1], -coordinates[0])
-        )
+        a1,a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours(current_node)
 
-        print("Scanning straight from node "+str(current_node))
-        a2,a3,b2,b3,c2,c3 = self.produce_neighbours_for_scan_straight(current_node)
-        available = lambda square : self.within_map(square) and self.free(square)
-        if not available(b3):
+        if not self.available(b3):
             return 0 #reached end of map
         else: #tile ahead is free
-            if available(c3) and not available(c2):
-                new_c3_node_for_open_set_heap = Node(c3,parent=current_node,direction=self.add_tuples(turn_counterclockwise_90_degrees(current_node.direction), current_node.direction))
+            if self.available(c3) and not self.available(c2):
+                new_c3_node_for_open_set_heap = Node(c3,parent=current_node,direction=self.add_tuples(self.turn_counterclockwise_90_degrees(current_node.direction), current_node.direction))
                 heappush(self.open_set_heap,new_c3_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_c3_node_for_open_set_heap))
-            if available(a3) and not available(a2):
-                new_a3_node_for_open_set_heap = Node(a3,parent=current_node,direction=self.add_tuples(turn_clockwise_90_degrees(current_node.direction), current_node.direction))
+            if self.available(a3) and not self.available(a2):
+                new_a3_node_for_open_set_heap = Node(a3,parent=current_node,direction=self.add_tuples(self.turn_clockwise_90_degrees(current_node.direction), current_node.direction))
                 heappush(self.open_set_heap,new_a3_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_a3_node_for_open_set_heap))
 
         next_node = current_node.copy()
-        next_node.i = next_node.i+current_node.direction[0]
-        next_node.j = next_node.j+current_node.direction[1]
+        print(f"next_node.position = self.add_tuples({next_node.position},{current_node.direction})")
+        next_node.position = self.add_tuples(next_node.position,current_node.direction)
         self.scan_straight(next_node)
 
+    def turn_45_counterclockwise(self,vector):
+        values = {(1, 1): (0, 1), (-1, 1): (-1, 0), (-1, -1): (0, -1), (1, -1): (1, 0)}
+        return values.get(vector)
+   
+    def turn_45_clockwise(self,vector):
+        values = {(1, 1): (1, 0), (1, -1): (0, -1), (-1, -1): (-1, 0), (-1, 1): (0, 1)}
+        return values.get(vector)
+
+    def turn_counterclockwise_90_degrees(self,coordinates):
+        return (-coordinates[1], coordinates[0])
+
+    def turn_clockwise_90_degrees(self,coordinates):
+        return (coordinates[1], -coordinates[0])
+
     def produce_neighbours_for_scan_diagonal(self,current_node):
-        def turn_45_counterclockwise(vector):
-            if vector==(1,1):  
-                return (0,1)
-            if vector==(-1,1):  
-                return (-1,0)
-            if vector==(-1,-1):  
-                return (0,-1)
-            if vector==(1,-1):  
-                return (1,0)
-
-        def turn_45_clockwise(vector):
-            if vector==(1,1):  
-                return (1,0)
-            if vector==(1,-1):  
-                return (0,-1)
-            if vector==(-1,-1):  
-                return (-1,0)
-            if vector==(-1,1):  
-                return (0,1)
-
-        turn_counterclockwise_90_degrees = (
-            lambda coordinates: (-coordinates[1], coordinates[0])
-        )
-        turn_counterclockwise_90_degrees = lambda coordinates: (-coordinates[1], coordinates[0])
-
-        turn_clockwise_90_degrees = (
-            lambda coordinates: (coordinates[1], -coordinates[0])
-        )
-
-        b1 =  self.add_tuples(current_node.position(),  turn_45_counterclockwise(turn_counterclockwise_90_degrees( current_node.direction)))
-        b2 = current_node.position()
-        c3 = self.add_tuples(current_node.position(), current_node.direction)
-        c2 = self.add_tuples(current_node.position(), turn_45_counterclockwise( current_node.direction))
-        c1 = self.add_tuples(current_node.position(),  turn_counterclockwise_90_degrees(current_node.direction))
-        b3 = self.add_tuples(current_node.position(), turn_45_clockwise( current_node.direction))
-        a2 =  self.add_tuples(current_node.position(),  turn_45_clockwise(turn_clockwise_90_degrees( current_node.direction)))
-        a3 = self.add_tuples(current_node.position(),   turn_clockwise_90_degrees( current_node.direction))
+        b1 =  self.add_tuples(current_node.position,  self.turn_45_counterclockwise(self.turn_counterclockwise_90_degrees( current_node.direction)))
+        b2 = current_node.position
+        c3 = self.add_tuples(current_node.position, current_node.direction)
+        c2 = self.add_tuples(current_node.position, self.turn_45_counterclockwise( current_node.direction))
+        c1 = self.add_tuples(current_node.position,  self.turn_counterclockwise_90_degrees(current_node.direction))
+        b3 = self.add_tuples(current_node.position, self.turn_45_clockwise( current_node.direction))
+        a2 =  self.add_tuples(current_node.position,  self.turn_45_clockwise(self.turn_clockwise_90_degrees( current_node.direction)))
+        a3 = self.add_tuples(current_node.position,   self.turn_clockwise_90_degrees( current_node.direction))
 
         return a2,a3,b1,b2,b3,c1,c2,c3
         
@@ -283,13 +270,16 @@ class JPS:
 
         '''
         if current_node.direction[1] != 0:
-            self.put_character_on_map((current_node.i,current_node.j),"x")
+            self.put_character_on_map((current_node.position),"x")
         else:
-            self.put_character_on_map((current_node.i,current_node.j),"x")
+            self.put_character_on_map((current_node.position),"x")
 
         self.print_map()
         print("Scanning diagonally from node "+str(current_node))
-        a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours_for_scan_diagonal(current_node)
+        #a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours_for_scan_diagonal(current_node)
+
+        a1,a2,a3,b1,b2,b3,c1,c2,c3 = self.produce_neighbours(current_node)
+
         scan_right_node = current_node.copy()
         scan_right_node.direction=self.subtract_tuples(b3,b2)
         print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
@@ -298,35 +288,31 @@ class JPS:
         scan_up_node.direction=self.subtract_tuples(c2,b2)
         print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
         self.scan_straight(scan_up_node)
-
-        available = lambda square : self.within_map(square) and self.free(square)
-        if not available(b1):
-            if available(c1):
-                new_c1_node_for_open_set_heap = Node(c1,parent=current_node,direction=self.subtract_tuples(c1,current_node.position()))
+        if not self.available(b1):
+            if self.available(c1):
+                new_c1_node_for_open_set_heap = Node(c1,parent=current_node,direction=self.subtract_tuples(c1,current_node.position))
                 heappush(self.open_set_heap,new_c1_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_c1_node_for_open_set_heap))
-            if available(c2):
-                new_c2_node_for_open_set_heap = Node(c2,parent=current_node,direction=self.subtract_tuples(c2,current_node.position()))
+            if self.available(c2):
+                new_c2_node_for_open_set_heap = Node(c2,parent=current_node,direction=self.subtract_tuples(c2,current_node.position))
                 heappush(self.open_set_heap,new_c2_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_c2_node_for_open_set_heap))
 
-            if available(c3):
-                new_c3_node_for_open_set_heap = Node(c3,parent=current_node,direction=self.subtract_tuples(c3,current_node.position()))
+            if self.available(c3):
+                new_c3_node_for_open_set_heap = Node(c3,parent=current_node,direction=self.subtract_tuples(c3,current_node.position))
                 heappush(self.open_set_heap,new_c3_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_c3_node_for_open_set_heap))
 
-            if available(b3):
-                new_b3_node_for_open_set_heap = Node(b3,parent=current_node,direction=self.subtract_tuples(b3,current_node.position()))
+            if self.available(b3):
+                new_b3_node_for_open_set_heap = Node(b3,parent=current_node,direction=self.subtract_tuples(b3,current_node.position))
                 heappush(self.open_set_heap,new_b3_node_for_open_set_heap)
                 print(f"Heappushed node"+str(new_b3_node_for_open_set_heap))
 
-        if not available(c3):
+        if not self.available(c3):
             return 0
 
         next_node = current_node.copy()
-        next_node.i = next_node.i+current_node.direction[0]
-        next_node.j = next_node.j+current_node.direction[1]
-        
+        next_node.position = self.add_tuples(next_node.position,current_node.direction)
         self.scan_diagonally(next_node)
 
     def find_shortest_path(self,start_coordinates,goal_coordinates):
@@ -336,7 +322,7 @@ class JPS:
         self.put_character_on_map(goal_coordinates,"G")
         self.start_node = Node(start_coordinates)
         self.goal_node = Node(goal_coordinates)
-        if self.start_node.position() == self.goal_node.position():
+        if self.start_node.position == self.goal_node.position:
             return 0
 
         self.add_neighbours_of_start_node_to_open_set()

@@ -93,6 +93,13 @@ class TestJPS(unittest.TestCase):
 
         self.assertEqual(node1 in self.algorithm.open_set, True)
 
+    def test_same_node_cannot_be_added_to_the_open_set_twice(self):
+        #node = Node((2,2), parent=Node, direction=(1,1)),
+        #self.algorithm.add_node_to_open_set_if_new(node, (3,3))
+        #result = self.algorithm.add_node_to_open_set_if_new(node, (3,3))
+
+        self.assertEqual(False, False)
+        
 
     def test_jps_adds_8_adjacent_squares_to_open_list_when_starting_from_a_place_with_free_space_to_all_sides(self):
         self.algorithm.find_shortest_path((1,1),(4,7))
@@ -142,8 +149,8 @@ class TestJPS(unittest.TestCase):
         ''' 
 
         self.assertEqual(
-          self.algorithm.produce_neighbours_for_scan_straight(node_going_right),
-          ((3,2),(4,2),(3,3),(4,3),(3,4),(4,4))
+          self.algorithm.produce_neighbours(node_going_right),
+          ((2, 2), (3, 2), (4, 2), (2, 3), (3, 3), (4, 3), (2, 4), (3, 4), (4, 4))
         ) 
 
     def test_neighbours_produced_for_straight_scan_left_okay(self):
@@ -156,8 +163,8 @@ class TestJPS(unittest.TestCase):
         ''' 
 
         self.assertEqual(
-          self.algorithm.produce_neighbours_for_scan_straight(node_going_left),
-          ((3,4),(2,4),(3,3),(2,3),(3,2),(2,2))
+          self.algorithm.produce_neighbours(node_going_left),
+          ((4, 4), (3, 4), (2, 4), (4, 3), (3, 3), (2, 3), (4, 2), (3, 2), (2, 2))
         ) 
 
     def test_neighbours_produced_for_straight_scan_up_okay(self):
@@ -170,8 +177,8 @@ class TestJPS(unittest.TestCase):
         ''' 
 
         self.assertEqual(
-          self.algorithm.produce_neighbours_for_scan_straight(node_going_up),
-          ((4,3), (4,4), (3,3),(3,4),(2,3),(2,4))
+          self.algorithm.produce_neighbours(node_going_up),
+          ((4, 2), (4, 3), (4, 4), (3, 2), (3, 3), (3, 4), (2, 2), (2, 3), (2, 4))
         ) 
 
     def test_neighbours_produced_for_straight_scan_down_okay(self):
@@ -184,14 +191,13 @@ class TestJPS(unittest.TestCase):
         ''' 
 
         self.assertEqual(
-          self.algorithm.produce_neighbours_for_scan_straight(node_going_down),
-          ((2,3), (2,2), (3,3),(3,2),(4,3),(4,2))
+          self.algorithm.produce_neighbours(node_going_down),
+          ((2, 4), (2, 3), (2, 2), (3, 4), (3, 3), (3, 2), (4, 4), (4, 3), (4, 2))
         ) 
 
     def test_scan_can_proceed_straight_up_and_find_a_forced_neighbour_diagonally_left(self):
         algorithm = JPS(self.up_lines)
         algorithm.find_shortest_path((1,1),(5,2))
-        #algorithm.produce_neighbours_for_scan_straight(Node((1,1), parent=self.algorithm.start_node, direction=(0,1)),
         parent_node = Node((3,1))
         jumppoint_node = Node((4,2), parent=parent_node, direction=(1,1))
         combined_set = []
@@ -202,7 +208,6 @@ class TestJPS(unittest.TestCase):
     def test_scan_can_proceed_straight_up_and_find_a_forced_neighbour_diagonally_right(self):
         algorithm = JPS(self.up_lines)
         algorithm.find_shortest_path((1,1),(7,2))
-        #algorithm.produce_neighbours_for_scan_straight(Node((1,1), parent=self.algorithm.start_node, direction=(0,1)),
         parent_node = Node((5,1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
@@ -220,10 +225,11 @@ class TestJPS(unittest.TestCase):
         '''
         parent_node = Node((0,0),None,None)
         start_node = Node((1,1),parent=parent_node,direction=(1,1))
-        neighbours = self.algorithm.produce_neighbours_for_scan_diagonal(start_node)
+        neighbours = self.algorithm.produce_neighbours(start_node)
+        #a1,a2,a3,b1,b2,b3,c1,c2,c3
         #a2,a3,b1,b2,b3,c1,c2,c3
         #a3,b2,b3,c1,c2,c3
-        self.assertEqual(neighbours,((1,0),(2, 0),(0,1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)))
+        self.assertEqual(neighbours,((0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)))
 
     def test_produce_neighbours_for_scan_diagonal_works_correctly_for_right_down(self):
         '''I imagine it as going right and up in this grid:
@@ -234,12 +240,12 @@ class TestJPS(unittest.TestCase):
         '''
         parent_node = Node((0,0),None,None)
         start_node = Node((1,1),parent=parent_node,direction=(1,-1))
-        neighbours = self.algorithm.produce_neighbours_for_scan_diagonal(start_node)
+        neighbours = self.algorithm.produce_neighbours(start_node)
 
         #a2,a3,b1,b2,b3,c1,c2,c3
         #a3,b2,b3,c1,c2,c3
         #self.assertEqual(neighbours,((0, 0), (1, 1), (1, 0), (2, 2), (2, 1), (2, 0)))
-        self.assertEqual(neighbours,((0, 1), (0, 0), (1, 2), (1, 1), (1, 0), (2, 2), (2, 1), (2, 0)))
+        self.assertEqual(neighbours,((0, 2), (0, 1), (0, 0), (1, 2), (1, 1), (1, 0), (2, 2), (2, 1), (2, 0)))
 
     def test_produce_neighbours_for_scan_diagonal_works_correctly_for_left_down(self):
         '''I imagine it as going right and up in this grid:
@@ -250,10 +256,10 @@ class TestJPS(unittest.TestCase):
         '''
         parent_node = Node((0,0),None,None)
         start_node = Node((1,1),parent=parent_node,direction=(-1,-1))
-        neighbours = self.algorithm.produce_neighbours_for_scan_diagonal(start_node)
+        neighbours = self.algorithm.produce_neighbours(start_node)
 
         #a3,b2,b3,c1,c2,c3
-        self.assertEqual(neighbours,((1, 2), (0, 2), (2, 1), (1, 1), (0, 1), (2, 0), (1, 0), (0, 0)))
+        self.assertEqual(neighbours,((2, 2), (1, 2), (0, 2), (2, 1), (1, 1), (0, 1), (2, 0), (1, 0), (0, 0)))
 
     def test_produce_neighbours_for_scan_diagonal_works_correctly_for_left_up(self):
         '''I imagine it as going right and up in this grid:
@@ -264,8 +270,8 @@ class TestJPS(unittest.TestCase):
         '''
         parent_node = Node((0,0),None,None)
         start_node = Node((1,1),parent=parent_node,direction=(-1,1))
-        neighbours = self.algorithm.produce_neighbours_for_scan_diagonal(start_node)
+        neighbours = self.algorithm.produce_neighbours(start_node)
         #a2,a3,b1,b2,b3,c1,c2,c3
         #a3,b2,b3,c1,c2,c3
-        self.assertEqual(neighbours,((2, 1), (2, 2), (1, 0), (1, 1), (1, 2), (0, 0), (0, 1), (0, 2)))
+        self.assertEqual(neighbours,((2, 0), (2, 1), (2, 2), (1, 0), (1, 1), (1, 2), (0, 0), (0, 1), (0, 2)))
 

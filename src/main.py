@@ -12,7 +12,7 @@ if __name__ == "__main__":
     Prints the shortest path calculated by the chosen algorithm
     """
 
-    parser = argparse.ArgumentParser(description='JPS vs Djikstra \nFor a good example on Dijkstra, run:\n python3 main.py --dijkstra --map arena.map 4\nFor a good example on JPS, run:\n python3 main.py --jps --map wall.map 0 0 4 7 ', formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description='JPS vs Djikstra \nFor an example on Dijkstra (no visualization yet), run:\n python3 main.py --dijkstra --map arena.map 5 5 20 30\nFor a good example on JPS, run:\n python3 main.py --jps --map wall.map 0 0 4 7 ', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('--map', type=str, default="arena.map",help='Name of the file inside map folder, e.g. arena.map')
     parser.add_argument('--dijkstra',action='store_true', help='You want to try dijkstra')
     parser.add_argument( '--jps',action='store_true', help='You want to try JPS')

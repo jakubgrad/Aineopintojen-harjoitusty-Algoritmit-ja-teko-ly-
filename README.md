@@ -15,3 +15,5 @@ To explore the functions of the tool deeper, make sure to also run
 ```
 python3 main.py --help
 ```
+
+run poetry run invoke start in topmost directory, otherwise the suggested map directory won't be there

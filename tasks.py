@@ -19,11 +19,15 @@ def start(ctx, args):
 '''    
 @task
 def jps(ctx):
-    ctx.run(f"cd {root_dir}/src && python3 main.py --jps --map wall.map 0 0 4 7", pty=True)
+    ctx.run(f"cd {root_dir}/src && python3 cli.py --jps --map wall.map 0 0 4 7", pty=True)
+
+@task
+def ui(ctx):
+    ctx.run(f"cd {root_dir}/src && python3 ui/ui.py", pty=True)
 
 @task
 def dijkstra(ctx):
-    ctx.run(f"cd {root_dir}/src && python3 main.py --dijkstra --map arena.map 4 3 5 11", pty=True)
+    ctx.run(f"cd {root_dir}/src && python3 cli.py --dijkstra --map arena.map 4 3 5 11", pty=True)
 
 @task
 def test(ctx):

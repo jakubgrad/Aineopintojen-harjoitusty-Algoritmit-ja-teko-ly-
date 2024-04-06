@@ -42,7 +42,8 @@ class Node:
 
     def __lt__(self, other):
         if isinstance(other, Node):
-            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)
+                           : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
             return priorities[self.direction] > priorities[other.direction]
 
     def __eq__(self, other):
@@ -64,7 +65,9 @@ class JPS:
         self.goal_coordinates = None
         self.open_set_heap = []
         self.closed_set = []
-        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
+                        : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+        self.wait_time = 0
         """Class constructor, that creates a new node 
         
         Attributes:
@@ -221,7 +224,7 @@ class JPS:
             result_map.append(row)
         return result_map
 
-    def print_map(self, wait_time=0.2):
+    def print_map(self):
         map_list = self.merge_maps(self.color_map, self.map)
         rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
 
@@ -231,7 +234,7 @@ class JPS:
 
         for row in rotated_map_list:
             print(" ".join(row))
-        time.sleep(wait_time)
+        time.sleep(self.wait_time)
 
     def put_character_on_map(self, coordinates, character):
         i, j = coordinates
@@ -342,7 +345,9 @@ class JPS:
             next_node.position, current_node.direction)
         self.scan_diagonally(next_node)
 
-    def find_shortest_path(self, start_coordinates, goal_coordinates):
+    def find_shortest_path(self, start_coordinates, goal_coordinates, visualization=False):
+        if visualization == True:
+            self.wait_time = 0.5
         self.goal_node = Node(goal_coordinates)
         self.start_node = Node(start_coordinates)
         self.start_coordinates = start_coordinates

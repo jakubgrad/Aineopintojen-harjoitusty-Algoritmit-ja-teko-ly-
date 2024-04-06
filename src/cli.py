@@ -32,7 +32,8 @@ if __name__ == "__main__":
     slides = []
     if args.jps:
         algorithm = JPS(lines)
-        algorithm.find_shortest_path(start_coordinates, goal_coordinates, slides, args.visual)
+        algorithm.find_shortest_path(
+            start_coordinates, goal_coordinates, slides, args.visual)
 
     elif args.dijkstra:
         algorithm = Dijkstra(lines)

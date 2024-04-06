@@ -42,8 +42,7 @@ class Node:
 
     def __lt__(self, other):
         if isinstance(other, Node):
-            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)
-                           : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)                          : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
             return priorities[self.direction] > priorities[other.direction]
 
     def __eq__(self, other):
@@ -55,7 +54,6 @@ class Node:
 class JPS:
     def __init__(self, map):
         self.map = [list(row) for row in map]
-        # self.color_map = [list(row) for row in map]
         self.color_map = [['' for _ in range(len(row))] for row in map]
 
         self.num_rows = len(self.map)
@@ -68,9 +66,8 @@ class JPS:
         self.closed_set = []
         self.callback = False
         self.slides = []
-        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
-                        : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
-        self.wait_time = 0.4 
+        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)                       : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+        self.wait_time = 0.4
         """Class constructor, that creates a new node 
         
         Attributes:
@@ -230,26 +227,27 @@ class JPS:
     def print_map(self):
         map_list = self.merge_maps(self.color_map, self.map)
         rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-        
+
         map = ""
         for i in range(self.num_rows):
             for j in range(self.len_row):
                 rotated_map_list[self.len_row - j - 1][i] = map_list[i][j]
 
         for row in rotated_map_list:
-            #print(" ".join(row))
-            map=map+(" ".join(row))+"\n"
+            # print(" ".join(row))
+            map = map+(" ".join(row))+"\n"
 
-        rotated_regular_map = [[''] * self.num_rows for _ in range(self.len_row)]
-        
-        rmap=""
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
+
+        rmap = ""
         for i in range(self.num_rows):
             for j in range(self.len_row):
                 rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
 
         for row in rotated_regular_map:
-            rmap=rmap+(" ".join(row))+"\n"
-                           
+            rmap = rmap+(" ".join(row))+"\n"
+
         print(map)
         self.slides.append(rmap)
         if self.visual:

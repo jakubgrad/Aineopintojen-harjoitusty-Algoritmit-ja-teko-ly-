@@ -38,7 +38,7 @@ class Dijkstra:
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.create_edges_from_map()
-        self.slides = False 
+        self.slides = False
 
     def __str__(self):
         """A function used to test if Dijkstra class correctly found the number of nodes

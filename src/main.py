@@ -14,7 +14,7 @@ def main():
     window = Tk()
     window.title("Todo application")
 
-    ui_view = UI(window,algorithm_service)
+    ui_view = UI(window, algorithm_service)
     ui_view.start()
 
     window.mainloop()

@@ -24,6 +24,11 @@ def dijkstra(ctx):
     ctx.run(f"cd {root_dir}/src && python3 cli.py --dijkstra --map arena.map 4 3 5 11", pty=True)
 
 @task
+def (ctx):
+    ctx.run(f"cd {root_dir} && python3 cli.py --dijkstra --map arena.map 4 3 5 11", pty=True)
+
+
+@task
 def test(ctx):
     ctx.run(f"cd {root_dir} && pytest {root_dir}/src", pty=True)
 

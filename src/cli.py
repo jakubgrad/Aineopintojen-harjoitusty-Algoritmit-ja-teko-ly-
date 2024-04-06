@@ -19,6 +19,8 @@ if __name__ == "__main__":
                         help='You want to try dijkstra')
     parser.add_argument('--jps', action='store_true',
                         help='You want to try JPS')
+    parser.add_argument('--visual', action='store_true',
+                        help='You want to see how the algorithm progresses')
     parser.add_argument('integers', metavar='start_x start_y goal_x goal_y',
                         type=int, nargs='+', help="Start and goal nodes' coordinates, e.g. 0 0 4 7")
 
@@ -27,9 +29,10 @@ if __name__ == "__main__":
     goal_coordinates = (args.integers[2], args.integers[3])
     map_path = "../maps/"+args.map
     lines = create_array(map_path)
+    slides = []
     if args.jps:
         algorithm = JPS(lines)
-        algorithm.find_shortest_path(start_coordinates, goal_coordinates)
+        algorithm.find_shortest_path(start_coordinates, goal_coordinates, slides, args.visual)
 
     elif args.dijkstra:
         algorithm = Dijkstra(lines)

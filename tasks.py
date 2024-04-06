@@ -10,20 +10,14 @@ root_dir = "'"+root_dir_raw+"'"
 @task
 def foo(ctx):
     print("bar")
-'''Doesn't work yet
-@task
-def start(ctx, args):
-    args = args.strip()
-    print(args)
-    ctx.run(f"python3 {root_dir}/src/main.py "+args, pty=True)
-'''    
-@task
-def jps(ctx):
-    ctx.run(f"cd {root_dir}/src && python3 cli.py --jps --map wall.map 0 0 4 7", pty=True)
 
 @task
-def ui(ctx):
-    ctx.run(f"cd {root_dir}/src && python3 ui/ui.py", pty=True)
+def start(ctx):
+    ctx.run(f"python3 {root_dir}/src/main.py ", pty=True)
+
+@task
+def jps(ctx):
+    ctx.run(f"cd {root_dir}/src && python3 cli.py --jps --visual --map wall.map 0 0 4 7", pty=True)
 
 @task
 def dijkstra(ctx):

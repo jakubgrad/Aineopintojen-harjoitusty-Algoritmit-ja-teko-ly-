@@ -61,13 +61,16 @@ class JPS:
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.open_set = []
+        self.visual = False
         self.start_node = None
         self.goal_coordinates = None
         self.open_set_heap = []
         self.closed_set = []
+        self.callback = False
+        self.slides = []
         self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
                         : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
-        self.wait_time = 0
+        self.wait_time = 0.4 
         """Class constructor, that creates a new node 
         
         Attributes:
@@ -227,14 +230,30 @@ class JPS:
     def print_map(self):
         map_list = self.merge_maps(self.color_map, self.map)
         rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-
+        
+        map = ""
         for i in range(self.num_rows):
             for j in range(self.len_row):
                 rotated_map_list[self.len_row - j - 1][i] = map_list[i][j]
 
         for row in rotated_map_list:
-            print(" ".join(row))
-        time.sleep(self.wait_time)
+            #print(" ".join(row))
+            map=map+(" ".join(row))+"\n"
+
+        rotated_regular_map = [[''] * self.num_rows for _ in range(self.len_row)]
+        
+        rmap=""
+        for i in range(self.num_rows):
+            for j in range(self.len_row):
+                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
+
+        for row in rotated_regular_map:
+            rmap=rmap+(" ".join(row))+"\n"
+                           
+        print(map)
+        self.slides.append(rmap)
+        if self.visual:
+            time.sleep(self.wait_time)
 
     def put_character_on_map(self, coordinates, character):
         i, j = coordinates
@@ -345,9 +364,9 @@ class JPS:
             next_node.position, current_node.direction)
         self.scan_diagonally(next_node)
 
-    def find_shortest_path(self, start_coordinates, goal_coordinates, visualization=False):
-        if visualization == True:
-            self.wait_time = 0.5
+    def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+        self.visual = visual
+        self.slides = slides
         self.goal_node = Node(goal_coordinates)
         self.start_node = Node(start_coordinates)
         self.start_coordinates = start_coordinates

@@ -38,6 +38,7 @@ class Dijkstra:
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.create_edges_from_map()
+        self.slides = False 
 
     def __str__(self):
         """A function used to test if Dijkstra class correctly found the number of nodes
@@ -98,7 +99,7 @@ class Dijkstra:
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i+1, j+1), 1.41)
 
-    def find_shortest_path(self, start_coordinates, end_coordinates):
+    def find_shortest_path(self, start_coordinates, end_coordinates, slides=False):
         """Actual implementation of the Dijkstra algorithm
 
         Args:

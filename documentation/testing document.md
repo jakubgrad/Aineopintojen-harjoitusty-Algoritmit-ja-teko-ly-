@@ -17,9 +17,10 @@
      - 
    - 
 4. How can the tests be repeated?<br />
-   - [x] Go to the root directory, and execute: `coverage run --branch -m pytest src && coverage report -m`<br />
+   - [x] Go to the root directory, and execute: `poetry run invoke coverage-report`<br />
 5. Presentation of the results of possible empirical testing of the program's operation in graphic form. (If it fits the topic)<br />
-   - [ ] Coming out next week<br />
+   - [X] Looking at the graphical interface and the command line simulation of the algorithm, I can see that it covers the whole map, doesn't get stuck and finds the goal node when possible. I haven't tested yet if the algorithm will cease to execute because it found a suboptimal route yet, although if I remember correctly, according to the paper on JPS that isn't probable. <br />
+   - I would like to expand the tests to include randomized data sets or different maps, but first I need to implemenet a visualization for Dijkstra and make the GUI more user-friendly.
 
 
 

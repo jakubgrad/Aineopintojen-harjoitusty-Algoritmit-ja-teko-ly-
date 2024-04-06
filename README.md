@@ -21,11 +21,35 @@ The command line too also exists because I started working on the algorithms usi
 ```
 poetry run invoke jps
 ```
-which is a shortcut for `python3 cli.py --jps --map wall.map 0 0 4 7`.
-You should get 7.41, which is the shortest path when assuming $\sqrt{2}$ = 1.41 between the default start square 200 and end square 256, rounded to two digits. Under the hood, main.py has called create_array to turn an example map maps/arena.map into an array, and then called dijkstra.py which in turn created a graph based on the array. Finally, the shortest path on the map is printed using dijkstra's algorith, *voilà*!<br /><br />
-To explore the functions of the tool deeper, make sure to also run
+which is a shortcut for `python3 cli.py --jps --visual --map wall.map 0 0 4 7` and has the advantage over the graphical interface that it uses colors and logs comments on what's happenning. It also produces the final path as a series of coordinates at the end unlike the graphical interface. <br />
+It's also possible to test dijkstra in command line with:
 ```
-python3 main.py --help
+poetry run invoke dijktra
 ```
+Although the output being just the length of the path isn't too exciting. To learn more about the command line type:
+```
+python3 src/cli.py --help
+```
+The command line tool also allows you to pass start and goal coordinates as arguments.<br/>
+Other useful commands are:
+```
+poetry run invoke test
+```
+To run `pytest` on the code and 
 
-run poetry run invoke start in topmost directory, otherwise the suggested map directory won't be there
+```
+poetry run invoke coverage-report
+```
+To create and open in a browser the branch coverage. <br/>
+If you are experiencing any issues with the command line or graphical tool, you might want to run:
+```
+poetry shell
+poetry install
+```
+If there are import problems with python, the following might help:
+```
+export PYTHONPATH=/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
+export PYTHONPATH=/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
+```
+Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at JPS code! It was very challenging to write it from ground-up.
+

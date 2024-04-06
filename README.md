@@ -40,7 +40,17 @@ To run `pytest` on the code and
 ```
 poetry run invoke coverage-report
 ```
-To create and open in a browser the branch coverage. <br/>
+To create and open in a browser the branch coverage. If you get an error similar to this one:
+```
+[13289:13289:0403/183659.749216:ERROR:process_singleton_posix.cc(353)] The profile appears to be in use by
+ another Google Chrome process (44970) on another computer (vdi-cubic-025.ad.helsinki.fi).
+Chrome has locked the profile so that it doesn't get corrupted.
+If you are sure no other processes are using this profile,
+you can unlock the profile and relaunch Chrome.
+```
+You can run  `rm -rf ~/.config/google-chrome/Singleton*` and then try to generate the report again. It should open in your browser. If it doesn't, there is still the possibility of opening it with a browser application directly from the file in html-cov in the topmost directory of the project.<br/>
+Note: the above `poetry` commands can be run in any project directory thanks to using absolute path of the project in `tasks.py`<br/>
+
 If you are experiencing any issues with the command line or graphical tool, you might want to run:
 ```
 poetry shell
@@ -48,8 +58,8 @@ poetry install
 ```
 If there are import problems with python, the following might help:
 ```
-export PYTHONPATH=/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
-export PYTHONPATH=/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
+export PYTHONPATH=~/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
+export PYTHONPATH=~/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
 ```
 Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at JPS code! It was very challenging to write it from ground-up.
 

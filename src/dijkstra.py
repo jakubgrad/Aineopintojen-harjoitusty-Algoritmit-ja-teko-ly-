@@ -1,5 +1,43 @@
 from heapq import *
 
+class Presentation:
+    def __init__(self, map):
+        self.map = [list(row) for row in map]
+        self.num_rows = len(self.map)
+        self.len_row = len(self.map[0])
+        self.slides = []
+            
+    def __str__(self):
+        return self.map
+
+    def mark(self, coordinates):
+        i,j=coordinates
+        self.map[i][j]="A"
+
+    def print_map(self):
+        rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
+
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
+
+        rmap = ""
+        for i in range(self.num_rows):
+            for j in range(self.len_row):
+                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
+
+        for row in rotated_regular_map:
+            rmap = rmap+(" ".join(row))+"\n"
+
+        #print(map)
+        #self.slides.append(rmap)
+        #if self.visual:
+        #    time.sleep(self.wait_time)
+        return rmap
+
+
+
+
+
 
 class Edge:
     """A class with which we can keep track of what edges and with what weights are the neighbours of a node
@@ -32,7 +70,9 @@ class Dijkstra:
     """
 
     def __init__(self, map):
+        self.presentation = Presentation(map) 
         self.map = map
+        self.map = [list(row) for row in map]
         self.number_of_nodes = len(map)*len(map[0])
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.num_rows = len(self.map)
@@ -74,28 +114,46 @@ class Dijkstra:
 
         return i*self.len_row+j
 
+    def coordinates(self, node_number):
+        """A handy function for converting a node number into a position of a square on the map
+
+        Args:
+            node_number, used to uniquely identify a field
+
+        Returns:
+            A tuple of (i,j), where
+                i: row of the square
+                j: column (or index in the row) of the square
+        """
+
+        return i*self.len_row+j
+
+
     def create_edges_from_map(self):
         """A function that turns an array of rows into a graph that can be used by Dijkstra
 
-        Is only run once during the initialization of the class
+        It is only run once during the initialization of the class
         """
 
         nrows = self.num_rows
-        for i in range(len(self.map)):
+        lrow = self.len_row
+        map = self.presentation.map
+
+        for i in range(nrows):
             nrows = nrows-1
-            for j in range(self.len_row):
-                if self.map[i][j] == "T":
+            for j in range(lrow):
+                if map[i][j] == "T":
                     continue
                 else:
-                    if j < self.len_row:
-                        if self.map[i][j+1] == ".":
+                    if j < lrow:
+                        if map[i][j+1] == ".":
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i, j+1), 1)
-                    if self.num_rows != 0:
-                        if self.map[i+1][j] == ".":
+                    if nrows != 0:
+                        if map[i+1][j] == ".":
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i+1, j), 1)
-                        if self.map[i+1][j+1] == ".":
+                        if map[i+1][j+1] == ".":
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i+1, j+1), 1.41)
 

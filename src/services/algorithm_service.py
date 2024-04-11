@@ -1,5 +1,6 @@
 from jps import JPS
 from dijkstra import Dijkstra
+from dijkstra import Presentation
 from create_array import create_array
 
 
@@ -15,9 +16,10 @@ class AlgorithmService():
                 start_coordinates, goal_coordinates, slides)
 
         else:
-            algorithm = Dijkstra(lines)
-            slides.append(algorithm.find_shortest_path(
-                start_coordinates, goal_coordinates, slides))
+            presentation = Presentation(lines)
+            algorithm = Dijkstra(lines,presentation)
+            result = algorithm.find_shortest_path(start_coordinates, goal_coordinates)
+            slides.extend(presentation.slides)
 
 
 algorithm_service = AlgorithmService()

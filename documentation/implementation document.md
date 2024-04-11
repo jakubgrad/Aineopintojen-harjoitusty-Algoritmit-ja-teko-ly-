@@ -14,6 +14,12 @@ The program is written in `Python`. It has the following structure at the moment
 └── ...<br /> 
 <br /> 
 
+# Notes
+- I realized that in a uniform graph such as one constructed from a grid, Dijkstra works essentially like a Breadth-First Search. I could have implemented it as such but I already coded Dijkstra.
+- It would be nice to create a datastructure for JPS that encapsulated the neighbour nodes. 
+- Here would be a good place to introduce the a-c 1-3 notation
+- The input maps are assumed to be rectangular
+- I want to add colors to the UI
 
 # Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />
@@ -31,4 +37,6 @@ The only LLM I've used was Chatgpt 3.5. I used it a lot to interpret the bugs in
 Space and time complexity of **JPS** https://en.wikipedia.org/wiki/A*_search_algorithm <br />
 Time complexity of **Djikstra** https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20 <br />
 Space complexity of **Djikstra** https://en.wikipedia.org/wiki/A*_search_algorithm <br />
+
+
 

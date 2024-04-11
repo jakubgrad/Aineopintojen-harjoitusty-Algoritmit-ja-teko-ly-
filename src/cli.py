@@ -1,5 +1,6 @@
 from heapq import *
 from dijkstra import Dijkstra
+from dijkstra import Presentation
 from jps import JPS
 from create_array import create_array
 import argparse
@@ -13,6 +14,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='JPS vs Djikstra \nFor an example on Dijkstra (no visualization yet), run:\n python3 main.py --dijkstra --map arena.map 5 5 20 30\nFor a good example on JPS, run:\n python3 main.py --jps --map wall.map 0 0 4 7 ', formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--print', action='store_true',
+                        help='You want to only print the first slide')
     parser.add_argument('--map', type=str, default="arena.map",
                         help='Name of the file inside map folder, e.g. arena.map')
     parser.add_argument('--dijkstra', action='store_true',
@@ -31,11 +34,16 @@ if __name__ == "__main__":
     lines = create_array(map_path)
     slides = []
     if args.jps:
-        algorithm = JPS(lines)
-        algorithm.find_shortest_path(
-            start_coordinates, goal_coordinates, slides, args.visual)
+        if args.print:
+            algorithm = JPS(lines)
+            algorithm.print_for_cli(start_coordinates, goal_coordinates, slides, args.visual)
+        else:
+            algorithm = JPS(lines)
+            algorithm.find_shortest_path(
+                start_coordinates, goal_coordinates, slides, args.visual)
 
     elif args.dijkstra:
-        algorithm = Dijkstra(lines)
+        presentation = Presentation(lines)
+        algorithm = Dijkstra(lines, presentation)
         print(algorithm.find_shortest_path(
             start_coordinates, goal_coordinates))

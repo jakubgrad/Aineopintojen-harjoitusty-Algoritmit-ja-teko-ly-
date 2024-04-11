@@ -55,7 +55,6 @@ class JPS:
     def __init__(self, map):
         self.map = [list(row) for row in map]
         self.color_map = [['' for _ in range(len(row))] for row in map]
-
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.open_set = []
@@ -66,7 +65,7 @@ class JPS:
         self.closed_set = []
         self.callback = False
         self.slides = []
-        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)                       : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
         self.wait_time = 0.4
         """Class constructor, that creates a new node 
         
@@ -362,7 +361,26 @@ class JPS:
             next_node.position, current_node.direction)
         self.scan_diagonally(next_node)
 
+    def print_for_cli(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+        self.visual = visual
+        self.slides = slides
+        self.goal_node = Node(goal_coordinates)
+        self.start_node = Node(start_coordinates)
+        self.start_coordinates = start_coordinates
+        self.goal_coordinates = goal_coordinates
+        if not self.within_map(start_coordinates) or not self.within_map(goal_coordinates):
+            print("Start or goal coordinates are out of bounds")
+            return 0
+        self.put_character_on_map(start_coordinates, "S")
+        self.put_character_on_map(goal_coordinates, "G")
+        if self.start_coordinates == self.goal_coordinates:
+            print("Start and goal positions are the same")
+            return 0
+        self.print_map()
+
+
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+        self.print_map()
         self.visual = visual
         self.slides = slides
         self.goal_node = Node(goal_coordinates)

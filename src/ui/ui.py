@@ -8,7 +8,7 @@ from config import default_jps, default_dijkstra
 class UI:
     def __init__(self, window, algorithm_service):
         self.window = window
-        self.font = ("Consolas", 7)
+        self.font = ("Consolas", 11)
         self.algorithm_service = algorithm_service
         self.slides=[]
         self.counter = 0
@@ -227,6 +227,7 @@ class UI:
         #print(f"self.filepath:{self.filepath}")
         #print(f"self.start_coordinates_entry:{self.start_coordinates_entry}")
         #print(f"self.goal_coordinates_entry:{self.goal_coordinates_entry}")
+        self.slides=[]
         if not start:
             start = self.start_coordinates_entry.get()
         if not goal:

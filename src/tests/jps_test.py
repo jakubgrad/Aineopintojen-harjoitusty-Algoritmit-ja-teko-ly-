@@ -201,7 +201,12 @@ class TestJPS(unittest.TestCase):
             ((2, 4), (2, 3), (2, 2), (3, 4), (3, 3), (3, 2), (4, 4), (4, 3), (4, 2))
         )
 
-    def test_scan_can_proceed_straight_up_and_find_a_forced_neighbour_diagonally_left(self):
+    def test_scan_can_proceed_straight_and_find_a_forced_neighbour_at_c3(self):
+        '''
+        . . . T F G . . S = start 
+        . S . . . . . . F = forced neighbour
+        . . . . . T . . G = goal 
+        '''
         algorithm = JPS(self.up_lines)
         algorithm.find_shortest_path((1, 1), (5, 2))
         parent_node = Node((3, 1))
@@ -211,8 +216,34 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set_heap)
         self.assertEqual(jumppoint_node in combined_set, True)
 
-    def test_scan_can_proceed_straight_up_and_find_a_forced_neighbour_diagonally_right(self):
+    def test_scan_can_proceed_straight_and_find_a_forced_neighbour_at_b3(self):
+        '''
+        . . . T . G . . S = start 
+        . S . . . . . . F = forced neighbour
+        . . . . F T . . G = goal 
+        '''
         algorithm = JPS(self.up_lines)
+        algorithm.find_shortest_path((1, 1), (7, 2))
+        parent_node = Node((5, 1))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((6, 0), parent=parent_node, direction=(1, -1))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c1(self):
+        '''
+        . . . . G   S = start
+        . . . . .   F = forced neighbour
+        . . T T T   G = goal    
+        . . . . .
+        . . . . .
+        . . . . .
+        . S . . .
+        . . . . .        
+        '''
+        algorithm = JPS(self.lines)
         algorithm.find_shortest_path((1, 1), (7, 2))
         parent_node = Node((5, 1))
         combined_set = []

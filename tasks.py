@@ -6,11 +6,6 @@ from sys import platform
 root_dir_raw = os.path.dirname(os.path.abspath(__file__))
 root_dir = "'"+root_dir_raw+"'"
 
-
-@task
-def foo(ctx):
-    print("bar")
-
 @task
 def start(ctx):
     ctx.run(f"python3 {root_dir}/src/main.py ", pty=True)
@@ -24,14 +19,8 @@ def dijkstra(ctx):
     ctx.run(f"cd {root_dir}/src && python3 cli.py --dijkstra --map arena.map 4 3 5 11", pty=True)
 
 @task
-def (ctx):
-    ctx.run(f"cd {root_dir} && python3 cli.py --dijkstra --map arena.map 4 3 5 11", pty=True)
-
-
-@task
 def test(ctx):
     ctx.run(f"cd {root_dir} && pytest {root_dir}/src", pty=True)
-
 
 @task
 def coverage(ctx):

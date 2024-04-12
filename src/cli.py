@@ -2,7 +2,7 @@ from heapq import *
 from dijkstra import Dijkstra
 from dijkstra import Presentation
 from jps import JPS
-from create_array import create_array
+from create_map import create_map
 import argparse
 
 
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     start_coordinates = (args.integers[0], args.integers[1])
     goal_coordinates = (args.integers[2], args.integers[3])
     map_path = "../maps/"+args.map
-    lines = create_array(map_path)
+    lines = create_map(map_path)
     slides = []
     if args.jps:
         if args.print:

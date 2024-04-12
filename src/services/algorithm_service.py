@@ -1,7 +1,6 @@
 from jps import JPS
 from dijkstra import Dijkstra
-from dijkstra import Presentation
-from create_array import create_array
+from create_map import create_map
 
 
 class AlgorithmService():
@@ -11,19 +10,12 @@ class AlgorithmService():
     def run_algorithm(self, start_coordinates, goal_coordinates, map_path, slides, jps=False, dijkstra=False, visualization=False):
         start_coordinates = self.coordinates_extract(start_coordinates)
         goal_coordinates = self.coordinates_extract(goal_coordinates)
-        lines = create_array(map_path)
-        if jps:
-            algorithm = JPS(lines)
-            distance = algorithm.find_shortest_path(
-                start_coordinates, goal_coordinates, slides, visual=True)
-            return distance
-        else:
-            presentation = Presentation(lines)
-            algorithm = Dijkstra(lines, presentation)
-            distance = algorithm.find_shortest_path(
-                start_coordinates, goal_coordinates)
-            slides.extend(presentation.slides)
-            return distance
+        lines = create_map(map_path)
+
+        algorithm = JPS(lines) if jps else Dijkstra(lines)
+        distance = algorithm.find_shortest_path(
+            start_coordinates, goal_coordinates, slides, visual=True)
+        return distance
 
     def coordinates_ok(self, start, goal):
         start = self.coordinates_extract(start)

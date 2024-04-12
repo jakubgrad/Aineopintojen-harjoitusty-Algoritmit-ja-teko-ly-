@@ -1,5 +1,5 @@
 import unittest
-from dijkstra import Dijkstra
+from dijkstra import Dijkstra, Presentation
 from create_array import create_array
 
 
@@ -9,7 +9,8 @@ class TestDijkstra(unittest.TestCase):
         # path = "../../maps/arena.map"
         path = "maps/arena.map"
         lines = create_array(path)
-        self.algorithm = Dijkstra(lines)
+        presentation = Presentation(lines)
+        self.algorithm = Dijkstra(lines, presentation)
         # a = args.start_node
         # b = args.end_node
 

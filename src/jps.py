@@ -42,7 +42,8 @@ class Node:
 
     def __lt__(self, other):
         if isinstance(other, Node):
-            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)                          : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)
+                           : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
             return priorities[self.direction] > priorities[other.direction]
 
     def __eq__(self, other):
@@ -63,9 +64,9 @@ class JPS:
         self.goal_coordinates = None
         self.open_set_heap = []
         self.closed_set = []
-        self.callback = False
         self.slides = []
-        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+        self.arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
+                        : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
         self.wait_time = 0.4
         """Class constructor, that creates a new node 
         
@@ -109,53 +110,78 @@ class JPS:
         i, j = coordinates
         self.color_map[i][j] = background_colors[color]
 
-    def points_between(self,start_coordinates,end_coordinates):
+    def points_between(self, start_coordinates, end_coordinates):
         print(f"points between {start_coordinates},{end_coordinates}")
         if start_coordinates == end_coordinates:
             return None
-        vector=self.subtract_tuples(end_coordinates,start_coordinates)
+        vector = self.subtract_tuples(end_coordinates, start_coordinates)
         if self.straight(vector):
             length = abs(vector[0]+vector[1])
-            if length ==1:
+            if length == 1:
                 return None
-            if vector[0]==0: 
-                unit_vector = (0,1) if vector[1]>0 else (0,-1)
+            if vector[0] == 0:
+                unit_vector = (0, 1) if vector[1] > 0 else (0, -1)
             else:
-                unit_vector = (1,0) if vector[0]>0 else (-1,0)
+                unit_vector = (1, 0) if vector[0] > 0 else (-1, 0)
         else:
             length = abs(vector[0])
             if length == 1:
                 return None
-            unit_vector=(vector[0]/length,vector[1]/length)
+            unit_vector = (vector[0]/length, vector[1]/length)
         print(f"unit_vector{unit_vector}")
         print(f"length{length}")
 
-        for i in range(0,length):
+        for i in range(0, length):
             print(f"i:{i}")
-            coord = self.add_tuples(start_coordinates,(round(unit_vector[0]*i),round(unit_vector[1]*i)))
+            coord = self.add_tuples(start_coordinates, (round(
+                unit_vector[0]*i), round(unit_vector[1]*i)))
             print(f"coord:{coord}")
             self.put_character_on_map(coord, "¤")
             print("put charactor on coord")
 
+    def find_distance(self, points):
+        total = 0
+        def straight_distance(p1, p2): return abs(p2[0]-p1[0]+p2[1]-p1[1])
+        def diagonal_distance(p1, p2): return 1.41 * \
+            max(abs(p2[0] - p1[0]), abs(p2[1] - p1[1]))
+
+        for i in range(len(points) - 1):
+            if self.straight(self.subtract_tuples(points[i], points[i+1])):
+                total += straight_distance(points[i], points[i + 1])
+            else:
+                total += diagonal_distance(points[i], points[i + 1])
+        return total
+
     def recreate_path(self, final_node):
+        distance = 0
         print(final_node.position)
         ans = str(final_node.position)
         last_node = final_node
+        points = []
+        points.append(final_node.position)
         while True:
             i = last_node.parent
-            self.put_character_on_map(i.position, "¤")
-            self.points_between(last_node.position, i.position)
-            self.print_map()
+
             if i == None:
                 break
             else:
+                points.append(i.position)
+                self.put_character_on_map(i.position, "¤")
+                self.points_between(last_node.position, i.position)
+                self.print_map()
                 print(i.position)
                 self.color(i.position, "r")
                 ans = ans + str(i.position)
                 last_node = i
-        
+        distance = self.find_distance(points)
+        print(self.start_coordinates)
+        print(type(self.start_coordinates))
         self.put_character_on_map(self.start_coordinates, "S")
-        raise Exception("Reached maximum recursion depth")
+        self.print_map()
+        print("works")
+
+        raise Exception(distance)
+        raise Exception("Miau, im a exception ")
         return ans
 
     def within_map(self, coordinates):
@@ -283,8 +309,18 @@ class JPS:
 
         print(map)
         self.slides.append(rmap)
+
+    def add_slide(self):
         if self.visual:
-            time.sleep(self.wait_time)
+            slide = ""
+            for i in range(self.num_rows):
+                for j in range(self.len_row):
+                    rotated_map[self.len_row - j - 1][i] = self.map[i][j]
+
+            for row in rotated_map:
+                slide = slide+(" ".join(row))+"\n"
+            self.slides.append(slide)
+
 
     def put_character_on_map(self, coordinates, character):
         i, j = coordinates
@@ -305,6 +341,7 @@ class JPS:
             (current_node.position), self.arrows[current_node.direction])
 
         self.print_map()
+
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = self.produce_neighbours(
             current_node)
 
@@ -315,7 +352,7 @@ class JPS:
             return 1
 
         if not self.available(b3):
-            return 0  # reached end of map
+            return 0  
         else:  # tile ahead is free
             if self.available(c3) and not self.available(c2):
                 self.add_node_to_open_set_if_new(current_node, c3)
@@ -357,11 +394,14 @@ class JPS:
             return True
 
     def scan_diagonally(self, current_node):
-        '''I imagine it as going right and up in this grid:
+        '''
+                        I imagine the scan as going right and up in this grid
         c ■  	
         b ■  ↗          The black squares were already covered.
         a ■  ■	■       They are the so-called natural neigbours.
-          1  2  3'''
+          1  2  3
+                        
+        '''
         self.print_map()
         print("Scanning diagonally from node "+str(current_node))
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = self.produce_neighbours(
@@ -416,7 +456,6 @@ class JPS:
             if self.available(a3):
                 self.add_node_to_open_set_if_new(current_node, a3)
 
-
         if not self.available(c3):
             return 0
 
@@ -440,7 +479,8 @@ class JPS:
         if self.start_coordinates == self.goal_coordinates:
             print("Start and goal positions are the same")
             return 0
-        rotated_regular_map = [[''] * self.num_rows for _ in range(self.len_row)]
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
 
         for i in range(self.num_rows):
             for j in range(self.len_row):
@@ -448,7 +488,8 @@ class JPS:
 
         rmap = ""
         for i, row in enumerate(rotated_regular_map):
-            row_with_numbers = [str(self.len_row-i -1)] + row  # Add increasing number to the beginning of each row
+            # Add increasing number to the beginning of each row
+            row_with_numbers = [str(self.len_row-i - 1)] + row
             rmap += " ".join(row_with_numbers) + "\n"
         last_row = " ".join(str(i) for i in range(self.num_rows))
         rmap += "  "+last_row + "\n"
@@ -475,6 +516,7 @@ class JPS:
         self.add_neighbours_of_start_node_to_open_set()
         self.open_set_heap = self.open_set[:]
         heapify(self.open_set_heap)
+        distance = 0
         try:
             while True:
                 if len(self.open_set_heap) == 0:
@@ -487,6 +529,8 @@ class JPS:
                     self.scan_straight(current_node)
                 else:
                     self.scan_diagonally(current_node)
-        except:
-            print("Error:")
+        except Exception as e:
+            distance = str(e)
+            print(f"Distance:{str(e)}")
             print("Exiting recursion")
+        return distance

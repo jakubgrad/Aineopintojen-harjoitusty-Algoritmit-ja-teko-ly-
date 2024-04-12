@@ -36,7 +36,8 @@ if __name__ == "__main__":
     if args.jps:
         if args.print:
             algorithm = JPS(lines)
-            algorithm.print_for_cli(start_coordinates, goal_coordinates, slides, args.visual)
+            algorithm.print_for_cli(
+                start_coordinates, goal_coordinates, slides, args.visual)
         else:
             algorithm = JPS(lines)
             algorithm.find_shortest_path(

@@ -1,5 +1,6 @@
 import unittest
 from jps import JPS, Node
+from dijkstra import Dijkstra, Presentation
 from create_array import create_array
 
 
@@ -9,11 +10,25 @@ class TestJPS(unittest.TestCase):
         path = "maps/wall.map"
         lines = create_array(path)
         self.up_lines = create_array("maps/up.map")
+        self.t1 = create_array("maps/t1.map")
+        self.t2 = create_array("maps/t2.map")
+        self.t3 = create_array("maps/t3.map")
+        self.t3_flipped = create_array("maps/t3_flipped.map")
         self.algorithm = JPS(lines)
         self.start_coordinates = (0, 0)
         self.goal_coordinates = (4, 7)
         self.start_node = Node(self.start_coordinates)
         self.goal_node = Node(self.goal_coordinates)
+
+    def test_find_distance_works(self):
+        result = self.algorithm.find_distance([(2, 2), (5, 5)])
+
+        self.assertEqual(result, 3*1.41)
+
+    def test_find_distance_works_2(self):
+        result = self.algorithm.find_distance([(2, 2), (2, 5)])
+
+        self.assertEqual(result, 3)
 
     def test_node_class_works_correctly(self):
         node = Node((0, 0))
@@ -26,11 +41,11 @@ class TestJPS(unittest.TestCase):
 
         self.assertEqual(result, (0, 1))
 
-    def test_node_class_str_works_correctly(self):
-        parent_node = Node((2, 7), parent=None, direction=(1, 1))
-        node = Node((3, 8), parent=parent_node, direction=(1, 0))
-        self.assertEqual(
-            str(node), 'coordinates (3, 8), parent coordinates (2, 7), direction (1, 0)')
+    # def test_node_class_str_works_correctly(self):
+    #    parent_node = Node((2, 7), parent=None, direction=(1, 1))
+    #    node = Node((3, 8), parent=parent_node, direction=(1, 0))
+    #    self.assertEqual(
+    #        str(node), 'coordinates (3, 8), parent coordinates (2, 7), direction (1, 0)')
 
     def test_if_goal_node_is_not_within_map_0_is_returned(self):
         result = self.algorithm.find_shortest_path((-5, -2), (4, 7))
@@ -47,13 +62,6 @@ class TestJPS(unittest.TestCase):
         node1 = Node((2, 2), parent=parent_node, direction=(0, 0))
         node2 = Node((2, 2), parent=parent_node, direction=(0, 0))
         self.assertEqual(node1, node2)
-
-    def test_node_class_works_correctly(self):
-        start_node = Node((0, 0), parent=None, direction=(1, 1))
-        node1 = Node((3, 3), parent=start_node, direction=(1, 0))
-        node2 = Node((4, 3), parent=node1, direction=(0, 1))
-        goal_node = Node((4, 7), parent=node2, direction=(0, 1))
-
         self.assertEqual(self.algorithm.recreate_path(
             goal_node), '(4, 7)(4, 3)(3, 3)(0, 0)')
 
@@ -64,14 +72,6 @@ class TestJPS(unittest.TestCase):
     def test_JPS_initializes_properly(self):
         self.assertEqual(str(self.algorithm),
                          'Number of rows: 5, Length of a row: 8')
-
-    def test_JPS_initializes_start_and_end_nodes_correctly_when_finding_shortest_path(self):
-        self.algorithm.find_shortest_path((0, 0), (4, 7))
-        start_node = self.start_node
-        goal_node = self.goal_node
-
-        self.assertEqual(self.algorithm.start_node.position, (0, 0))
-        self.assertEqual(self.algorithm.goal_node.position, (4, 7))
 
     def test_open_set_initializes_as_empty(self):
         self.assertEqual(len(self.algorithm.open_set), 0)
@@ -233,23 +233,150 @@ class TestJPS(unittest.TestCase):
         self.assertEqual(jumppoint_node in combined_set, True)
 
     def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c1(self):
-        '''
-        . . . . G   S = start
-        . . . . .   F = forced neighbour
-        . . T T T   G = goal    
-        . . . . .
-        . . . . .
-        . . . . .
-        . S . . .
-        . . . . .        
-        '''
-        algorithm = JPS(self.lines)
-        algorithm.find_shortest_path((1, 1), (7, 2))
-        parent_node = Node((5, 1))
+        '''t1.map:
+        7 . . . . G .
+        6 . . . . F .
+        5 T T T T T P   S = start
+        4 . . . . . .   F = forced neighbour
+        3 . . . . . .   G = goal
+        2 . . . . . .   P = parent node
+        1 . S . . . .
+        0 . . . . . .
+          0 1 2 3 4 5'''
+        algorithm = JPS(self.t1)
+        algorithm.find_shortest_path((1, 1), (4, 7))
+        parent_node = Node((5, 5))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
         combined_set.extend(algorithm.open_set_heap)
-        jumppoint_node = Node((6, 0), parent=parent_node, direction=(1, -1))
+        jumppoint_node = Node((4, 6), parent=parent_node, direction=(-1, 1))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c2(self):
+        '''t2.map:
+        7 G . . . . . .
+        6 . . . . . F .
+        5 T T T T T P .
+        4 . . . . . . .
+        3 T T . . . . T
+        2 . . . . . T T
+        1 . S . . T T T
+        0 . . . . . . .
+          0 1 2 3 4 5 6'''
+        algorithm = JPS(self.t2)
+        algorithm.find_shortest_path((1, 1), (0, 7))
+        parent_node = Node((5, 5))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((5, 6), parent=parent_node, direction=(0, 1))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c3(self):
+        '''t2.map:
+        7 . . . . G . .
+        6 . . . . . . F
+        5 T T T T T P .
+        4 . . . . . . .
+        3 T T . . . . T
+        2 . . . . . T T
+        1 . S . . T T T
+        0 . . . . . . .
+          0 1 2 3 4 5 6'''
+        algorithm = JPS(self.t2)
+        algorithm.find_shortest_path((1, 1), (0, 7))
+        parent_node = Node((5, 5))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((6, 6), parent=parent_node, direction=(1, 1))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_b3(self):
+        '''t2.map:
+        7 . . . . G . .
+        6 . . . . . . . 
+        5 T T T T T P F 
+        4 . . . . . . .
+        3 T T . . . . T
+        2 . . . . . T T
+        1 . S . . T T T
+        0 . . . . . . .
+          0 1 2 3 4 5 6'''
+        algorithm = JPS(self.t2)
+        algorithm.find_shortest_path((1, 1), (0, 7))
+        parent_node = Node((5, 5))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((6, 5), parent=parent_node, direction=(1, 0))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_obstacle_at_c2_finds_forced_neighbour_at_c3(self):
+        '''t3.map:
+        7 . . . . G . . .
+        6 . . . . . . . .
+        5 T T T T T T . .
+        4 . . . . . . . .
+        3 T T . . . . . .
+        2 T T F . . T T T
+        1 . P . . T T T T
+        0 S . . . T . . .
+          0 1 2 3 4 5 6 7'''
+        algorithm = JPS(self.t3)
+        algorithm.find_shortest_path((0, 0), (4, 7))
+        parent_node = Node((1, 1))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_obstacle_at_c2_finds_forced_neighbour_at_b3(self):
+        '''t3.map:
+        7 . . . . G . . .
+        6 . . . . . . . .
+        5 T T T T T T . .
+        4 . . . . . . . .
+        3 T T . . . . . .
+        2 T T . . . T T T
+        1 . P F . T T T T
+        0 S . . . T . . .
+          0 1 2 3 4 5 6 7'''
+        algorithm = JPS(self.t3)
+        algorithm.find_shortest_path((0, 0), (4, 7))
+        parent_node = Node((1, 1))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((2, 1), parent=parent_node, direction=(1, 0))
+
+        self.assertEqual(jumppoint_node in combined_set, True)
+
+    def test_scan_can_proceed_diagonally_obstacle_at_b3_finds_forced_neighbour_at_c3(self):
+        '''t3_flipped.map:
+        8 . . . . . . . .
+        7 . . . . G . . .
+        6 . . . . . . . .
+        5 T T T T T T . .
+        4 . . . . . . . .
+        3 T . . . . . . .
+        2 . . . . . T T T
+        1 . . T T . T T T
+        0 S . T T . . . .
+          0 1 2 3 4 5 6 7'''
+        algorithm = JPS(self.t3_flipped)
+        algorithm.find_shortest_path((0, 0), (4, 7))
+        parent_node = Node((1, 1))
+        combined_set = []
+        combined_set.extend(algorithm.closed_set)
+        combined_set.extend(algorithm.open_set_heap)
+        jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
 

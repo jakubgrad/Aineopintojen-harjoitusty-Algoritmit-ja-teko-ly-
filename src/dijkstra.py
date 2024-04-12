@@ -17,12 +17,13 @@ class Presentation:
         self.map[i][j] = mark
 
     def add_slide(self):
-        #self.slides.append(deepcopy(self.map))
+        # self.slides.append(deepcopy(self.map))
         self.slides.append(self.print_map())
 
     def print_map(self):
         rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-        rotated_regular_map = [[''] * self.num_rows for _ in range(self.len_row)]
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
 
         for i in range(self.num_rows):
             for j in range(self.len_row):
@@ -33,6 +34,7 @@ class Presentation:
             rmap = rmap + (" ".join(row)) + "\n"
 
         return rmap
+
 
 class Edge:
     """A class with which we can keep track of what edges and with what weights are the neighbours of a node
@@ -51,6 +53,7 @@ class Edge:
             end: the terminating edge
             weight: the weight or cost to access edge
         """
+
 
 class Dijkstra:
     """A class that can turn arrays describing a map into a graph and find the shortest path using Dijkstra algorithm
@@ -117,10 +120,9 @@ class Dijkstra:
                 i: row of the square
                 j: column (or index in the row) of the square
         """
-        i = node_number //self.len_row
-        j = node_number%self.len_row
-        return (i,j)
-
+        i = node_number // self.len_row
+        j = node_number % self.len_row
+        return (i, j)
 
     def create_edges_from_map(self):
         """A function that turns an array of rows into a graph that can be used by Dijkstra

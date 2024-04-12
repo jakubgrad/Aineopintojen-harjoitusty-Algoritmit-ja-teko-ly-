@@ -32,11 +32,18 @@ If you are sure no other processes are using this profile,
 you can unlock the profile and relaunch Chrome.
 ```
 You can run  `rm -rf ~/.config/google-chrome/Singleton*` and then try to generate the report again. <br />
-5. Presentation of the results of possible empirical testing of the program's operation in graphic form. (If it fits the topic)<br />
-   - [X] Looking at the graphical interface and the command line simulation of the algorithm, I can see that it covers the whole map, doesn't get stuck and finds the goal node when possible. I haven't tested yet if the algorithm will cease to execute because it found a suboptimal route yet, although if I remember correctly, according to the paper on **JPS** that isn't probable. <br />
-
    
    - I would like to expand the tests to include randomized data sets or different maps, but first I need to implemenet a visualization for **Dijkstra** and make the GUI more user-friendly.
+   - [x] Go to the root directory, and execute: `poetry run invoke coverage-report`<br />
+5. Presentation of the results of possible empirical testing of the program's operation in graphic form. (If it fits the topic)<br /><br />
+# Default JPS visualization
+![Default JPS](/documentation/pictures/default_jps.png)
+<br/>`S` shows the starting place, `G` the goal. `¤` denotes the path taken by the algorithm in execution. Log puts the distance taken at 7.82.
+# Default Dijkstra visualization
+![Default Dijkstra](/documentation/pictures/default_dijkstra.png)
+<br/>The starting place can be seen by going to slide 0 or clicking on "Animate from start!". Algorithm found the distance to be 4.23, shown is the 1000th slide. <br/>
+   - [X] Looking at the graphical interface and the command line simulation of the **JPS**, I can see that it covers the whole map, doesn't get stuck and finds the goal node when possible. I haven't tested yet if the algorithm will cease to execute because it found a suboptimal route yet, although if I remember correctly, according to the paper on **JPS** that isn't probable. <br />
+   - I would like to expand the tests to include randomized data sets or different maps, but first I need to implemenet a better visualization for Dijkstra and include a better choice for maps.
 
 
 

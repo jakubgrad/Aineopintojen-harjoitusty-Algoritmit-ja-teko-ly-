@@ -44,7 +44,7 @@ Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, wh
 
 # Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />
-     - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. I need to conduct time complexity testing myself still<br />
+     - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. **I need to conduct time complexity testing myself still**<br />
      - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
    - [x] **Djikstra**:<br />
      - Time complexity of [O(V+E*log V)](https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20) when implemented with min-priority queue

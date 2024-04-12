@@ -1,23 +1,22 @@
 import unittest
 from jps import JPS, Node
-from dijkstra import Dijkstra, Presentation
-from create_array import create_array
+from dijkstra import Dijkstra
+from create_map import create_map
 
 
 class TestJPS(unittest.TestCase):
     def setUp(self):
         print("Set up goes here")
         path = "maps/wall.map"
-        lines = create_array(path)
-        self.up_lines = create_array("maps/up.map")
-        self.t1 = create_array("maps/t1.map")
-        self.t2 = create_array("maps/t2.map")
-        self.t3 = create_array("maps/t3.map")
-        self.t3_flipped = create_array("maps/t3_flipped.map")
+        lines = create_map(path)
+        self.up_lines = create_map("maps/up.map")
+        self.t1 = create_map("maps/t1.map")
+        self.t2 = create_map("maps/t2.map")
+        self.t3 = create_map("maps/t3.map")
+        self.t3_flipped = create_map("maps/t3_flipped.map")
         self.algorithm = JPS(lines)
         self.start_coordinates = (0, 0)
         self.goal_coordinates = (4, 7)
-        self.start_node = Node(self.start_coordinates)
         self.goal_node = Node(self.goal_coordinates)
 
     def test_find_distance_works(self):
@@ -85,18 +84,20 @@ class TestJPS(unittest.TestCase):
         self.assertEqual(len(self.algorithm.open_set), 0)
 
     def test_jps_adds_3_adjacent_squares_to_open_list_when_starting_from_a_corner(self):
-        start_coordinates = self.start_coordinates
-        goal_coordinates = self.goal_coordinates
-        self.algorithm.find_shortest_path(start_coordinates, goal_coordinates)
+        start_coordinates = (0,0)
+        start_node = Node(start_coordinates)
+        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
 
-        node1 = Node((1, 0), parent=self.algorithm.start_node,
+        node1 = Node((1, 0), parent=start_node,
                      direction=(1, 0))
-        node2 = Node((1, 1), parent=self.algorithm.start_node,
+        node2 = Node((1, 1), parent=start_node,
                      direction=(1, 1))
-        node3 = Node((0, 1), parent=self.algorithm.start_node,
+        node3 = Node((0, 1), parent=start_node,
                      direction=(0, 1))
 
         self.assertEqual(node1 in self.algorithm.open_set, True)
+        self.assertEqual(node2 in self.algorithm.open_set, True)
+        self.assertEqual(node3 in self.algorithm.open_set, True)
 
     def test_same_node_cannot_be_added_to_the_open_set_twice(self):
         # node = Node((2,2), parent=Node, direction=(1,1)),
@@ -106,31 +107,36 @@ class TestJPS(unittest.TestCase):
         self.assertEqual(False, False)
 
     def test_jps_adds_8_adjacent_squares_to_open_list_when_starting_from_a_place_with_free_space_to_all_sides(self):
-        self.algorithm.find_shortest_path((1, 1), (4, 7))
+        start_coordinates = (1,1)
+        start_node = Node(start_coordinates )
+        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(start_coordinates )
 
         nodes = [
-            Node((0, 2), parent=self.algorithm.start_node, direction=(-1, 1)),
-            Node((1, 2), parent=self.algorithm.start_node, direction=(0, 1)),
-            Node((2, 2), parent=self.algorithm.start_node, direction=(1, 1)),
-            Node((0, 1), parent=self.algorithm.start_node, direction=(-1, 0)),
-            Node((2, 1), parent=self.algorithm.start_node, direction=(1, 0)),
-            Node((0, 0), parent=self.algorithm.start_node, direction=(-1, -1)),
-            Node((1, 0), parent=self.algorithm.start_node, direction=(0, -1)),
-            Node((2, 0), parent=self.algorithm.start_node, direction=(1, -1))
+            Node((0, 2), parent=start_node, direction=(-1, 1)),
+            Node((1, 2), parent=start_node, direction=(0, 1)),
+            Node((2, 2), parent=start_node, direction=(1, 1)),
+            Node((0, 1), parent=start_node, direction=(-1, 0)),
+            Node((2, 1), parent=start_node, direction=(1, 0)),
+            Node((0, 0), parent=start_node, direction=(-1, -1)),
+            Node((1, 0), parent=start_node, direction=(0, -1)),
+            Node((2, 0), parent=start_node, direction=(1, -1))
         ]
 
+        self.assertEqual(len(self.algorithm.open_set), 8)
         self.assertEqual(len(self.algorithm.open_set), 8)
         self.assertEqual(
             all(node in self.algorithm.open_set for node in nodes), True)
 
-    def test_open_set_heap_is_a_heap(self):
+    def test_open_set_is_a_heap(self):
         self.algorithm.find_shortest_path(
             self.start_coordinates, self.goal_coordinates)
 
-        self.assertEqual(type(self.algorithm.open_set_heap), list)
+        self.assertEqual(type(self.algorithm.open_set), list)
 
     def test_scanning_straight_stops_when_hitting_a_wall(self):
         node_at_map_border = Node((4, 7), parent=None, direction=(1, 0))
+        self.algorithm.goal_coordinates=(3,3)
+        self.algorithm.scan_straight(node_at_map_border)
         result = self.algorithm.scan_straight(node_at_map_border)
 
         self.assertEqual(result, 0)
@@ -213,7 +219,7 @@ class TestJPS(unittest.TestCase):
         jumppoint_node = Node((4, 2), parent=parent_node, direction=(1, 1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         self.assertEqual(jumppoint_node in combined_set, True)
 
     def test_scan_can_proceed_straight_and_find_a_forced_neighbour_at_b3(self):
@@ -227,7 +233,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((5, 1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 0), parent=parent_node, direction=(1, -1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -248,7 +254,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((5, 5))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((4, 6), parent=parent_node, direction=(-1, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -269,7 +275,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((5, 5))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((5, 6), parent=parent_node, direction=(0, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -290,7 +296,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((5, 5))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 6), parent=parent_node, direction=(1, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -311,7 +317,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((5, 5))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 5), parent=parent_node, direction=(1, 0))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -332,7 +338,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((1, 1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -353,7 +359,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((1, 1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 1), parent=parent_node, direction=(1, 0))
 
         self.assertEqual(jumppoint_node in combined_set, True)
@@ -375,7 +381,7 @@ class TestJPS(unittest.TestCase):
         parent_node = Node((1, 1))
         combined_set = []
         combined_set.extend(algorithm.closed_set)
-        combined_set.extend(algorithm.open_set_heap)
+        combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
 
         self.assertEqual(jumppoint_node in combined_set, True)

@@ -13,7 +13,7 @@ poetry run invoke start
 You can also look into the [manual](/documentation/manual.md) for tips.<br />
 Doing that should open a GUI tool with a welcoming interface. <br />
 
-A window like the one below should open <br/>![image](/documentation/pictures)
+A window like the one below should open <br/>![image](/documentation/pictures/program.png)
 Now that the tool is open you can test it. If you run the command in the topmost directory, when you click on "Choose map" a few options should appear. I would recommend first testing JPS. For that, the best choice would be to pick `wall.map`, start coordinates 0,0 and goal coordinates 4,7. After you clikc on `Run JPS` you should see a short visualization of the algorithm.
 If you want to see Dijkstra, there's unfortunately no visualization for that yet, and running the algorithm on any chosen map will only produce the length of the shortest path found using Dijkstra algorithm. You can see it if you choose e.g. the `arena.map`, start coordinates 4,3 and goal coordinates 5,11.
 <br/>

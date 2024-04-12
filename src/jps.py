@@ -55,7 +55,6 @@ class Node:
 class JPS:
     def __init__(self, map):
         self.map = [list(row) for row in map]
-        self.color_map = [['' for _ in range(len(row))] for row in map]
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.open_set = []
@@ -85,30 +84,6 @@ class JPS:
         """
 
         return f'Number of rows: {self.num_rows}, Length of a row: {self.len_row}'
-
-    def color(self, coordinates, color):
-        colors = {
-            "r": '\033[91m',
-            "g": '\033[92m',
-            "y": '\033[93m',
-            "b": '\033[94m',
-            "m": '\033[95m',  # magenta
-            "c": '\033[96m',  # cyan
-            "w": '\033[97m',  # white
-            "reset": '\033[0m'  # reset
-        }
-        background_colors = {
-            "r": '\033[41m',  # red
-            "g": '\033[42m',  # green
-            "y": '\033[43m',  # yellow
-            "b": '\033[44m',  # blue
-            "m": '\033[45m',  # magenta
-            "c": '\033[46m',  # cyan
-            "w": '\033[47m',  # white
-            "reset": '\033[0m'  # reset
-        }
-        i, j = coordinates
-        self.color_map[i][j] = background_colors[color]
 
     def points_between(self, start_coordinates, end_coordinates):
         print(f"points between {start_coordinates},{end_coordinates}")
@@ -170,7 +145,6 @@ class JPS:
                 self.points_between(last_node.position, i.position)
                 self.add_slide()
                 print(i.position)
-                self.color(i.position, "r")
                 ans = ans + str(i.position)
                 last_node = i
         distance = self.find_distance(points)
@@ -297,7 +271,6 @@ class JPS:
                 slide = slide+(" ".join(row))+"\n"
             self.slides.append(slide)
 
-
     def put_character_on_map(self, coordinates, character):
         i, j = coordinates
         map_list = self.map[i]
@@ -366,7 +339,6 @@ class JPS:
         else:
             heappush(self.open_set_heap, open_node)
             print(f"Heappushed node"+str(open_node))
-            self.color(open_node.position, "y")
             return True
 
     def scan_diagonally(self, current_node):

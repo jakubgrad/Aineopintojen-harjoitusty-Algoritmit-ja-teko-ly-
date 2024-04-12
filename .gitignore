@@ -2,3 +2,4 @@ __pycache__/
 .pytest_cache
 .coverage
 test_node.py
+cli.py

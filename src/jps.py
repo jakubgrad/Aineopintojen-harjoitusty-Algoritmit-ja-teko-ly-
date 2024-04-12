@@ -168,7 +168,7 @@ class JPS:
                 points.append(i.position)
                 self.put_character_on_map(i.position, "¤")
                 self.points_between(last_node.position, i.position)
-                self.print_map()
+                self.add_slide()
                 print(i.position)
                 self.color(i.position, "r")
                 ans = ans + str(i.position)
@@ -177,7 +177,7 @@ class JPS:
         print(self.start_coordinates)
         print(type(self.start_coordinates))
         self.put_character_on_map(self.start_coordinates, "S")
-        self.print_map()
+        self.add_slide()
         print("works")
 
         raise Exception(distance)
@@ -283,35 +283,11 @@ class JPS:
             result_map.append(row)
         return result_map
 
-    def print_map(self):
-        map_list = self.merge_maps(self.color_map, self.map)
-        rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-
-        map = ""
-        for i in range(self.num_rows):
-            for j in range(self.len_row):
-                rotated_map_list[self.len_row - j - 1][i] = map_list[i][j]
-
-        for row in rotated_map_list:
-            # print(" ".join(row))
-            map = map+(" ".join(row))+"\n"
-
-        rotated_regular_map = [
-            [''] * self.num_rows for _ in range(self.len_row)]
-
-        rmap = ""
-        for i in range(self.num_rows):
-            for j in range(self.len_row):
-                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
-
-        for row in rotated_regular_map:
-            rmap = rmap+(" ".join(row))+"\n"
-
-        print(map)
-        self.slides.append(rmap)
-
     def add_slide(self):
         if self.visual:
+            rotated_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
+
             slide = ""
             for i in range(self.num_rows):
                 for j in range(self.len_row):
@@ -340,7 +316,7 @@ class JPS:
         self.put_character_on_map(
             (current_node.position), self.arrows[current_node.direction])
 
-        self.print_map()
+        self.add_slide()
 
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = self.produce_neighbours(
             current_node)
@@ -402,7 +378,7 @@ class JPS:
           1  2  3
                         
         '''
-        self.print_map()
+        self.add_slide()
         print("Scanning diagonally from node "+str(current_node))
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = self.produce_neighbours(
             current_node)
@@ -497,7 +473,7 @@ class JPS:
         print(rmap)
 
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
-        self.print_map()
+        self.add_slide()
         self.visual = visual
         self.slides = slides
         self.goal_node = Node(goal_coordinates)

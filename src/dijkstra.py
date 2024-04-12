@@ -1,40 +1,4 @@
 from heapq import *
-from copy import deepcopy
-
-
-class Presentation:
-    def __init__(self, map):
-        self.map = [list(row) for row in map]
-        self.num_rows = len(self.map)
-        self.len_row = len(self.map[0])
-        self.slides = []
-
-    def __str__(self):
-        return str(self.map)
-
-    def mark(self, coordinates, mark):
-        i, j = coordinates
-        self.map[i][j] = mark
-
-    def add_slide(self):
-        # self.slides.append(deepcopy(self.map))
-        self.slides.append(self.print_map())
-
-    def print_map(self):
-        rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-        rotated_regular_map = [
-            [''] * self.num_rows for _ in range(self.len_row)]
-
-        for i in range(self.num_rows):
-            for j in range(self.len_row):
-                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
-
-        rmap = ""
-        for row in rotated_regular_map:
-            rmap = rmap + (" ".join(row)) + "\n"
-
-        return rmap
-
 
 class Edge:
     """A class with which we can keep track of what edges and with what weights are the neighbours of a node
@@ -57,7 +21,7 @@ class Edge:
 
 class Dijkstra:
     """A class that can turn arrays describing a map into a graph and find the shortest path using Dijkstra algorithm
-
+    
     Attributes:
         map: an array of rows, each describing a row of squares, where each square is an obstacle or is free
         number_of_nodes: number of nodes in total equal to number of squares
@@ -67,8 +31,14 @@ class Dijkstra:
     """
 
     def __init__(self, map):
-        self.map = map
-        self.slide_map = [list(row) for row in map]
+        """Dijkstra's class constructor
+        
+        Args:   
+            map: the map on which to run Dijkstra
+        """
+
+        self.map = map 
+        self.slide_map = map
         self.slides = []
         self.visual = False
         self.number_of_nodes = len(map)*len(map[0])
@@ -78,27 +48,38 @@ class Dijkstra:
         self.create_edges_from_map()
 
     def mark(self, coordinates, mark):
+        """A function that marks a place on the grid with a character
+
+        Args:
+            coordinates: coordinates on which to place the character
+            character: character to be place
+        """
         i, j = coordinates
         self.slide_map[i][j] = mark
 
     def add_slide(self):
-        # self.slides.append(deepcopy(self.map))
-        self.slides.append(self.print_map())
+        """ A function that adds a snapshot of the algorithm
+            to the slides list that is passed on to UI
 
-    def print_map(self):
-        rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
-        rotated_regular_map = [
-            [''] * self.num_rows for _ in range(self.len_row)]
+        Attributes:
+            visual: if False, no slides are added. This is because 
+                    I want to make performance tests in the future
+        """
 
-        for i in range(self.num_rows):
-            for j in range(self.len_row):
-                rotated_regular_map[self.len_row - j - 1][i] = self.slide_map[i][j]
+        if self.visual:
+            rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
+            rotated_regular_map = [
+                [''] * self.num_rows for _ in range(self.len_row)]
 
-        rmap = ""
-        for row in rotated_regular_map:
-            rmap = rmap + (" ".join(row)) + "\n"
+            for i in range(self.num_rows):
+                for j in range(self.len_row):
+                    rotated_regular_map[self.len_row - j - 1][i] = self.slide_map[i][j]
 
-        return rmap
+            rmap = ""
+            for row in rotated_regular_map:
+                rmap = rmap + (" ".join(row)) + "\n"
+
+            self.slides.append(rmap)
 
 
     def __str__(self):
@@ -146,6 +127,7 @@ class Dijkstra:
                 i: row of the square
                 j: column (or index in the row) of the square
         """
+
         i = node_number // self.len_row
         j = node_number % self.len_row
         return (i, j)
@@ -212,3 +194,4 @@ class Dijkstra:
         if distance[b] == 10000:
             distance[b] = -1
         return round(distance[b], 2)
+

@@ -98,6 +98,11 @@ class JPS:
     """
 
     def __init__(self, map):
+        """JPS's class constructor
+        
+        Args:   
+            map: the map on which to run Dijkstra
+        """
         self.map = map 
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
@@ -407,8 +412,6 @@ class JPS:
 
     def scan_straight(self, node):
         ''' A function that allows JPS to scan along rows and columns
-            The algorithm produces neighbours relatively to the direction
-            of the scan (up/down/left/right)
 
         Args:
             node: node that is being expanded
@@ -476,79 +479,98 @@ class JPS:
             print(f"Heappushed node"+str(open_node))
             return True
 
-    def scan_diagonally(self, current_node):
-        '''
+    def scan_diagonally(self, node):
+        """ A function that allows JPS to scan across diagonals.
+
+        Args:
+            node: node that is being expanded
+        
+        Returns:
+            0 when it finishes, i.e. it hits a wall or an obstacle
+
                         I imagine the scan as going right and up in this grid
         c ■  	
         b ■  ↗          The black squares were already covered.
         a ■  ■	■       They are the so-called natural neigbours.
           1  2  3
                         
-        '''
+        """
+
         self.add_slide()
-        print("Scanning diagonally from node "+str(current_node))
+        print("Scanning diagonally from node "+str(node))
         neighbours = self.produce_neighbours(
-            current_node)
+            node)
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
         if self.goal_coordinates in neighbours:
             final_node = Node(self.goal_coordinates,
-                              parent=current_node, direction=None)
+                              parent=node, direction=None)
             self.recreate_path(final_node)
             return 1
 
-        scan_right_node = current_node.copy()
+        scan_right_node = node.copy()
         scan_right_node.direction = self.subtract_tuples(b3, b2)
-        scan_right_node.parent = current_node
+        scan_right_node.parent = node
         print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
         self.scan_straight(scan_right_node)
-        scan_up_node = current_node.copy()
+        scan_up_node = node.copy()
         scan_up_node.direction = self.subtract_tuples(c2, b2)
-        scan_up_node.parent = current_node
+        scan_up_node.parent = node
         print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
         self.scan_straight(scan_up_node)
         self.mark(
-            (current_node.position), current_node.direction)
+            (node.position), node.direction)
         if not self.available(b1):
             if self.available(c1):
-                self.add_node_to_open_set_if_new(current_node, c1)
+                self.add_node_to_open_set_if_new(node, c1)
             if self.available(c2):
-                self.add_node_to_open_set_if_new(current_node, c2)
+                self.add_node_to_open_set_if_new(node, c2)
             if self.available(c3):
-                self.add_node_to_open_set_if_new(current_node, c3)
+                self.add_node_to_open_set_if_new(node, c3)
             if self.available(b3):
-                self.add_node_to_open_set_if_new(current_node, b3)
+                self.add_node_to_open_set_if_new(node, b3)
 
         if not self.available(c2):
             if self.available(c3):
-                self.add_node_to_open_set_if_new(current_node, c3)
+                self.add_node_to_open_set_if_new(node, c3)
             if self.available(b3):
-                self.add_node_to_open_set_if_new(current_node, b3)
+                self.add_node_to_open_set_if_new(node, b3)
 
         if not self.available(b3):
             if self.available(c3):
-                self.add_node_to_open_set_if_new(current_node, c3)
+                self.add_node_to_open_set_if_new(node, c3)
             if self.available(c2):
-                self.add_node_to_open_set_if_new(current_node, c2)
+                self.add_node_to_open_set_if_new(node, c2)
 
         if not self.available(a2):
             if self.available(b3):
-                self.add_node_to_open_set_if_new(current_node, c1)
+                self.add_node_to_open_set_if_new(node, c1)
             if self.available(c2):
-                self.add_node_to_open_set_if_new(current_node, c2)
+                self.add_node_to_open_set_if_new(node, c2)
             if self.available(c3):
-                self.add_node_to_open_set_if_new(current_node, c3)
+                self.add_node_to_open_set_if_new(node, c3)
             if self.available(a3):
-                self.add_node_to_open_set_if_new(current_node, a3)
+                self.add_node_to_open_set_if_new(node, a3)
 
         if not self.available(c3):
             return 0
 
-        next_node = current_node.copy()
+        next_node = node.copy()
         next_node.position = self.add_tuples(
-            next_node.position, current_node.direction)
+            next_node.position, node.direction)
         self.scan_diagonally(next_node)
 
     def print_for_cli(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+        """A legacy function that supports using cli.py
+
+        Args:
+            start_coordinates
+            goal_coordinates
+            slides
+            visual
+
+        Returns: prints a map with coordinates for the user
+        """
+
         self.visual = visual
         self.slides = slides
         self.start_coordinates = start_coordinates
@@ -578,6 +600,19 @@ class JPS:
         print(rmap)
 
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+        """Function that can be called after initializing JPS to find the shortest path
+
+        Args: 
+            start_coordinates
+            goal_coordinates
+            slides: used for presenting snapshots of the algorithm to the UI
+            visual: a flag that tells JPS if it should create slides
+
+        Returns:
+            The length of the shortest path, and mutating the list in place,
+            passes the snapshots of execution to the UI
+        """
+
         self.add_slide()
         self.visual = visual
         self.slides = slides

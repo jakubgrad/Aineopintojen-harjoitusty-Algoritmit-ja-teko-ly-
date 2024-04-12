@@ -1,6 +1,5 @@
 from heapq import *
 from dijkstra import Dijkstra
-from dijkstra import Presentation
 from jps import JPS
 from create_map import create_map
 import argparse
@@ -44,7 +43,6 @@ if __name__ == "__main__":
                 start_coordinates, goal_coordinates, slides, args.visual)
 
     elif args.dijkstra:
-        presentation = Presentation(lines)
-        algorithm = Dijkstra(lines, presentation)
+        algorithm = Dijkstra(lines, slides)
         print(algorithm.find_shortest_path(
             start_coordinates, goal_coordinates))

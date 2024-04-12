@@ -17,9 +17,15 @@ The program is written in `Python`. It has the following structure at the moment
 # Notes
 - I realized that in a uniform graph such as one constructed from a grid, Dijkstra works essentially like a Breadth-First Search. I could have implemented it as such but I already coded Dijkstra.
 - It would be nice to create a datastructure for JPS that encapsulated the neighbour nodes. 
-- Here would be a good place to introduce the a-c 1-3 notation
+- It would be a good place to introduce the a-c 1-3 notation
 - The input maps are assumed to be rectangular
-- I want to add colors to the UI
+- I want to add colors to the visualization. It used to exist in command line, but Tkinter doesn't support the methods I've been using
+- There used to be a color map for JPS, but I removed it bc Tkinter doesn't support fonts?
+- Arrows are not marked as free. It's nice that algorithm won't run into the same area again, but it also means it will hallucinate forced neighbours (and it does)
+- Need to run more different types of tests for Dijkstra
+- Need to run tests for efficiency / results of the algorithms
+- Add_neighbours_of_start_coordinates_to_open_set could use the function produce_neighbours
+
 
 # Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />

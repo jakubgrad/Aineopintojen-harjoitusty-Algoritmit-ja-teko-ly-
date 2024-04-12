@@ -6,5 +6,7 @@ imports failed without these
 might not be necessary anymore
 
 ## Week 4 
+- GUI is functional
+- Removed most printouts in JPS algorithm for clarity of code
 
 

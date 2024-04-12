@@ -21,7 +21,7 @@
      - During a scan, **JPS** correctly assigns coordinates to the squares around it, regardles of the direction of the scan
      - **JPS** correctly assigns coordinates to the squares around it, regardles of the direction of the scan
      - **JPS** correctly recognizes *jumppoints*
-
+- [ ] The inputs weren't very representative and overall they are very small
 4. How can the tests be repeated?<br />
    - [x] Go to the root directory, and execute: `poetry run invoke coverage-report`. The results should appear in the browser. If you get an error similar to this one:
 ```

@@ -109,12 +109,43 @@ class JPS:
         i, j = coordinates
         self.color_map[i][j] = background_colors[color]
 
+    def points_between(self,start_coordinates,end_coordinates):
+        print(f"points between {start_coordinates},{end_coordinates}")
+        if start_coordinates == end_coordinates:
+            return None
+        vector=self.subtract_tuples(end_coordinates,start_coordinates)
+        if self.straight(vector):
+            length = abs(vector[0]+vector[1])
+            if length ==1:
+                return None
+            if vector[0]==0: 
+                unit_vector = (0,1) if vector[1]>0 else (0,-1)
+            else:
+                unit_vector = (1,0) if vector[0]>0 else (-1,0)
+        else:
+            length = abs(vector[0])
+            if length == 1:
+                return None
+            unit_vector=(vector[0]/length,vector[1]/length)
+        print(f"unit_vector{unit_vector}")
+        print(f"length{length}")
+
+        for i in range(0,length):
+            print(f"i:{i}")
+            coord = self.add_tuples(start_coordinates,(round(unit_vector[0]*i),round(unit_vector[1]*i)))
+            print(f"coord:{coord}")
+            self.put_character_on_map(coord, "¤")
+            print("put charactor on coord")
+
     def recreate_path(self, final_node):
         print(final_node.position)
         ans = str(final_node.position)
         last_node = final_node
         while True:
             i = last_node.parent
+            self.put_character_on_map(i.position, "¤")
+            self.points_between(last_node.position, i.position)
+            self.print_map()
             if i == None:
                 break
             else:
@@ -122,6 +153,9 @@ class JPS:
                 self.color(i.position, "r")
                 ans = ans + str(i.position)
                 last_node = i
+        
+        self.put_character_on_map(self.start_coordinates, "S")
+        raise Exception("Reached maximum recursion depth")
         return ans
 
     def within_map(self, coordinates):
@@ -332,6 +366,12 @@ class JPS:
         print("Scanning diagonally from node "+str(current_node))
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = self.produce_neighbours(
             current_node)
+        if self.goal_coordinates in [a1, a2, a3, b1, b2, b3, c1, c2, c3]:
+            final_node = Node(self.goal_coordinates,
+                              parent=current_node, direction=None)
+            self.recreate_path(final_node)
+            return 1
+
         scan_right_node = current_node.copy()
         scan_right_node.direction = self.subtract_tuples(b3, b2)
         scan_right_node.parent = current_node
@@ -353,6 +393,30 @@ class JPS:
                 self.add_node_to_open_set_if_new(current_node, c3)
             if self.available(b3):
                 self.add_node_to_open_set_if_new(current_node, b3)
+
+        if not self.available(c2):
+            if self.available(c3):
+                self.add_node_to_open_set_if_new(current_node, c3)
+            if self.available(b3):
+                self.add_node_to_open_set_if_new(current_node, b3)
+
+        if not self.available(b3):
+            if self.available(c3):
+                self.add_node_to_open_set_if_new(current_node, c3)
+            if self.available(c2):
+                self.add_node_to_open_set_if_new(current_node, c2)
+
+        if not self.available(a2):
+            if self.available(b3):
+                self.add_node_to_open_set_if_new(current_node, c1)
+            if self.available(c2):
+                self.add_node_to_open_set_if_new(current_node, c2)
+            if self.available(c3):
+                self.add_node_to_open_set_if_new(current_node, c3)
+            if self.available(a3):
+                self.add_node_to_open_set_if_new(current_node, a3)
+
+
         if not self.available(c3):
             return 0
 
@@ -376,8 +440,20 @@ class JPS:
         if self.start_coordinates == self.goal_coordinates:
             print("Start and goal positions are the same")
             return 0
-        self.print_map()
+        rotated_regular_map = [[''] * self.num_rows for _ in range(self.len_row)]
 
+        for i in range(self.num_rows):
+            for j in range(self.len_row):
+                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
+
+        rmap = ""
+        for i, row in enumerate(rotated_regular_map):
+            row_with_numbers = [str(self.len_row-i -1)] + row  # Add increasing number to the beginning of each row
+            rmap += " ".join(row_with_numbers) + "\n"
+        last_row = " ".join(str(i) for i in range(self.num_rows))
+        rmap += "  "+last_row + "\n"
+
+        print(rmap)
 
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
         self.print_map()
@@ -399,15 +475,18 @@ class JPS:
         self.add_neighbours_of_start_node_to_open_set()
         self.open_set_heap = self.open_set[:]
         heapify(self.open_set_heap)
-
-        while True:
-            if len(self.open_set_heap) == 0:
-                print("Jump points have been exhausted")
-                return
-            current_node = heappop(self.open_set_heap)
-            self.closed_set.append(current_node.copy())
-            print(str(f"Current node: {current_node}"))
-            if self.straight(current_node.direction):
-                self.scan_straight(current_node)
-            else:
-                self.scan_diagonally(current_node)
+        try:
+            while True:
+                if len(self.open_set_heap) == 0:
+                    print("Jump points have been exhausted")
+                    return
+                current_node = heappop(self.open_set_heap)
+                self.closed_set.append(current_node.copy())
+                print(str(f"Current node: {current_node}"))
+                if self.straight(current_node.direction):
+                    self.scan_straight(current_node)
+                else:
+                    self.scan_diagonally(current_node)
+        except:
+            print("Error:")
+            print("Exiting recursion")

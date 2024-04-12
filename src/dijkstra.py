@@ -66,14 +66,40 @@ class Dijkstra:
         len_row: length of a single row
     """
 
-    def __init__(self, map, presentation):
-        self.presentation = presentation
+    def __init__(self, map):
         self.map = map
+        self.slide_map = [list(row) for row in map]
+        self.slides = []
+        self.visual = False
         self.number_of_nodes = len(map)*len(map[0])
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.create_edges_from_map()
+
+    def mark(self, coordinates, mark):
+        i, j = coordinates
+        self.slide_map[i][j] = mark
+
+    def add_slide(self):
+        # self.slides.append(deepcopy(self.map))
+        self.slides.append(self.print_map())
+
+    def print_map(self):
+        rotated_map_list = [[''] * self.num_rows for _ in range(self.len_row)]
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
+
+        for i in range(self.num_rows):
+            for j in range(self.len_row):
+                rotated_regular_map[self.len_row - j - 1][i] = self.slide_map[i][j]
+
+        rmap = ""
+        for row in rotated_regular_map:
+            rmap = rmap + (" ".join(row)) + "\n"
+
+        return rmap
+
 
     def __str__(self):
         """A function used to test if Dijkstra class correctly found the number of nodes
@@ -149,7 +175,7 @@ class Dijkstra:
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i+1, j+1), 1.41)
 
-    def find_shortest_path(self, start_coordinates, end_coordinates):
+    def find_shortest_path(self, start_coordinates, end_coordinates, slides, visual=False):
         """Actual implementation of the Dijkstra algorithm
 
         Args:
@@ -159,8 +185,9 @@ class Dijkstra:
         Returns:
             The shortest path to 2 decimal digits
         """
-        map = self.presentation
 
+        self.slides = slides
+        self.visual = visual
         a = self.edge_number(*start_coordinates)
         b = self.edge_number(*end_coordinates)
         processed = [False] * self.number_of_nodes
@@ -174,8 +201,8 @@ class Dijkstra:
             u = next[1]
             if not processed[u]:
                 processed[u] = True
-                map.mark(self.coordinates(u), "V")
-                map.add_slide()
+                self.mark(self.coordinates(u), "V")
+                self.add_slide()
                 for edge in self.adjacencylist[u]:
                     v = edge.end
                     if distance[v] > distance[u] + edge.weight:
@@ -184,8 +211,4 @@ class Dijkstra:
 
         if distance[b] == 10000:
             distance[b] = -1
-        print(map.slides[1000])
-        deep = deepcopy(map.slides[1000])
-        print(deep)
-
         return round(distance[b], 2)

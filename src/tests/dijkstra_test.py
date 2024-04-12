@@ -9,8 +9,8 @@ class TestDijkstra(unittest.TestCase):
         # path = "../../maps/arena.map"
         path = "maps/arena.map"
         lines = create_array(path)
-        presentation = Presentation(lines)
-        self.algorithm = Dijkstra(lines, presentation)
+        slides = []
+        self.algorithm = Dijkstra(lines)
         # a = args.start_node
         # b = args.end_node
 
@@ -18,8 +18,9 @@ class TestDijkstra(unittest.TestCase):
         self.assertEqual(str(self.algorithm), 'Number of nodes: 2401')
 
     def test_dijkstra_finds_distances_on_arena_map(self):
-        self.assertEqual(
-            self.algorithm.find_shortest_path((4, 3), (5, 11)), 8.41)
+        slides = []
+        distance = self.algorithm.find_shortest_path((4, 3), (5, 11), slides, visual=False)
+        self.assertEqual(distance, 8.41)
 
 
 '''

@@ -2,15 +2,20 @@
 
 The program is written in `Python`. It has the following structure at the moment:<br />
 <br /> 
-├── documentation           &emsp;&emsp;&emsp;# documentation files <br />
 ├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool <br />
 ├── src                     &emsp;&emsp;&emsp;# code files <br />
-│   ├── __pychache_     
 │   ├── tests               &emsp;&emsp;&emsp;#test files <br />
-│   ├── create_array.py     &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
-│   ├── dijkstra.py         &emsp;&emsp;&emsp;# turns an array of rows into a graph<br /> 
-│   │                       &emsp;&emsp;&emsp;# and executes dijkstrak<br /> 
-│   └── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br /> 
+│   ├── create_map.py       &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
+│   ├── dijkstra.py         &emsp;&emsp;&emsp;# implementation of Dijkstra<br /> 
+│   ├── jps.py              &emsp;&emsp;&emsp;# implementation of JPS<br /> 
+│   ├── config.py           &emsp;&emsp;&emsp;# provides useful variables like<br /> 
+│   │                       &emsp;&emsp;&emsp;# path to root directory<br /> 
+│   ├── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br />
+│   └── services            &emsp;&emsp;&emsp;#  
+│       └── algorithm_service.py &emsp;&emsp;&emsp;# responsible <br />
+│                           &emsp;&emsp;&emsp;# for interaction between UI and algorithms <br />
+├── ui                      &emsp;&emsp;&emsp;# ui files <br />
+│   └── ui.py               &emsp;&emsp;&emsp;# main and only ui file<br />
 └── ...<br /> 
 <br /> 
 
@@ -25,6 +30,9 @@ The program is written in `Python`. It has the following structure at the moment
 - Need to run more different types of tests for Dijkstra
 - Need to run tests for efficiency / results of the algorithms
 - Add_neighbours_of_start_coordinates_to_open_set could use the function produce_neighbours
+- Need to move print_for_cli away from JPS
+- Add debug mode?
+- Add different types of tests
 
 
 # Targeted time and space requirements (e.g. O-analyses)

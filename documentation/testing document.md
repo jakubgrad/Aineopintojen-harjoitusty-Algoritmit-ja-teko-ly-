@@ -1,7 +1,7 @@
 # Testing document = Testatusdokumentti
 
 1. Unit testing coverage report.<br />
-   - [x] [Week 4](http://jakubgrad.ddns.net:2231/htmlcov4/), also [Week 3](http://jakubgrad.ddns.net:2231/htmlcov/), [Week 2](http://jakubgrad.ddns.net:2231/HTML%20coverage/)<br />
+   - [x] [Week 4](http://jakubgrad.ddns.net:2231/htmlcov4/), also [Week 3](http://jakubgrad.ddns.net:2231/htmlcov/), [Week 2](http://jakubgrad.ddns.net:2231/HTML%20coverage/)<br />. If these links don't work, try:
    - [x] [Week 4](http://87.92.126.250:2231/htmlcov4/), also [Week 3](http://87.92.126.250:2231/htmlcov/), [Week 2](http://87.92.126.250:2231/HTML%20coverage/)<br />
 2. What has been tested, how was this done?<br />
    - [x] There is a lot of tests for **JPS** and much less for **Dijkstra**. For **JPS**: <br />

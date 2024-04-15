@@ -1,6 +1,5 @@
 import os
 import tkinter as tk
-from tkinter import ttk
 from tkinter.filedialog import askopenfilename
 from config import default_jps, default_dijkstra
 

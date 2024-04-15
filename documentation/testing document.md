@@ -1,7 +1,8 @@
 # Testing document = Testatusdokumentti
 
 1. Unit testing coverage report.<br />
-   - [x] Also [Week 3](http://jakubgrad.ddns.net:2231/htmlcov/), [Week 2](http://jakubgrad.ddns.net:2231/HTML%20coverage/)<br />
+   - [x] [Week 4](http://jakubgrad.ddns.net:2231/htmlcov4/), also [Week 3](http://jakubgrad.ddns.net:2231/htmlcov/), [Week 2](http://jakubgrad.ddns.net:2231/HTML%20coverage/)<br />
+   - [x] [Week 4](http://87.92.126.250:2231/htmlcov4/), also [Week 3](http://87.92.126.250:2231/htmlcov/), [Week 2](http://87.92.126.250:2231/HTML%20coverage/)<br />
 2. What has been tested, how was this done?<br />
    - [x] There is a lot of tests for **JPS** and much less for **Dijkstra**. For **JPS**: <br />
      - I created a few maps like `t1.map`, `t2.map` to test different situations. Specifically, I want to see if **JPS** notices *forced neighbours* and adds them to the open set for further expansion. At the end of week 4 it seems that it can find all *forced neighbours* and hence all the *jumpoints*. The tests also include neat commented out pictures of the map with marked start and goal coordinates and the desired *forced neighbour*, which makes it super easy to understand the purpose of each of this type of tests.<br />
@@ -21,7 +22,7 @@
      - During a scan, **JPS** correctly assigns coordinates to the squares around it, regardles of the direction of the scan
      - **JPS** correctly assigns coordinates to the squares around it, regardles of the direction of the scan
      - **JPS** correctly recognizes *jumppoints*
-
+- [ ] The inputs weren't very representative and overall they are very small
 4. How can the tests be repeated?<br />
    - [x] Go to the root directory, and execute: `poetry run invoke coverage-report`. The results should appear in the browser. If you get an error similar to this one:
 ```

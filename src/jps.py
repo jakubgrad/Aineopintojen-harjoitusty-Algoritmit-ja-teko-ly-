@@ -2,27 +2,8 @@ from heapq import *
 import time
 
 
-class Edge:
-    """A class with which we can keep track of what edges and with what weights are the neighbours of a node
-
-    Attributes:
-        end: the terminating edge
-        weight: the weight or cost to access edge
-    """
-
-    def __init__(self, v, weight):
-        self.end = v
-        self.weight = weight
-        """Class constructor, that creates a new edge
-        
-        Args:
-            end: the terminating edge
-            weight: the weight or cost to access edge
-        """
-
-
 class Node:
-    def __init__(self, coordinates, parent=None, direction=None):
+    def __init__(self, coordinates, parent=None, direction=None,length=0):
         """Class constructor, that creates a new node 
 
         Args:
@@ -34,6 +15,7 @@ class Node:
         self.parent = parent
         self.direction = direction
         self.position = coordinates
+        self.length = length
 
     def __str__(self):
         return (
@@ -190,10 +172,10 @@ class JPS:
         return total_distance
 
     def update_min_distance(self, final_node):
+        print(" update_min_distance")
         distance = 0
         path = []
-        ans = str(final_node.position)
-        last_node = final_node
+        last_node = final_node.copy()
         path.append(final_node.position)
         while True:
             i = last_node.parent
@@ -362,6 +344,38 @@ class JPS:
         Returns: 
             the neighbours of the node
         """
+        d = current_node.direction 
+        p = current_node.position
+
+        if d == (1,0) or d == (1,1):
+            neighbours = ((-1,-1),(0,-1),(1,-1),
+                          (-1,0),(0,0),(1,0),
+                          (-1,1),(0,1),(1,1))
+
+        if d == (0,1) or d == (-1,1):
+            neighbours = ((1,-1),(1,0),(1,1),
+                          (0,-1),(0,0),(0,1),
+                          (-1,-1),(-1,0),(-1,1))
+
+        #if d == (-1,0) or d == (-1,-1):
+        #   neighbours = ((1,-1),(0,-1),(-1,-1),
+        #                  (1,0),(0,0),(-1,0),
+        #                  (1,1),(0,1),(-1,1))
+
+        if d == (-1,0) or d == (-1,-1):
+            neighbours = ((1,1),(0,1),(-1,1),
+                          (1,0),(0,0),(-1,0),
+                          (1,-1),(0,-1),(-1,-1))
+
+        if d == (0,-1) or d == (1,-1):
+            neighbours = ((-1,1),(-1,0),(-1,-1),
+                          (0,1),(0,0),(0,-1),
+                          (1,1),(1,0),(1,-1))
+
+
+        neighbours = tuple(self.add_tuples(neighbour, p) for neighbour in neighbours)
+
+        return neighbours 
 
         # copying the node to not introduce changes to the original one
         # when producing neighbours
@@ -403,7 +417,7 @@ class JPS:
 
             for row in rotated_map:
                 slide = slide+(" ".join(row))+"\n"
-            print(slide)
+            #print(slide)
             self.slides.append(slide)
 
     def mark(self, coordinates, character):
@@ -435,6 +449,8 @@ class JPS:
         return self.within_map(coordinates) and self.free(coordinates)
 
     def scan_straight(self, node):
+        if node.length > self.min_distance:
+            return
         ''' A function that allows JPS to scan along rows and columns
 
         Args:
@@ -456,11 +472,19 @@ class JPS:
         neighbours = self.produce_neighbours(node)
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
-        if self.goal_coordinates in neighbours:
+        if b3 == self.goal_coordinates:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
             self.update_min_distance(final_node)
             return 1
+
+        #if self.goal_coordinates in neighbours:
+        #    final_node = Node(self.goal_coordinates,
+        #                      parent=node, direction=None)
+        #    self.update_min_distance(final_node)
+        #    return 1
+        #
+        #    return 1
 
         if not self.available(b3):
             return 0  
@@ -475,6 +499,8 @@ class JPS:
             f"next_node.position = self.add_tuples({next_node.position},{node.direction})")
         next_node.position = self.add_tuples(
             next_node.position, node.direction)
+
+        next_node.length = node.length+1
         self.scan_straight(next_node)
 
     def turn_45_counterclockwise(self, vector):
@@ -504,6 +530,8 @@ class JPS:
             return True
 
     def scan_diagonally(self, node):
+        if node.length > self.min_distance:
+            return
         """ A function that allows JPS to scan across diagonals.
 
         Args:
@@ -525,21 +553,30 @@ class JPS:
         neighbours = self.produce_neighbours(
             node)
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
-        if self.goal_coordinates in neighbours:
+
+        if c3 == self.goal_coordinates:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
             self.update_min_distance(final_node)
             return 1
 
+        #if self.goal_coordinates in neighbours:
+        #    final_node = Node(self.goal_coordinates,
+        #                      parent=node, direction=None)
+        #    self.update_min_distance(final_node)
+        #    return 1
+
         scan_right_node = node.copy()
         scan_right_node.direction = self.subtract_tuples(b3, b2)
         scan_right_node.parent = node
-        print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
+        scan_right_node.length = node.length+1
+        #print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
         self.scan_straight(scan_right_node)
         scan_up_node = node.copy()
         scan_up_node.direction = self.subtract_tuples(c2, b2)
         scan_up_node.parent = node
-        print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
+        scan_up_node.length = node.length+1
+        #print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
         self.scan_straight(scan_up_node)
         self.mark(
             (node.position), node.direction)
@@ -581,6 +618,8 @@ class JPS:
         next_node = node.copy()
         next_node.position = self.add_tuples(
             next_node.position, node.direction)
+
+        next_node.length = node.length+1
         self.scan_diagonally(next_node)
 
     def print_for_cli(self, start_coordinates, goal_coordinates, slides=[], visual=False):
@@ -668,23 +707,21 @@ class JPS:
 
         self.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
         distance = 0
-        try:
-            while True:
-                if len(self.open_set) == 0:
-                    print("Jump points have been exhausted")
-                    print("Ended execution due to break statement")
-                    break
-                current_node = heappop(self.open_set)
-                self.closed_set.append((current_node.position, current_node.direction))
-                print(str(f"Current node: {current_node}"))
-                if self.straight(current_node.direction):
-                    self.scan_straight(current_node)
-                else:
-                    self.scan_diagonally(current_node)
-        except Exception as e:
-            distance = str(e)
-            print(f"Distance:{str(e)}")
-            print("Exiting recursion")
+        while True:
+            if len(self.open_set) == 0:
+                print("Jump points have been exhausted")
+                print("Ended execution due to break statement")
+                break
+            current_node = heappop(self.open_set)
+            self.closed_set.append((current_node.position, current_node.direction))
+            print(str(f"Current node: {current_node}"))
+            if self.straight(current_node.direction):
+                self.scan_straight(current_node)
+            else:
+                self.scan_diagonally(current_node)
+        #distance = str(e)
+        #print(f"Distance:{str(e)}")
+        #print("Exiting recursion")
         self.recreate_path(self.final_node)
         print("recreated path")
         return self.min_distance

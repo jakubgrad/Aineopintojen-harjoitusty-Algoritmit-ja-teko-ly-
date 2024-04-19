@@ -113,6 +113,8 @@ class JPS:
         self.goal_coordinates = None
         self.closed_set = []
         self.slides = []
+        self.final_node = None
+        self.min_distance = 999999999
         
     def __str__(self):
         """A function used to test if JPS class correctly found the size of map 
@@ -187,6 +189,26 @@ class JPS:
                 total_distance += diagonal_distance(path[i], path[i + 1])
         return total_distance
 
+    def update_min_distance(self, final_node):
+        distance = 0
+        path = []
+        ans = str(final_node.position)
+        last_node = final_node
+        path.append(final_node.position)
+        while True:
+            i = last_node.parent
+            if i == None:
+                break
+            else:
+                path.append(i.position)
+                last_node = i
+        distance = self.find_distance(path)
+
+        if distance < self.min_distance:
+            self.min_distance = distance
+            self.final_node = final_node
+
+
     def recreate_path(self, final_node):
         """ Function used to mark in the visualization the path taken by
             the algorithm and to return the length of the path
@@ -222,7 +244,8 @@ class JPS:
         self.mark(self.start_coordinates, "S")
         self.add_slide()
 
-        raise Exception(distance)
+                
+        #raise Exception(distance)
 
     def within_map(self, coordinates):
         """A handy function that tells whether coordinates lie within the map
@@ -380,6 +403,7 @@ class JPS:
 
             for row in rotated_map:
                 slide = slide+(" ".join(row))+"\n"
+            print(slide)
             self.slides.append(slide)
 
     def mark(self, coordinates, character):
@@ -435,12 +459,12 @@ class JPS:
         if self.goal_coordinates in neighbours:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
-            self.recreate_path(final_node)
+            self.update_min_distance(final_node)
             return 1
 
         if not self.available(b3):
             return 0  
-        else:  # tile ahead is free
+        else:  
             if self.available(c3) and not self.available(c2):
                 self.add_node_to_open_set_if_new(node, c3)
             if self.available(a3) and not self.available(a2):
@@ -472,7 +496,7 @@ class JPS:
     def add_node_to_open_set_if_new(self, current_node, square):
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
             square, current_node.position))
-        if open_node in self.closed_set:
+        if (open_node.position, open_node.direction) in self.closed_set or open_node in self.open_set:
             return False
         else:
             heappush(self.open_set, open_node)
@@ -504,7 +528,7 @@ class JPS:
         if self.goal_coordinates in neighbours:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
-            self.recreate_path(final_node)
+            self.update_min_distance(final_node)
             return 1
 
         scan_right_node = node.copy()
@@ -571,8 +595,6 @@ class JPS:
         Returns: prints a map with coordinates for the user
         """
 
-        self.visual = visual
-        self.slides = slides
         self.start_coordinates = start_coordinates
         self.goal_coordinates = goal_coordinates
         if not self.within_map(start_coordinates) or not self.within_map(goal_coordinates):
@@ -592,12 +614,29 @@ class JPS:
 
         rmap = ""
         for i, row in enumerate(rotated_regular_map):
-            # Add increasing number to the beginning of each row
             row_with_numbers = [str(self.len_row-i - 1)] + row
             rmap += " ".join(row_with_numbers) + "\n"
         last_row = " ".join(str(i) for i in range(self.num_rows))
         rmap += "  "+last_row + "\n"
         print(rmap)
+
+
+    def view_map(self):
+        rotated_regular_map = [
+            [''] * self.num_rows for _ in range(self.len_row)]
+
+        for i in range(self.num_rows):
+            for j in range(self.len_row):
+                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
+        
+        rmap = ""
+        for i, row in enumerate(rotated_regular_map):
+            row_with_numbers = [str(self.len_row-i - 1)] + row
+            rmap += " ".join(row_with_numbers) + "\n"
+        last_row = " ".join(str(i) for i in range(self.num_rows))
+        rmap += "  "+last_row + "\n"
+        return rmap
+
 
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
         """Function that can be called after initializing JPS to find the shortest path
@@ -633,9 +672,10 @@ class JPS:
             while True:
                 if len(self.open_set) == 0:
                     print("Jump points have been exhausted")
-                    return
+                    print("Ended execution due to break statement")
+                    break
                 current_node = heappop(self.open_set)
-                self.closed_set.append(current_node.copy())
+                self.closed_set.append((current_node.position, current_node.direction))
                 print(str(f"Current node: {current_node}"))
                 if self.straight(current_node.direction):
                     self.scan_straight(current_node)
@@ -645,4 +685,6 @@ class JPS:
             distance = str(e)
             print(f"Distance:{str(e)}")
             print("Exiting recursion")
-        return distance
+        self.recreate_path(self.final_node)
+        print("recreated path")
+        return self.min_distance

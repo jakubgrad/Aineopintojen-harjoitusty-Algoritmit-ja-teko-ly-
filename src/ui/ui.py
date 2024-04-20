@@ -1,7 +1,8 @@
 import os
-from math import log
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
+
+# default maps:
 from config import default_jps, default_dijkstra
 
 
@@ -18,7 +19,7 @@ class UI:
         self.create_widgets()
 
     def start(self):
-        #tk.messagebox.showinfo(master=None, message="For large inputs, processing will take a few seconds,"+
+        # tk.messagebox.showinfo(master=None, message="For large inputs, processing will take a few seconds,"+
         #    "\n"+"During that time, the GUI will be unresponsive")
         self.create_widgets()
 
@@ -118,7 +119,7 @@ class UI:
             self.frm_buttons, text="Stop animation", bg="#FF0000", fg="#ffffff", command=lambda: self.stop_animation())
 
         self.btn_toggle_collecting_slides = tk.Button(
-            self.frm_buttons, text="Don't produce slide for performance", bg="#FF0000", fg="#ffffff", command=lambda: self.toggle_collecting_slides ())
+            self.frm_buttons, text="Don't produce slide for performance", bg="#FF0000", fg="#ffffff", command=lambda: self.toggle_collecting_slides())
 
         self.lbl_log = tk.Label(
             self.frm_buttons, text="Log")
@@ -180,7 +181,7 @@ class UI:
                                      sticky="ew", padx=5, pady=5)
 
         self.btn_toggle_collecting_slides.grid(row=14, column=0, columnspan=2,
-                                     sticky="ew", padx=5, pady=5)
+                                               sticky="ew", padx=5, pady=5)
 
         self.lbl_font.grid(row=15, column=0, columnspan=2,
                            sticky="ew", padx=5, pady=1)
@@ -215,7 +216,7 @@ class UI:
         print(f"preview:{preview}")
         with open(self.filepath, mode="r", encoding="utf-8") as input_file:
             text = input_file.read()
-            #self.txt_edit.insert(tk.END, text)
+            # self.txt_edit.insert(tk.END, text)
             self.txt_edit.insert(tk.END, preview)
 
     def run_default_dijkstra(self):
@@ -246,42 +247,20 @@ class UI:
         self.run_algorithm(jps=True)
 
     def run_algorithm(self, dijkstra=False, jps=False, start=False, goal=False, map=False):
-
-        
         start = start if start else self.start_coordinates_entry.get()
         goal = goal if goal else self.goal_coordinates_entry.get()
-        map = map if map else self.filepath
-
-        self.slides = []
 
         if not self.algorithm_service.coordinates_ok(start, goal):
             return
-        
 
-        distance, execution_time = self.algorithm_service.run_algorithm(
+        map = map if map else self.filepath
+        self.slides = []
+
+        distance, execution_time, message = self.algorithm_service.run_algorithm(
             start, goal, map, self.slides, dijkstra=dijkstra, jps=jps, visual=self.produce_slides)
 
-        n_of_edges = self.algorithm_service.count_edges(map)
-
-        n_of_vertices = self.algorithm_service.count_vertices(map)
-
         self.clear_log()
-
-        jps_branching_factor = 8#2*n_of_edges/n_of_vertices 
-        dijkstra_branching_factor = n_of_edges/n_of_vertices 
-
-        dijkstra_time_complexity = n_of_vertices + n_of_edges * log(10,n_of_vertices )
-        jps_time_complexity = jps_branching_factor**distance  
-
-        self.update_log(f"Distance is {distance}" + "\n"+
-            f"Execution time is {execution_time}" + "\n"+
-            f"Number of edges is {n_of_edges}"+ "\n"+
-            f"Number of vertices is {n_of_vertices}"+ "\n"+
-            f"JPS worst branching factor is {jps_branching_factor}"+"\n"+
-            f"Jijkstra branching factor is {dijkstra_branching_factor}"+"\n"+
-            f"Dijkstra time complexity of [O(V+E*log V)] = {dijkstra_time_complexity }"+"\n"+
-            f"JPS worst time complexity of [O(b^d)] = {jps_time_complexity }")
-
+        self.update_log(message)
 
         self.max_counter = len(self.slides)-1
         self.counter = self.max_counter
@@ -307,14 +286,14 @@ class UI:
 
     def animate(self, start=0):
         self.stop_animation()  # Stop any ongoing animation
-        self.job_ids = []  
+        self.job_ids = []
         for idx, slide in enumerate(self.slides[start:], start=start):
             if self.max_counter < 100:
                 time = 300
             else:
                 time = round(40000/self.max_counter)
                 if time < 20:
-                    time = 20 
+                    time = 20
             job_id = self.window.after(
                 (idx - start) * time, lambda s=slide, c=idx: self.update_text_and_counter(s, c))
             self.update_counter(self.counter+1)
@@ -340,8 +319,6 @@ class UI:
             self.btn_toggle_collecting_slides.config(
                 text=f"Don't produce slide for performance")
             self.produce_slides = True
-
-
 
     def stop_animation(self):
         for job_id in self.job_ids:

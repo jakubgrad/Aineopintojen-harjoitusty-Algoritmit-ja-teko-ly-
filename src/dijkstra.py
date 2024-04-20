@@ -45,6 +45,9 @@ class Dijkstra:
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
+        self.edge_counter = 0
+        self.vertices = [] 
+        heapify(self.vertices)
         self.create_edges_from_map()
 
     def mark(self, coordinates, mark):
@@ -100,6 +103,12 @@ class Dijkstra:
             x: the weight/cost of the edge
         """
 
+        if a not in self.vertices:
+            heappush(self.vertices,  a)
+        if b not in self.vertices:
+            heappush(self.vertices,  b)
+
+        self.edge_counter=self.edge_counter+1
         self.adjacencylist[a].append(Edge(b, x))
         self.adjacencylist[b].append(Edge(a, x))
 
@@ -132,6 +141,19 @@ class Dijkstra:
         j = node_number % self.len_row
         return (i, j)
 
+
+    def within_map(self, coordinates):
+        """A handy function that tells whether coordinates lie within the map
+
+        Args: 
+            coordinates: the coordinates to be checked
+            
+        Returns: true or false depending on whether the cooridnates are on the map
+        """
+
+        i, j = coordinates
+        return True if 0 <= i < self.num_rows and 0 <= j < self.len_row else False
+
     def create_edges_from_map(self):
         """A function that turns an array of rows into a graph that can be used by Dijkstra
 
@@ -145,19 +167,24 @@ class Dijkstra:
                 if self.map[i][j] == "T":
                     continue
                 else:
-                    if j < self.len_row:
-                        if self.map[i][j+1] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i, j+1), 1)
-                    if self.num_rows != 0:
-                        if self.map[i+1][j] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i+1, j), 1)
-                        if self.map[i+1][j+1] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i+1, j+1), 1.41)
+                    if self.within_map((i,j+1)):
+                        if j < self.len_row:
+                            if self.map[i][j+1] == ".":
+                                self.add_edge(self.edge_number(i, j),
+                                              self.edge_number(i, j+1), 1)
 
-    def find_shortest_path(self, start_coordinates, end_coordinates, slides, visual=False):
+                    if self.within_map((i+1,j)):
+                        if self.num_rows != 0:
+                            if self.map[i+1][j] == ".":
+                                self.add_edge(self.edge_number(i, j),
+                                              self.edge_number(i+1, j), 1)
+
+                        if self.within_map((i+1,j+1)):
+                            if self.map[i+1][j+1] == ".":
+                                self.add_edge(self.edge_number(i, j),
+                                              self.edge_number(i+1, j+1), 1.41)
+
+    def find_shortest_path(self, start_coordinates, end_coordinates, slides=False, visual=False):
         """Actual implementation of the Dijkstra algorithm
 
         Args:

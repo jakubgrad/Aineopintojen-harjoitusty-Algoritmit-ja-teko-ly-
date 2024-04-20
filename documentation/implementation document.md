@@ -23,6 +23,18 @@ Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, wh
 <br /> `algorithm_service.py` handles things like converting the string input of the user and the proper conversion of the map as well as directly calling the algorithms with appropriate algorithms. Because there is a lot of buttons in the UI it might seem like `algorithm_service.py` is pretty short, and in fact I would like to see feedback on how to improve it. (The UI could probably use some refactoring as well). <br />
 `algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. Both algorithms are first fed the map, and only then called with `find_shortest_path`. It allows the user to choose different coordinates and run them on the same map.<br />
 
+# Achieved time and space requirements (e.g. O-analyses of pseudocode)
+Dijkstra:
+Time complexity of [O(V+E*log V)]
+
+dijkstra on brc.map:
+10, 10, 100, 100
+Distance is 186.57
+Execution time is 0.06116676330566406
+
+JPS:
+worst case being [O(b^d), where b is the branching factor (the average number of successors per state)
+
 # Notes
 -**"Achieved time and space requirements (e.g. O-analyses of pseudocode)". In the works!**<br />
 -**"Performance and O analysis comparison (if suitable for the topic of the work)". Same!**<br />

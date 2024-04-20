@@ -34,7 +34,7 @@ The orange line shows the time it would take if my implementation had *exactly* 
 So we can see that the algorithm performs within the time complexity for smaller maps, and performs slower than expected for larger maps.<br/>
 I haven't done actual space complexity testing, but my estimates are:
 - O(E+V) for Dijkstra, since it creates a node for each vertex and puts each edge into adjacency list.
-- O(E) for JPS, since it potentially creates a node for each square, in every of 8 directions.
+- O(E) for JPS, since it potentially creates a node for each square, in every of 8 directions, if it doesn't find the path to the goal coordinate.
 
 # Notes
 -**"Achieved time and space requirements (e.g. O-analyses of pseudocode)". In the works!**<br />

@@ -87,9 +87,10 @@ class TestJPS(unittest.TestCase):
         self.assertEqual(len(self.algorithm.open_set), 0)
 
     def test_jps_adds_3_adjacent_squares_to_open_list_when_starting_from_a_corner(self):
-        start_coordinates = (0,0)
+        start_coordinates = (0, 0)
         start_node = Node(start_coordinates)
-        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
+        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(
+            start_coordinates)
 
         node1 = Node((1, 0), parent=start_node,
                      direction=(1, 0))
@@ -110,9 +111,10 @@ class TestJPS(unittest.TestCase):
         self.assertEqual(False, False)
 
     def test_jps_adds_8_adjacent_squares_to_open_list_when_starting_from_a_place_with_free_space_to_all_sides(self):
-        start_coordinates = (1,1)
-        start_node = Node(start_coordinates )
-        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(start_coordinates )
+        start_coordinates = (1, 1)
+        start_node = Node(start_coordinates)
+        self.algorithm.add_neighbours_of_start_coordinates_to_open_set(
+            start_coordinates)
 
         nodes = [
             Node((0, 2), parent=start_node, direction=(-1, 1)),
@@ -138,7 +140,7 @@ class TestJPS(unittest.TestCase):
 
     def test_scanning_straight_stops_when_hitting_a_wall(self):
         node_at_map_border = Node((4, 7), parent=None, direction=(1, 0))
-        self.algorithm.goal_coordinates=(3,3)
+        self.algorithm.goal_coordinates = (3, 3)
         self.algorithm.scan_straight(node_at_map_border)
         result = self.algorithm.scan_straight(node_at_map_border)
 
@@ -223,7 +225,8 @@ class TestJPS(unittest.TestCase):
         combined_set = []
         combined_set.extend(algorithm.closed_set)
         combined_set.extend(algorithm.open_set)
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_straight_and_find_a_forced_neighbour_at_b3(self):
         '''
@@ -239,7 +242,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 0), parent=parent_node, direction=(1, -1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c1(self):
         '''t1.map:
@@ -260,7 +264,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((4, 6), parent=parent_node, direction=(-1, 1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c2(self):
         '''t2.map:
@@ -281,7 +286,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((5, 6), parent=parent_node, direction=(0, 1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_c3(self):
         '''t2.map:
@@ -302,7 +308,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 6), parent=parent_node, direction=(1, 1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_and_find_a_forced_neighbour_at_b3(self):
         '''t2.map:
@@ -323,7 +330,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((6, 5), parent=parent_node, direction=(1, 0))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_obstacle_at_c2_finds_forced_neighbour_at_c3(self):
         '''t3.map:
@@ -344,7 +352,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_obstacle_at_c2_finds_forced_neighbour_at_b3(self):
         '''t3.map:
@@ -365,7 +374,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 1), parent=parent_node, direction=(1, 0))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_scan_can_proceed_diagonally_obstacle_at_b3_finds_forced_neighbour_at_c3(self):
         '''t3_flipped.map:
@@ -387,7 +397,8 @@ class TestJPS(unittest.TestCase):
         combined_set.extend(algorithm.open_set)
         jumppoint_node = Node((2, 2), parent=parent_node, direction=(1, 1))
 
-        self.assertEqual(jumppoint_node in combined_set or (jumppoint_node.position,jumppoint_node.direction) in combined_set, True)
+        self.assertEqual(jumppoint_node in combined_set or (
+            jumppoint_node.position, jumppoint_node.direction) in combined_set, True)
 
     def test_produce_neighbours_for_scan_diagonal_works_correctly_for_right_up(self):
         '''I imagine it as going right and up in this grid:
@@ -477,9 +488,6 @@ class TestJPS(unittest.TestCase):
 
     def test_dijkstra_finds_distance_on_arena_map_2(self):
         algorithm = JPS(self.arena2_map)
-        distance = algorithm.find_shortest_path((1, 2), (5,20))
+        distance = algorithm.find_shortest_path((1, 2), (5, 20))
         self.assertGreaterEqual(float(distance), 20)
         self.assertLessEqual(float(distance), 21)
-
-
-

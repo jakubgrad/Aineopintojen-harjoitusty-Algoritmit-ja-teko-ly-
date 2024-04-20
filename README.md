@@ -1,7 +1,7 @@
 # JPS vs Dijkstra
 A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly (period 4) Laboratoriotyöskentely<br /><br />
 
-The tool has a working UI and measures execution times of **JPS** and **Dijkstra**. Currently the implementation for **JPS** isn't fully optimized and for larger graphs (over 70x70 tiles) only **Dijkstra** can be run. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) and [implementation document]([url](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md))<br /><br />
+The tool has a working UI and measures execution times of **JPS** and **Dijkstra**. Currently the implementation for **JPS** isn't fully optimized and for larger graphs (over 70x70 tiles) only **Dijkstra** can be run. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) and [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md)<br /><br />
 To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
 To test out the app simply download the repository, then <br />
 ```

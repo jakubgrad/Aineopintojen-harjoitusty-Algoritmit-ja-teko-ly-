@@ -26,6 +26,7 @@ Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, wh
 # Notes
 -**"Achieved time and space requirements (e.g. O-analyses of pseudocode)". In the works!**<br />
 -**"Performance and O analysis comparison (if suitable for the topic of the work)". Same!**<br />
+-would be nice to you notation e.g. read_map(map_name: str) -> list: to make clearer what inputs and outputs are for a given function
 - After loading a file to the user interface, it shows up in the naked form of a *.map file, and worse even, it is not rotated correctly. It can be very confusing to the user, and because there is no error log for choosing coordinates out of the map, it might seem like the UI doesn't work!
 - I realized that in a uniform graph such as one constructed from a grid, Dijkstra works essentially like a Breadth-First Search. I could have implemented it as such but I already coded Dijkstra.
 - It would be nice to create a datastructure for JPS that encapsulated the neighbour nodes. 
@@ -40,6 +41,7 @@ Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, wh
 - Need to move print_for_cli away from JPS
 - Add debug mode?
 - Add different types of tests
+- The maps are flipped vertically and horizontally so that coordinates feel natural (i.e. they resemble cartesian coordinate system in the 1st quarter)
 
 
 # Targeted time and space requirements (e.g. O-analyses)

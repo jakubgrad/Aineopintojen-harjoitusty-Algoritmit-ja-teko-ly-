@@ -31,14 +31,10 @@ What I could do is create separate graphs that aren't grids and have a specific 
 Instead what I did so far was measure Dijkstra on maps of different sizes and use the *time complexity formula* O(V+E*log V) to *predict* how long it should take to run Dijkstra on a given map. This gives me pairs of *achieved time* and *predicted time*, e.g. for `arena.map` time found is 1.16 seconds and time predicted is 3829 (without any units). This alone doesn't tell us anything, but having a few tuples of data like that I was able to create this graph:
 ![image](/documentation/pictures/Figure_achieved_vs_predicted_for_dijkstra.png)
 The orange line shows the time it would take if my implementation had *exactly* the time complexity of O(V+E*log V), and the blue line the actual achieved time.
-So we can see that the algorithm performs within the time complexity for smaller maps, and 
-dijkstra on brc.map:
-10, 10, 100, 100
-Distance is 186.57
-Execution time is 0.06116676330566406
-
-JPS:
-worst case being [O(b^d), where b is the branching factor (the average number of successors per state)
+So we can see that the algorithm performs within the time complexity for smaller maps, and performs slower than expected for larger maps.<br/>
+I haven't done actual space complexity testing, but my estimates are:
+- O(E+V) for Dijkstra, since it creates a node for each vertex and puts each edge into adjacency list.
+- O(E) for JPS, since it potentially creates a node for each square, in every of 8 directions.
 
 # Notes
 -**"Achieved time and space requirements (e.g. O-analyses of pseudocode)". In the works!**<br />

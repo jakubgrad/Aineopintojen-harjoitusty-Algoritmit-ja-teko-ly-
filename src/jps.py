@@ -428,13 +428,14 @@ class JPS:
             character: character to be place
         """
         
-        arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
-            : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
-        i, j = coordinates
-        if type(character)==tuple:
-            character = arrows[character]
-        map_list = self.map[i]
-        map_list[j] = character
+        if self.visual:
+            arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
+                : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+            i, j = coordinates
+            if type(character)==tuple:
+                character = arrows[character]
+            map_list = self.map[i]
+            map_list[j] = character
 
     def available(self, coordinates):
         """ A handy function that checks if coordinates are both free and

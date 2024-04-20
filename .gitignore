@@ -3,3 +3,6 @@ __pycache__/
 .coverage
 test_node.py
 cli.py
+
+#measuring folder is for producing time complexity graphs
+measuring

@@ -3,13 +3,15 @@ import time
 
 
 class Node:
-    def __init__(self, coordinates, parent=None, direction=None,length=0):
+    def __init__(self, coordinates, parent=None, direction=None, length=0):
         """Class constructor, that creates a new node 
 
         Args:
             coordinates: a tuple of node's row and column in the grid
             parent: node's parent, so the node from which JPS has reached this node
             direction: direction of search the node is supposed to begin
+            length: a variable to keep track and prune when a path's length is greater
+            than the minimum distance already found
         """
 
         self.parent = parent
@@ -18,13 +20,26 @@ class Node:
         self.length = length
 
     def __str__(self):
+        """Generate a string representation of the Node object.
+
+        Returns:
+            A string containing information about the node's coordinates,
+            its parent's coordinates (if exists), and the direction of scan.
+        """
+
         return (
             f"coordinates {self.position}, "
             f"parent coordinates {self.parent.position if self.parent else None}, "
             f"direction {self.direction}"
-        )    
+        )
 
     def copy(self):
+        """Create a copy of the Node object.
+
+        Returns:
+            Node: A new Node object with the same position, parent, direction,
+            and length as the original node.
+        """
         return Node(self.position, parent=self.parent, direction=self.direction)
 
     def __lt__(self, other):
@@ -40,8 +55,7 @@ class Node:
         """
 
         if isinstance(other, Node):
-            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)
-                           : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
             return priorities[self.direction] > priorities[other.direction]
 
     def __eq__(self, other):
@@ -81,11 +95,11 @@ class JPS:
 
     def __init__(self, map):
         """JPS's class constructor
-        
+
         Args:   
             map: the map on which to run Dijkstra
         """
-        self.map = map 
+        self.map = map
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.open_set = []
@@ -97,7 +111,7 @@ class JPS:
         self.slides = []
         self.final_node = None
         self.min_distance = 999999999
-        
+
     def __str__(self):
         """A function used to test if JPS class correctly found the size of map 
 
@@ -112,12 +126,12 @@ class JPS:
             that lie together on straight or diagonal line.
             Used to mark the path between consecutive jumppoints of JPS after the 
             path to the goal was found
-            
+
         Args:
             start_coordinates: any coordinates of a points on the map
             end_coordinates:   coordinates of a point that is diagonally or
                                linearly away from start_coordinates' point
-            
+
         Returns:
             A string describing the size of the map
         """
@@ -172,7 +186,18 @@ class JPS:
         return total_distance
 
     def update_min_distance(self, final_node):
-        print(" update_min_distance")
+        """ Find distance of the final node to the start node.
+            if the distance is smaller: update the minimum distance, and
+            also update the final node from which the path will be drawn.
+
+        Args:
+            final_node (Node): The final node representing the end of a potential
+            shortest path.
+
+        Returns:
+            None
+        """
+
         distance = 0
         path = []
         last_node = final_node.copy()
@@ -190,11 +215,10 @@ class JPS:
             self.min_distance = distance
             self.final_node = final_node
 
-
     def recreate_path(self, final_node):
         """ Function used to mark in the visualization the path taken by
             the algorithm and to return the length of the path
-        
+
         Args:
             final_node: the node from which the algorithm reached goal coordinates
 
@@ -226,15 +250,14 @@ class JPS:
         self.mark(self.start_coordinates, "S")
         self.add_slide()
 
-                
-        #raise Exception(distance)
+        # raise Exception(distance)
 
     def within_map(self, coordinates):
         """A handy function that tells whether coordinates lie within the map
 
         Args: 
             coordinates: the coordinates to be checked
-            
+
         Returns: true or false depending on whether the cooridnates are on the map
         """
 
@@ -248,7 +271,7 @@ class JPS:
 
         Args: 
             coordinates: the coordinates to be checked
-            
+
         Returns:  true or false depending on whether the cooridnates are free to
                   create a jumppoint or continue scanning
         """
@@ -264,7 +287,7 @@ class JPS:
     def subtract_tuples(self, coordinates1, coordinates2):
         return (coordinates1[0]-coordinates2[0], coordinates1[1]-coordinates2[1])
 
-    def add_neighbours_of_start_coordinates_to_open_set(self,start_coordinates):
+    def add_neighbours_of_start_coordinates_to_open_set(self, start_coordinates):
         """ Function used to initiate JPS.
             The first neighbours are added as nodes to the open set
 
@@ -301,18 +324,17 @@ class JPS:
         for node in nodes:
             heappush(self.open_set, node)
 
-
     def straight(self, vector):
         """ A handy function that tells whether a vector goes 
             on a straight line or diagonally
 
         Args: 
             vector: the vector to be checked
-            
+
         Returns: true or false depending on whether the vector 
         is a diagonal or a straight line
         """
-        return  vector[0]*vector[1] == 0
+        return vector[0]*vector[1] == 0
 
     def turn_counterclockwise_90_degrees(self, vector):
         return (-vector[1], vector[0])
@@ -337,45 +359,45 @@ class JPS:
             b ■  →                  b ■  ↗         
             a ■	                    a ■  ■	■      
               1  2  3                 1  2  3   
-        
+
         Args:
             current_node: node that is being expanded
 
         Returns: 
             the neighbours of the node
         """
-        d = current_node.direction 
+        d = current_node.direction
         p = current_node.position
 
-        if d == (1,0) or d == (1,1):
-            neighbours = ((-1,-1),(0,-1),(1,-1),
-                          (-1,0),(0,0),(1,0),
-                          (-1,1),(0,1),(1,1))
+        if d == (1, 0) or d == (1, 1):
+            neighbours = ((-1, -1), (0, -1), (1, -1),
+                          (-1, 0), (0, 0), (1, 0),
+                          (-1, 1), (0, 1), (1, 1))
 
-        if d == (0,1) or d == (-1,1):
-            neighbours = ((1,-1),(1,0),(1,1),
-                          (0,-1),(0,0),(0,1),
-                          (-1,-1),(-1,0),(-1,1))
+        if d == (0, 1) or d == (-1, 1):
+            neighbours = ((1, -1), (1, 0), (1, 1),
+                          (0, -1), (0, 0), (0, 1),
+                          (-1, -1), (-1, 0), (-1, 1))
 
-        #if d == (-1,0) or d == (-1,-1):
+        # if d == (-1,0) or d == (-1,-1):
         #   neighbours = ((1,-1),(0,-1),(-1,-1),
         #                  (1,0),(0,0),(-1,0),
         #                  (1,1),(0,1),(-1,1))
 
-        if d == (-1,0) or d == (-1,-1):
-            neighbours = ((1,1),(0,1),(-1,1),
-                          (1,0),(0,0),(-1,0),
-                          (1,-1),(0,-1),(-1,-1))
+        if d == (-1, 0) or d == (-1, -1):
+            neighbours = ((1, 1), (0, 1), (-1, 1),
+                          (1, 0), (0, 0), (-1, 0),
+                          (1, -1), (0, -1), (-1, -1))
 
-        if d == (0,-1) or d == (1,-1):
-            neighbours = ((-1,1),(-1,0),(-1,-1),
-                          (0,1),(0,0),(0,-1),
-                          (1,1),(1,0),(1,-1))
+        if d == (0, -1) or d == (1, -1):
+            neighbours = ((-1, 1), (-1, 0), (-1, -1),
+                          (0, 1), (0, 0), (0, -1),
+                          (1, 1), (1, 0), (1, -1))
 
+        neighbours = tuple(self.add_tuples(neighbour, p)
+                           for neighbour in neighbours)
 
-        neighbours = tuple(self.add_tuples(neighbour, p) for neighbour in neighbours)
-
-        return neighbours 
+        return neighbours
 
         # copying the node to not introduce changes to the original one
         # when producing neighbours
@@ -394,8 +416,8 @@ class JPS:
         a3 = self.add_tuples(a2, node.direction)
         c1 = self.subtract_tuples(self.add_tuples(b2, b2), a3)
 
-        neighbours = (a1, a2, a3, b1, b2, b3, c1, c2, c3)       
-        return neighbours 
+        neighbours = (a1, a2, a3, b1, b2, b3, c1, c2, c3)
+        return neighbours
 
     def add_slide(self):
         """ A function that adds a snapshot of the algorithm
@@ -405,10 +427,10 @@ class JPS:
             visual: if False, no slides are added. This is because 
                     I want to make performance tests in the future
         """
-        
+
         if self.visual:
             rotated_map = [
-            [''] * self.num_rows for _ in range(self.len_row)]
+                [''] * self.num_rows for _ in range(self.len_row)]
 
             slide = ""
             for i in range(self.num_rows):
@@ -417,7 +439,7 @@ class JPS:
 
             for row in rotated_map:
                 slide = slide+(" ".join(row))+"\n"
-            #print(slide)
+            # print(slide)
             self.slides.append(slide)
 
     def mark(self, coordinates, character):
@@ -427,12 +449,11 @@ class JPS:
             coordinates: coordinates on which to place the character
             character: character to be place
         """
-        
+
         if self.visual:
-            arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)
-                : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+            arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
             i, j = coordinates
-            if type(character)==tuple:
+            if type(character) == tuple:
                 character = arrows[character]
             map_list = self.map[i]
             map_list[j] = character
@@ -443,7 +464,7 @@ class JPS:
 
         Args:
             coordinates: which coordinates need to be checked
-            
+
         Returns: whether the tile is free of obstacles and inside the map
         """
 
@@ -479,7 +500,7 @@ class JPS:
             self.update_min_distance(final_node)
             return 1
 
-        #if self.goal_coordinates in neighbours:
+        # if self.goal_coordinates in neighbours:
         #    final_node = Node(self.goal_coordinates,
         #                      parent=node, direction=None)
         #    self.update_min_distance(final_node)
@@ -488,8 +509,8 @@ class JPS:
         #    return 1
 
         if not self.available(b3):
-            return 0  
-        else:  
+            return 0
+        else:
             if self.available(c3) and not self.available(c2):
                 self.add_node_to_open_set_if_new(node, c3)
             if self.available(a3) and not self.available(a2):
@@ -561,7 +582,7 @@ class JPS:
             self.update_min_distance(final_node)
             return 1
 
-        #if self.goal_coordinates in neighbours:
+        # if self.goal_coordinates in neighbours:
         #    final_node = Node(self.goal_coordinates,
         #                      parent=node, direction=None)
         #    self.update_min_distance(final_node)
@@ -571,13 +592,13 @@ class JPS:
         scan_right_node.direction = self.subtract_tuples(b3, b2)
         scan_right_node.parent = node
         scan_right_node.length = node.length+1
-        #print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
+        # print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
         self.scan_straight(scan_right_node)
         scan_up_node = node.copy()
         scan_up_node.direction = self.subtract_tuples(c2, b2)
         scan_up_node.parent = node
         scan_up_node.length = node.length+1
-        #print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
+        # print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
         self.scan_straight(scan_up_node)
         self.mark(
             (node.position), node.direction)
@@ -660,7 +681,6 @@ class JPS:
         rmap += "  "+last_row + "\n"
         print(rmap)
 
-
     def view_map(self):
         rotated_regular_map = [
             [''] * self.num_rows for _ in range(self.len_row)]
@@ -668,7 +688,7 @@ class JPS:
         for i in range(self.num_rows):
             for j in range(self.len_row):
                 rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
-        
+
         rmap = ""
         for i, row in enumerate(rotated_regular_map):
             row_with_numbers = [str(self.len_row-i - 1)] + row
@@ -676,7 +696,6 @@ class JPS:
         last_row = " ".join(str(i) for i in range(self.num_rows))
         rmap += "  "+last_row + "\n"
         return rmap
-
 
     def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
         """Function that can be called after initializing JPS to find the shortest path
@@ -714,15 +733,16 @@ class JPS:
                 print("Ended execution due to break statement")
                 break
             current_node = heappop(self.open_set)
-            self.closed_set.append((current_node.position, current_node.direction))
+            self.closed_set.append(
+                (current_node.position, current_node.direction))
             print(str(f"Current node: {current_node}"))
             if self.straight(current_node.direction):
                 self.scan_straight(current_node)
             else:
                 self.scan_diagonally(current_node)
-        #distance = str(e)
-        #print(f"Distance:{str(e)}")
-        #print("Exiting recursion")
+        # distance = str(e)
+        # print(f"Distance:{str(e)}")
+        # print("Exiting recursion")
         self.recreate_path(self.final_node)
         print("recreated path")
         return self.min_distance

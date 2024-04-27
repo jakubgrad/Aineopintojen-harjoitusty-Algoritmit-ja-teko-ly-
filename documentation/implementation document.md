@@ -2,18 +2,19 @@
 
 The program is written in `Python`. It has the following directory structure at the moment:<br />
 <br /> 
-- maps                    # maps used to test the tool 
-- src                     # code files 
-  - tests                 # test files 
-  - create_map.py         # turns a map into an array of rows 
-  - dijkstra.py           # implementation of Dijkstra 
-  - jps.py                # implementation of JPS 
-  - config.py             # provides useful variables like path to root directory 
-  - main.py               # allows running the tool as a user 
-  - services              #  
-    - algorithm_service.py # responsible for interaction between UI and algorithms 
-- ui                      # ui files 
-  - ui.py                 # main and only ui file 
+├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool 
+├── src                     &emsp;&emsp;&emsp;# code files 
+│   ├── tests               &emsp;&emsp;&emsp;# test files 
+│   ├── create_map.py       &emsp;&emsp;&emsp;# turns a map into an array of rows 
+│   ├── dijkstra.py         &emsp;&emsp;&emsp;# implementation of Dijkstra 
+│   ├── jps.py              &emsp;&emsp;&emsp;# implementation of JPS 
+│   ├── config.py           &emsp;&emsp;&emsp;# provides useful variables like path to root directory 
+│   └── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user 
+│   └── services            &emsp;&emsp;&emsp;#  
+│       └── algorithm_service.py &emsp;&emsp;&emsp;# responsible for interaction between UI and algorithms 
+└── ui                      &emsp;&emsp;&emsp;# ui files 
+    └── ui.py               &emsp;&emsp;&emsp;# main and only ui file 
+
 <br /> 
 # Structure
 Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, which contains references to algorith_service. Initially no algorithm is run, and the user needs to choose their own start/goal coordinates, map and JPS or Dijkstra or choose a default run of either of the two. I created the default option to simplify testing the program, but it's probably easiest to test the functioning of the program with these default options.<br />

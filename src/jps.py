@@ -292,12 +292,7 @@ class JPS:
         for coords in surrounding_squares:
             node_position = self.add_tuples(start_coordinates, coords)
             if self.available(node_position):
-                heappush(self.open_set, Node(
-                        node_position,
-                        parent=start_node,
-                        direction=coords
-                    )
-                )
+                heappush(self.open_set, Node(node_position,parent=start_node,direction=coords))
 
     def straight(self, vector):
         """ A handy function that tells whether a vector goes 
@@ -360,7 +355,6 @@ class JPS:
 
         neighbours = tuple(self.add_tuples(neighbour, p)
                            for neighbour in neighbours)
-
         return neighbours
 
     def add_slide(self):
@@ -383,11 +377,12 @@ class JPS:
 
             for row in rotated_map:
                 slide = slide+(" ".join(row))+"\n"
-            # print(slide)
             self.slides.append(slide)
 
     def mark(self, coordinates, character,jumppoint=False):
-        """A function that marks a place on the grid with a character
+        """ A function that marks a place on the grid with a character.
+            Arrows are either thick and white for jumppoints or regular
+            for the scanned area
 
         Args:
             coordinates: coordinates on which to place the character
@@ -395,14 +390,16 @@ class JPS:
         """
 
         if self.visual:
-            if jumppoint == False:
-                arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
-            else: 
-                arrows = {(0,0):"G",(1, 1): "⬀", (1, -1): "⬂", (-1, -1): "⬃", (-1, 1): "⬁", (1, 0): "⇨", (-1, 0): "⇦", (0, 1): "⇧", (0, -1): "⇩"}
-
             i, j = coordinates
+
             if type(character) == tuple:
+                if jumppoint == False:
+                    arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+                else: 
+                    arrows = {(0,0):"G",(1, 1): "⬀", (1, -1): "⬂", (-1, -1): "⬃", (-1, 1): "⬁", (1, 0): "⇨", (-1, 0): "⇦", (0, 1): "⇧", (0, -1): "⇩"}
+
                 character = arrows[character]
+
             map_list = self.map[i]
             map_list[j] = character
 
@@ -441,10 +438,10 @@ class JPS:
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if b3 == self.goal_coordinates:
-            final_node = Node(self.goal_coordinates,
-                              parent=node, direction=None)
-            self.final_node = final_node
-            self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
+            self.final_node = Node(self.goal_coordinates,
+                              parent=node, direction=(0,0),heuristic=0)
+            heappush(self.open_set, self.final_node)
+            ##self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
             return 1
 
         if not self.available(b3):
@@ -471,24 +468,28 @@ class JPS:
         return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
     def add_node_to_open_set_if_new(self, current_node, square):
+        ''' A function for adding  
 
-        if square == self.goal_coordinates:
-            heuristic = 0 
-        else: 
-            distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
-            distance_travelled = current_node.length
-            heuristic = distance_to_goal + distance_travelled 
+        Args:
+            node: node that is being expanded
+        
+        Returns:
+        '''
+         
+        distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
+        distance_travelled = current_node.length
+        heuristic = distance_to_goal + distance_travelled 
 
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
             square, current_node.position), length=current_node.length, heuristic=heuristic)
 
         if (open_node.position, open_node.direction) in self.closed_set or open_node in self.open_set:
             return False
-        else:
-            heappush(self.open_set, open_node)
-            self.mark(
-                open_node.position, open_node.direction, jumppoint=True)
-            return True
+
+        heappush(self.open_set, open_node)
+        self.mark(
+            open_node.position, open_node.direction, jumppoint=True)
+        return True
 
     def scan_diagonally(self, node):
         """ A function that allows JPS to scan across diagonals.
@@ -515,8 +516,9 @@ class JPS:
 
         if c3 == self.goal_coordinates:
             self.final_node = Node(self.goal_coordinates,
-                              parent=node, direction=None)
-            self.add_node_to_open_set_if_new(self.final_node, self.goal_coordinates)
+                              parent=node, direction=(0,0), heuristic=0)
+            heappush(self.open_set, self.final_node)
+            #self.add_node_to_open_set_if_new(self.final_node, self.goal_coordinates)
             return 1
 
         scan_right_node = node.copy()
@@ -614,17 +616,22 @@ class JPS:
             The length of the shortest path, and mutating the list in place,
             passes the snapshots of execution to the UI
         """
+        if not self.within_map(start_coordinates): 
+            print("Start coordinates lie outside of map")
+            return -1
+        if not self.within_map(goal_coordinates): 
+            print("Goal coordinates lie outside of map")
+            return -1
 
         self.add_slide()
         self.visual = visual
         self.slides = slides
         self.start_coordinates = start_coordinates
         self.goal_coordinates = goal_coordinates
-        if not self.within_map(start_coordinates) or not self.within_map(goal_coordinates):
-            print("Start or goal coordinates are out of bounds")
-            return 0
+
         self.mark(start_coordinates, "S")
         self.mark(goal_coordinates, "G")
+
         if self.start_coordinates == self.goal_coordinates:
             print("Start and goal positions are the same")
             return 0
@@ -636,17 +643,18 @@ class JPS:
 
         while True:
             if len(self.open_set) == 0:
-                print("Jump points have been exhausted")
-                print("Ended execution due to break statement")
-                print("Perhaps there is no path to the goal coordinates")
+                print("No path to goal coordinates")
                 break
+
             current_node = heappop(self.open_set)
+
             if current_node.position == self.goal_coordinates:
                 GOAL_FOUND = True
                 break
+
             self.closed_set.append(
                 (current_node.position, current_node.direction))
-            print(str(f"Current node: {current_node}"))
+
             if self.straight(current_node.direction):
                 self.scan_straight(current_node)
             else:
@@ -654,4 +662,4 @@ class JPS:
 
         if GOAL_FOUND:
             return self.recreate_path(self.final_node)
-        return False
+        return -1

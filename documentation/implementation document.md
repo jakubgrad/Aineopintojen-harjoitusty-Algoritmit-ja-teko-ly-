@@ -48,26 +48,6 @@ JPS executes in `1.76811 s`<br>
 Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my implementation initializes an array for all squares on the map. <br><br>
 Based on these it seems that the time complexities in the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) match the tests and the algorithms behave predictably.
 
-# Notes
--worst case time complexity of dijkstra could be driven down to average, if the algorithm gives up after not finding the coordinate 🧠
--Dijkstra takes  O((E + V)log(V)) to find all nodes on the map, but your implementation finishes earlier. Find out when!!!
--would be nice to you notation e.g. read_map(map_name: str) -> list: to make clearer what inputs and outputs are for a given function
-- After loading a file to the user interface, it shows up in the naked form of a *.map file, and worse even, it is not rotated correctly. It can be very confusing to the user, and because there is no error log for choosing coordinates out of the map, it might seem like the UI doesn't work!
-- I realized that in a uniform graph such as one constructed from a grid, Dijkstra works essentially like a Breadth-First Search. I could have implemented it as such but I already coded Dijkstra.
-- It would be nice to create a datastructure for JPS that encapsulated the neighbour nodes. 
-- It would be a good place to introduce the a-c 1-3 notation
-- The input maps are assumed to be rectangular
-- I want to add colors to the visualization. It used to exist in command line, but Tkinter doesn't support the methods I've been using
-- There used to be a color map for JPS, but I removed it bc Tkinter doesn't support fonts?
-- Arrows are not marked as free. It's nice that algorithm won't run into the same area again, but it also means it will hallucinate forced neighbours (and it does)
-- Need to run more different types of tests for Dijkstra
-- Need to run tests for efficiency / results of the algorithms
-- Add_neighbours_of_start_coordinates_to_open_set could use the function produce_neighbours
-- Need to move print_for_cli away from JPS
-- Add debug mode?
-- Add different types of tests
-- The maps are flipped vertically and horizontally so that coordinates feel natural (i.e. they resemble cartesian coordinate system in the 1st quarter)
-
 
 # Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />

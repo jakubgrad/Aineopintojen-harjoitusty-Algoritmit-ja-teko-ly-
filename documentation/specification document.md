@@ -21,10 +21,10 @@ To answer the required questions:<br /><br />
        - **Average time complexity** of O(d²), where d is the distance between start and goal coordinates.I would argue this is the case for a map with few obstacle (which means that the search is expanding upwards, downwards, rightwards and leftwards). On such a map, the searched area grows in four directions and could be roughly approximated as a square. I got the insight from [geeks2geeks on BFS traversal on a 2d grid](https://www.geeksforgeeks.org/breadth-first-traversal-bfs-on-a-2d-array/) 
      - Space complexity of usual Dijkstra implementaiton is [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/). Although perhaps this could be improved for my implementation to O(d²) since not all vertices need to be in memory to find the shortest path in a grid, the current implementation doesn't take advantage of that fact and intializes arrays for the entire size of the map.
         
-# Achieved time complexity
+## Achieved time complexity
 View in the [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md#achieved-time-and-space-requirements-eg-o-analyses-of-pseudocode)
 
-# References
+## References
 **JPS** http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf <br />
 Space and time complexity of **JPS** https://en.wikipedia.org/wiki/A*_search_algorithm <br />
 Time complexity of **Djikstra** https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20 <br />

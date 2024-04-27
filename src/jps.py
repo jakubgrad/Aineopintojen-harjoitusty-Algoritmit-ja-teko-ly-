@@ -256,6 +256,7 @@ class JPS:
                 ans = ans + str(i.position)
                 last_node = i
         distance = self.find_distance(path)
+        self.min_distance=distance
         print(self.start_coordinates)
         print(type(self.start_coordinates))
         self.mark(self.start_coordinates, "S")
@@ -455,7 +456,7 @@ class JPS:
             # print(slide)
             self.slides.append(slide)
 
-    def mark(self, coordinates, character):
+    def mark(self, coordinates, character,jumppoint=False):
         """A function that marks a place on the grid with a character
 
         Args:
@@ -464,7 +465,10 @@ class JPS:
         """
 
         if self.visual:
-            arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+            if jumppoint == False:
+                arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+            else: 
+                arrows = {(0,0):"G",(1, 1): "⬀", (1, -1): "⬂", (-1, -1): "⬃", (-1, 1): "⬁", (1, 0): "⇨", (-1, 0): "⇦", (0, 1): "⇧", (0, -1): "⇩"}
 
             i, j = coordinates
             if type(character) == tuple:
@@ -511,9 +515,11 @@ class JPS:
         if b3 == self.goal_coordinates:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
-            self.add_node_to_open_set_if_new(node, self.goal_coordinates)
+            self.final_node = final_node
+            self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
             print("added goal coordinates to open set")
-            self.update_min_distance(final_node)
+            #self.update_min_distance(final_node)
+            #self.update_min_distance(final_node)
             return 1
 
         # if self.goal_coordinates in neighbours:
@@ -539,7 +545,8 @@ class JPS:
             next_node.position, node.direction)
 
         next_node.length = node.length+1
-        self.scan_straight(next_node)
+        if self.scan_straight(next_node) == 1:
+            return 1
 
     def turn_45_counterclockwise(self, vector):
         values = {(1, 1): (0, 1), (-1, 1): (-1, 0),
@@ -580,7 +587,7 @@ class JPS:
             heappush(self.open_set, open_node)
             print(f"Heappushed node"+str(open_node))
             self.mark(
-                (open_node.position), "J")
+                (open_node.position), open_node.direction, jumppoint=True)
             return True
 
     def scan_diagonally(self, node):
@@ -611,7 +618,10 @@ class JPS:
         if c3 == self.goal_coordinates:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
-            self.update_min_distance(final_node)
+
+            self.final_node = final_node
+            self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
+            #self.update_min_distance(final_node)
             return 1
 
         # if self.goal_coordinates in neighbours:
@@ -625,13 +635,19 @@ class JPS:
         scan_right_node.parent = node
         scan_right_node.length = node.length+1
         # print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
-        self.scan_straight(scan_right_node)
+        #exit recursion
+        if self.scan_straight(scan_right_node) == 1:
+            return 1
+        
         scan_up_node = node.copy()
         scan_up_node.direction = self.subtract_tuples(c2, b2)
         scan_up_node.parent = node
         scan_up_node.length = node.length+1
         # print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
-        self.scan_straight(scan_up_node)
+
+        #exit recursion
+        if self.scan_straight(scan_up_node) == 1:
+            return 1
         self.mark(
             (node.position), node.direction)
         if not self.available(b1):

@@ -2,9 +2,6 @@ from heapq import *
 import time
 import math
 
-#def heuristic(Node, goal_coordinates):
-#    coordinates = Node.position
-
 class Node:
     def __init__(self, coordinates, parent=None, direction=None, length=0, heuristic=1000):
         """Class constructor, that creates a new node 
@@ -50,7 +47,10 @@ class Node:
 
     def __lt__(self, other):
         """ A comparison method for nodes. Uses a heuristic function 
-            to find the distance to the goal node
+            to find the distance to the goal node so that heappoping
+            the open_set yields the best jumppoint. If the heuristic
+            values of two nodes are the same, priority is to 
+            expand the nodes according to their direction
 
         Args:
             self: the node itself
@@ -66,8 +66,7 @@ class Node:
             if other.heuristic == self.heuristic:
                 priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
                 return priorities[self.direction] > priorities[other.direction]
-            else: 
-                return other.heuristic > self.heuristic
+            return other.heuristic > self.heuristic
 
     def __eq__(self, other):
         """ Another comparison method for nodes
@@ -196,52 +195,21 @@ class JPS:
                 total_distance += diagonal_distance(path[i], path[i + 1])
         return total_distance
 
-    def update_min_distance(self, final_node):
-        """ Find distance of the final node to the start node.
-            if the distance is smaller: update the minimum distance, and
-            also update the final node from which the path will be drawn.
-
-        Args:
-            final_node (Node): The final node representing the end of a potential
-            shortest path.
-
-        Returns:
-            None
-        """
-
-        distance = 0
-        path = []
-        last_node = final_node.copy()
-        path.append(final_node.position)
-        while True:
-            i = last_node.parent
-            if i == None:
-                break
-            else:
-                path.append(i.position)
-                last_node = i
-        distance = self.find_distance(path)
-
-        if distance < self.min_distance:
-            self.min_distance = distance
-            self.final_node = final_node
-
     def recreate_path(self, final_node):
-        """ Function used to mark in the visualization the path taken by
-            the algorithm and to return the length of the path
+        """ Function used to mark in the slides the path taken by
+            the algorithm and to set as self.min_distance the length
+            of the path from start coordinates to goal_coordinates
 
         Args:
-            final_node: the node from which the algorithm reached goal coordinates
+            final_node: the node in position of goal coordinates
 
         Returns: the length of the path taken by the JPS algorithm
         """
-
         distance = 0
-        print(final_node.position)
-        ans = str(final_node.position)
         last_node = final_node
         path = []
         path.append(final_node.position)
+
         while True:
             i = last_node.parent
 
@@ -253,16 +221,12 @@ class JPS:
                 self.mark_points_between(last_node.position, i.position)
                 self.add_slide()
                 print(i.position)
-                ans = ans + str(i.position)
                 last_node = i
+
         distance = self.find_distance(path)
-        self.min_distance=distance
-        print(self.start_coordinates)
-        print(type(self.start_coordinates))
         self.mark(self.start_coordinates, "S")
         self.add_slide()
-
-        # raise Exception(distance)
+        return distance
 
     def within_map(self, coordinates):
         """A handy function that tells whether coordinates lie within the map
@@ -393,11 +357,6 @@ class JPS:
                           (0, -1), (0, 0), (0, 1),
                           (-1, -1), (-1, 0), (-1, 1))
 
-        # if d == (-1,0) or d == (-1,-1):
-        #   neighbours = ((1,-1),(0,-1),(-1,-1),
-        #                  (1,0),(0,0),(-1,0),
-        #                  (1,1),(0,1),(-1,1))
-
         if d == (-1, 0) or d == (-1, -1):
             neighbours = ((1, 1), (0, 1), (-1, 1),
                           (1, 0), (0, 0), (-1, 0),
@@ -517,18 +476,7 @@ class JPS:
                               parent=node, direction=None)
             self.final_node = final_node
             self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
-            print("added goal coordinates to open set")
-            #self.update_min_distance(final_node)
-            #self.update_min_distance(final_node)
             return 1
-
-        # if self.goal_coordinates in neighbours:
-        #    final_node = Node(self.goal_coordinates,
-        #                      parent=node, direction=None)
-        #    self.update_min_distance(final_node)
-        #    return 1
-        #
-        #    return 1
 
         if not self.available(b3):
             return 0
@@ -775,6 +723,9 @@ class JPS:
 
         self.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
         distance = 0
+
+        GOAL_FOUND = False
+
         while True:
             if len(self.open_set) == 0:
                 print("Jump points have been exhausted")
@@ -783,7 +734,7 @@ class JPS:
                 break
             current_node = heappop(self.open_set)
             if current_node.position == self.goal_coordinates:
-                print("Found goal node from the open set")
+                GOAL_FOUND = True
                 break
             self.closed_set.append(
                 (current_node.position, current_node.direction))
@@ -792,9 +743,7 @@ class JPS:
                 self.scan_straight(current_node)
             else:
                 self.scan_diagonally(current_node)
-        # distance = str(e)
-        # print(f"Distance:{str(e)}")
-        # print("Exiting recursion")
-        self.recreate_path(self.final_node)
-        print("recreated path")
-        return self.min_distance
+
+        if GOAL_FOUND:
+            return self.recreate_path(self.final_node)
+        return False

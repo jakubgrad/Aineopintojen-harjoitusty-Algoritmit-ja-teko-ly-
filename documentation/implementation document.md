@@ -25,27 +25,26 @@ The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is
 
 # Achieved time and space requirements (e.g. O-analyses of pseudocode)
 I did the following tests following the [instructions in the manual](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md#time-testing):<br>
+
 `arena.map` 49x49<br>
 Distance is 56.7 from (2,2) to (33,46)`<br>
 JPS executes in `0.00684 s``<br>
-Dijkstra executes in `0.0636 s``<br>`<br>
+Dijkstra executes in `0.0636 s``<br><br>
 
 `smaller_brc.map` 130x54<br>
-Distance is 116 from (9,12) to (9,128)
-Dijkstra executes in `0.551 s`
-JPS executes in `0.00193 s`, since the first scan goes straight from start coordinates to goal coordinates. Over 200 times faster than Dijkstra for these settings.
+Distance is 116 from (9,12) to (9,128)<br>
+Dijkstra executes in `0.551 s`<br>
+JPS executes in `0.00193 s`, since the first scan goes straight from start coordinates to goal coordinates. Over 200 times faster than Dijkstra for these settings.<br><br>
 
 `smaller_brc.map` 130x54<br>
-Distance is 133 from (1,11) to (40,128)
-Dijkstra executes in `0.540 s`
-JPS executes in `0.0695 s`, still tenfold faster than Dijkstra
-
+Distance is 133 from (1,11) to (40,128)<br>
+Dijkstra executes in `0.540 s`<br>
+JPS executes in `0.0695 s`, still tenfold faster than Dijkstra<br><br>
 
 `medium_brc.map` 182x124<br>
-
-Distance is 184.8 from (10,10) to (100,100)
-JPS executes in `1.76811 s`
-Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my implementation initializes an array for all squares on the map. 
+Distance is 184.8 from (10,10) to (100,100)<br>
+JPS executes in `1.76811 s`<br>
+Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my implementation initializes an array for all squares on the map. <br>
 
 # On empiric testing of algorithms 
 In week 5 I finally got around to measuring the execution time of the algorithms and I found a challenge.<br/> 

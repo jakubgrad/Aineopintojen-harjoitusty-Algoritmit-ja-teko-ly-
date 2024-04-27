@@ -1,7 +1,7 @@
 # JPS vs Dijkstra
 A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly (period 4) Laboratoriotyöskentely<br /><br />
 
-Currently the tool is still under production 🛠. The goal is to have a tool that can show to the user the functioning of the algorithms and that can compare the two algorithms in terms of time complexity. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) 📎<br /><br />
+The tool has a working UI and measures execution times of **JPS** and **Dijkstra**. Currently the implementation for **JPS** isn't fully optimized and for larger graphs (over 70x70 tiles) only **Dijkstra** can be run. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) and [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md)<br /><br />
 To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
 To test out the app simply download the repository, then <br />
 ```
@@ -43,5 +43,7 @@ If there are import problems with python, which is unlikely to occur in the firs
 export PYTHONPATH=~/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
 export PYTHONPATH=~/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
 ```
-Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at any of it!
+Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at any of it!<br>
+[Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)<br>
+[Peer review 2](https://github.com/levitesuo/algoritmit-harjoitusty-/issues/2)
 

@@ -24,16 +24,17 @@ Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, wh
 `algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. Both algorithms are first fed the map, and only then called with `find_shortest_path`. It allows the user to choose different coordinates and run them on the same map.<br />
 
 # Achieved time and space requirements (e.g. O-analyses of pseudocode)
-Dijkstra:
-Time complexity of [O(V+E*log V)]
-
-dijkstra on brc.map:
-10, 10, 100, 100
-Distance is 186.57
-Execution time is 0.06116676330566406
-
-JPS:
-worst case being [O(b^d), where b is the branching factor (the average number of successors per state)
+In week 5 I finally got around to measuring the execution time of the algorithms and I found a challenge.<br/> 
+*Time complexity formula* for Dijkstra is O(V+E log V) where *E* is number of edges and *v* is number of nodes.<br/>
+This means that execution time of Dijkstra depends both on the number of nodes and the number of edges. <br/>
+What I could do is create separate graphs that aren't grids and have a specific number of edges and vertices. I haven't gotten around to doing that since the implementation of **Dijkstra** and **JPS** that I created uses maps in the format *.map* that you can see in the [dedicated folder](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/tree/main/maps).<br/>
+Instead what I did so far was measure Dijkstra on maps of different sizes and use the *time complexity formula* O(V+E*log V) to *predict* how long it should take to run Dijkstra on a given map. This gives me pairs of *achieved time* and *predicted time*, e.g. for `arena.map` time found is 1.16 seconds and time predicted is 3829 (without any units). This alone doesn't tell us anything, but having a few tuples of data like that I was able to create this graph:
+![image](/documentation/pictures/Figure_achieved_vs_predicted_for_dijkstra.png)
+The orange line shows the time it would take if my implementation had *exactly* the time complexity of O(V+E*log V), and the blue line the actual achieved time.
+So we can see that the algorithm performs within the time complexity for smaller maps, and performs slower than expected for larger maps.<br/>
+I haven't done actual space complexity testing, but my estimates are:
+- O(E+V) for Dijkstra, since it creates a node for each vertex and puts each edge into adjacency list.
+- O(E) for JPS, since it potentially creates a node for each square, in every of 8 directions, if it doesn't find the path to the goal coordinate.
 
 # Notes
 -Dijkstra takes  O((E + V)log(V)) to find all nodes on the map, but your implementation finishes earlier. Find out when!!!

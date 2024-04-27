@@ -1,8 +1,5 @@
-from heapq import *
-from services.algorithm_service import algorithm_service
-
-
 from tkinter import Tk
+from services.algorithm_service import algorithm_service
 from ui.ui import UI
 
 

@@ -44,7 +44,7 @@ If there are import problems with python, which is unlikely to occur in the firs
 export PYTHONPATH=~/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
 export PYTHONPATH=~/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
 ```
-Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at any of it!<br>
+Currently the code isn't the nicest and needs a lot of refactoring and linting, but feel free to take a look at any of it!<br><br>
 [Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)<br>
 [Peer review 2](https://github.com/levitesuo/algoritmit-harjoitusty-/issues/2)
 

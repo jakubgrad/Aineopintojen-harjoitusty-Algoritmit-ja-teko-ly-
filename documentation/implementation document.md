@@ -1,6 +1,6 @@
-## Implementation document = Toteutusdokumentti<br />
+### Implementation document = Toteutusdokumentti<br />
 
-# Structure
+## Structure
 
 ├── maps                    &emsp;&emsp;&emsp; maps used to test the tool <br />
 ├── src                     &emsp;&emsp;&emsp; code files <br />
@@ -25,7 +25,7 @@ Following user interaction in the UI, `algorithm_service.py` calls the appropria
 `config.py` specifies useful paths in the repository such as the path to the maps directory and the paths of default maps for Dijkstra and JPS.<br><br>
 `create_map.py` takes a text file (or equivalently a `.map` file) and converts it into a list of lists, effectively a 2d array that can be used by both JPS and Dijkstra.
 
-# Achieved time and space requirements (e.g. O-analyses of pseudocode)
+## Achieved time and space requirements (e.g. O-analyses of pseudocode)
 I did the following tests following the [instructions in the manual](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md#time-testing):<br>
 
 `arena.map` 49x49 <br>
@@ -50,7 +50,7 @@ Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my 
 Based on these it seems that the time complexities in the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) match the tests and the algorithms behave predictably.
 
 
-# Targeted time and space requirements (e.g. O-analyses)
+## Targeted time and space requirements (e.g. O-analyses)
 A lot more on both in [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md), please check it out if you're interested in targeted time and space requierements.
 - **JPS**: ["O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
   - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
@@ -59,10 +59,10 @@ A lot more on both in [specification document](https://github.com/jakubgrad/Aine
   - **Average time complexity** of O(d²)
   - Space complexity of [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/).
   
-# Use of large language models 
+## Use of large language models 
 The only LLM I've used was Chatgpt 3.5. I used it a lot to interpret the bugs in the console, e.g. "cannot import module". It was especially useful when dealing with GUI, because I have close to zero experience on it and the error messages just don't tell me anything understandable. This way it was so much faster to debug, because often it's just something that I didn't notice and ChatGPT almost always picks it up. I also found ChatGPT great for suggesting different programming tricks, like e.g. the ANSI color codes and reminding how lambda, list comprehension etc. work. In other cases it was utterly useless, maybe because it cannot even conceptualize folder structure or how my algorithm would actually be used (it's not started by just calling the class for instance.). Also, with larger and multiple files, ChatGPT was too confused about what's what and couldn't help at all. With well formulated questions there is significant benefit. E.g., it's suggested me to use exceptions when I asked what can end a deep recursion. 
 
-# References
+## References
 **JPS** http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf <br />
 Space and time complexity of **JPS** https://en.wikipedia.org/wiki/A*_search_algorithm <br />
 Time complexity of **Djikstra** https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20 <br />

@@ -36,8 +36,7 @@ JPS:
 worst case being [O(b^d), where b is the branching factor (the average number of successors per state)
 
 # Notes
--**"Achieved time and space requirements (e.g. O-analyses of pseudocode)". In the works!**<br />
--**"Performance and O analysis comparison (if suitable for the topic of the work)". Same!**<br />
+-Dijkstra takes  O((E + V)log(V)) to find all nodes on the map, but your implementation finishes earlier. Find out when!!!
 -would be nice to you notation e.g. read_map(map_name: str) -> list: to make clearer what inputs and outputs are for a given function
 - After loading a file to the user interface, it shows up in the naked form of a *.map file, and worse even, it is not rotated correctly. It can be very confusing to the user, and because there is no error log for choosing coordinates out of the map, it might seem like the UI doesn't work!
 - I realized that in a uniform graph such as one constructed from a grid, Dijkstra works essentially like a Breadth-First Search. I could have implemented it as such but I already coded Dijkstra.

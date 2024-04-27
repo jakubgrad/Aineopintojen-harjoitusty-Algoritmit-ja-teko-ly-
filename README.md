@@ -15,7 +15,7 @@ poetry run invoke start
 ```
 Doing that should open a GUI tool with a welcoming interface. <br />
 A window like the one below should open <br/><br/>
-![image](/documentation/pictures/program.png)<br/>
+![image](/documentation/pictures/program.png)<br/><br>
 Now that the tool is open you can try it. I recommend first trying out `Default JPS` and `Default Dijkstra`, since these examples have predefined start and goal coordinates and maps that I know to work well.<br/>
 Once you run a regular or a default algorithm, using the UI you can change the size of the display, see every step of execution by updating the counter and even animate the execution from any point.<br/><br/>
 Other useful commands are:

@@ -20,6 +20,7 @@
 
 <br> <br> 
 The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, which contains references to algorith_service. Initially no algorithm is run, and the user needs to choose their own start/goal coordinates, map and JPS or Dijkstra or choose a default run of either of the two. I created the default option to simplify testing the program, but it's probably easiest to test the functioning of the program with these default options.<br />
+# Important functions
 <br /> `algorithm_service.py` handles things like converting the string input of the user and the proper conversion of the map as well as directly calling the algorithms with appropriate algorithms. Because there is a lot of buttons in the UI it might seem like `algorithm_service.py` is pretty short, and in fact I would like to see feedback on how to improve it. (The UI could probably use some refactoring as well). <br />
 `algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. Both algorithms are first fed the map, and only then called with `find_shortest_path`. It allows the user to choose different coordinates and run them on the same map.<br />
 

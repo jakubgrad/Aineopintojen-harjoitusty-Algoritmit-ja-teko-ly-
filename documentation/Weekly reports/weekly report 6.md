@@ -20,5 +20,5 @@
 5. What do I do next? <br />
    - Test time complexity a bit more, lint, improve coverage of the tests
 **Other considerations:** <br />
-I spent around **10** hours this week working on the project **5** of it was spent on giving reviews<br />
+I spent around **12** hours this week working on the project **5** of it was spent on giving reviews<br />
  

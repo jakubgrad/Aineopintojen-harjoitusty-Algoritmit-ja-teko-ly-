@@ -55,7 +55,7 @@ A lot more on both in [specification document](https://github.com/jakubgrad/Aine
 - **JPS**: ["O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
   - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
 - **Djikstra**:<br />
-  - **Worst-case time complexity** of [O(V + E)](https://techsauce.medium.com/time-complexity-and-space-complexity-of-dfs-and-bfs-algorithms-671217e43d58#:~:text=Breadth%20First%20Search%20%E2%80%94%20Time%20Complexity&text=In%20the%20worst%20case%20(as,of%20edges%20in%20the%20graph.), 
+  - **Worst-case time complexity** of [O(V + E)](https://techsauce.medium.com/time-complexity-and-space-complexity-of-dfs-and-bfs-algorithms-671217e43d58#), 
   - **Average time complexity** of O(d²)
   - Space complexity of [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/).
   

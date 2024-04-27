@@ -1,9 +1,9 @@
 # JPS vs Dijkstra
 A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly (period 4) Laboratoriotyöskentely<br /><br />
-[Specification document = Määrittelydokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md)
-[Testing document = Testausdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/testing%20document.md)
-[Implementation document = Toteutusdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md)
-[Manual = Käyttöohje](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md)
+[Specification document = Määrittelydokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) <br>
+[Testing document = Testausdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/testing%20document.md) <br>
+[Implementation document = Toteutusdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md) <br>
+[Manual = Käyttöohje](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md) <br>
 
 
 The tool has a working UI and measures execution times of **JPS** and **Dijkstra**. Currently the implementation for **JPS** isn't fully optimized and for larger graphs (over 70x70 tiles) only **Dijkstra** can be run. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) and [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md)<br /><br />

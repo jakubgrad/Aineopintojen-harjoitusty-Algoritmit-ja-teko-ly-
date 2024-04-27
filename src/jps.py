@@ -1,9 +1,12 @@
 from heapq import *
 import time
+import math
 
+#def heuristic(Node, goal_coordinates):
+#    coordinates = Node.position
 
 class Node:
-    def __init__(self, coordinates, parent=None, direction=None, length=0):
+    def __init__(self, coordinates, parent=None, direction=None, length=0, heuristic=1000):
         """Class constructor, that creates a new node 
 
         Args:
@@ -11,13 +14,16 @@ class Node:
             parent: node's parent, so the node from which JPS has reached this node
             direction: direction of search the node is supposed to begin
             length: a variable to keep track and prune when a path's length is greater
-            than the minimum distance already found
+                than the minimum distance already found
+            heuristic: a variable that makes JPS behave like A* in that it
+                first expands nodes that are most promising
         """
 
         self.parent = parent
         self.direction = direction
         self.position = coordinates
         self.length = length
+        self.heuristic = heuristic
 
     def __str__(self):
         """Generate a string representation of the Node object.
@@ -43,7 +49,8 @@ class Node:
         return Node(self.position, parent=self.parent, direction=self.direction)
 
     def __lt__(self, other):
-        """A comparison method for nodes
+        """ A comparison method for nodes. Uses a heuristic function 
+            to find the distance to the goal node
 
         Args:
             self: the node itself
@@ -54,9 +61,13 @@ class Node:
             than scanning the other one
         """
 
+
         if isinstance(other, Node):
-            priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
-            return priorities[self.direction] > priorities[other.direction]
+            if other.heuristic == self.heuristic:
+                priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+                return priorities[self.direction] > priorities[other.direction]
+            else: 
+                return other.heuristic > self.heuristic
 
     def __eq__(self, other):
         """ Another comparison method for nodes
@@ -310,6 +321,8 @@ class JPS:
         '''
         nodes = []
         start_node = Node(start_coordinates)
+        # below should be refactored and used function 
+        # add_node_to_open_set_if_new
         for x in surrounding_squares:
             node_position = self.add_tuples(start_coordinates, x)
             if self.available(node_position):
@@ -541,9 +554,20 @@ class JPS:
     def turn_clockwise_90_degrees(self, coordinates):
         return (coordinates[1], -coordinates[0])
 
+    def distance_between_points(self,point1, point2):
+        x1, y1 = point1
+        x2, y2 = point2
+        return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
     def add_node_to_open_set_if_new(self, current_node, square):
+        distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
+        distance_travelled = current_node.length
+        heuristic = distance_to_goal + distance_travelled 
+        print(f"heuristic: {heuristic}")
+
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
-            square, current_node.position))
+            square, current_node.position), length=current_node.length, heuristic=heuristic)
+
         if (open_node.position, open_node.direction) in self.closed_set or open_node in self.open_set:
             return False
         else:

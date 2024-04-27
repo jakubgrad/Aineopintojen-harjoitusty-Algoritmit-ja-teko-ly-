@@ -1,8 +1,9 @@
-from heapq import *
+from heapq import heapify, heappush, heappop
 
 
 class Edge:
-    """A class with which we can keep track of what edges and with what weights are the neighbours of a node
+    """A class with which we can keep track of what edges and with what weights
+       are the neighbours of a node
 
     Attributes:
         end: the terminating edge
@@ -25,28 +26,29 @@ class Edge:
 
 
 class Dijkstra:
-    """A class that can turn arrays describing a map into a graph and find the shortest path using Dijkstra algorithm
+    """A class that can turn arrays describing a map into a graph
+       and find the shortest path using Dijkstra algorithm
 
     Attributes:
-        map: an array of rows, each describing a row of squares, where each square is an obstacle or is free
+        map: an array of rows, each describing a row of squares, where each square
+            is an obstacle or is free
         number_of_nodes: number of nodes in total equal to number of squares
         adjacencylist: an array of arrays, one for each square/node
         num_rows: number of rows of the map
         len_row: length of a single row
     """
 
-    def __init__(self, map):
+    def __init__(self, source_map):
         """Dijkstra's class constructor
 
         Args:   
             map: the map on which to run Dijkstra
         """
 
-        self.map = map
-        self.slide_map = map
+        self.map = source_map
+        self.slide_map = source_map
         self.slides = []
-        self.visual = False
-        self.number_of_nodes = len(map)*len(map[0])
+        self.number_of_nodes = len(source_map)*len(source_map[0])
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
@@ -62,8 +64,10 @@ class Dijkstra:
             coordinates: coordinates on which to place the character
             character: character to be place
         """
-        i, j = coordinates
-        self.slide_map[i][j] = mark
+
+        if self.visual:
+            i, j = coordinates
+            self.slide_map[i][j] = mark
 
     def add_slide(self):
         """ A function that adds a snapshot of the algorithm
@@ -75,8 +79,6 @@ class Dijkstra:
         """
 
         if self.visual:
-            rotated_map_list = [
-                [''] * self.num_rows for _ in range(self.len_row)]
             rotated_regular_map = [
                 [''] * self.num_rows for _ in range(self.len_row)]
 
@@ -157,7 +159,9 @@ class Dijkstra:
         """
 
         i, j = coordinates
-        return True if 0 <= i < self.num_rows and 0 <= j < self.len_row else False
+        if 0 <= i < self.num_rows and 0 <= j < self.len_row:
+            return True
+        return False
 
     def create_edges_from_map(self):
         """A function that turns an array of rows into a graph that can be used by Dijkstra
@@ -171,23 +175,22 @@ class Dijkstra:
             for j in range(self.len_row):
                 if self.map[i][j] == "T":
                     continue
-                else:
-                    if self.within_map((i, j+1)):
-                        if j < self.len_row:
-                            if self.map[i][j+1] == ".":
-                                self.add_edge(self.edge_number(i, j),
-                                              self.edge_number(i, j+1), 1)
+                if self.within_map((i, j+1)):
+                    if j < self.len_row:
+                        if self.map[i][j+1] == ".":
+                            self.add_edge(self.edge_number(i, j),
+                                          self.edge_number(i, j+1), 1)
 
-                    if self.within_map((i+1, j)):
-                        if self.num_rows != 0:
-                            if self.map[i+1][j] == ".":
-                                self.add_edge(self.edge_number(i, j),
-                                              self.edge_number(i+1, j), 1)
+                if self.within_map((i+1, j)):
+                    if self.num_rows != 0:
+                        if self.map[i+1][j] == ".":
+                            self.add_edge(self.edge_number(i, j),
+                                          self.edge_number(i+1, j), 1)
 
-                        if self.within_map((i+1, j+1)):
-                            if self.map[i+1][j+1] == ".":
-                                self.add_edge(self.edge_number(i, j),
-                                              self.edge_number(i+1, j+1), 1.41)
+                    if self.within_map((i+1, j+1)):
+                        if self.map[i+1][j+1] == ".":
+                            self.add_edge(self.edge_number(i, j),
+                                          self.edge_number(i+1, j+1), 1.41)
 
     def find_shortest_path(self, start_coordinates, end_coordinates, slides=False, visual=False):
         """Actual implementation of the Dijkstra algorithm
@@ -204,6 +207,8 @@ class Dijkstra:
         self.visual = visual
         a = self.edge_number(*start_coordinates)
         b = self.edge_number(*end_coordinates)
+        if a == b:
+            return
         processed = [False] * self.number_of_nodes
         distance = [10000] * self.number_of_nodes
         distance[a] = 0
@@ -222,6 +227,8 @@ class Dijkstra:
                     if distance[v] > distance[u] + edge.weight:
                         distance[v] = distance[u] + edge.weight
                         heappush(h, (distance[v], v))
+                if u == b:
+                    break
 
         if distance[b] == 10000:
             distance[b] = -1

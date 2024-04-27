@@ -67,7 +67,7 @@ class UI:
             self.frm_buttons, text="Run Default JPS", bg="#808000", fg="#ffffff", command=self.run_default_jps)
 
         self.lbl_start_coordinates = tk.Label(
-            self.frm_buttons, bg="#000080", fg="#ffffff", padx=5, pady=5, text="Start Coordinates")
+            self.frm_buttons, bg="#900C3F", fg="#ffffff", padx=5, pady=5, text="Start Coordinates")
 
         self.lbl_goal_coordinates = tk.Label(
             self.frm_buttons, bg="#000080", fg="#ffffff", font=("Consolas", 10), padx=5, pady=5, text="Goal Coordinates")
@@ -264,9 +264,10 @@ class UI:
 
         self.max_counter = len(self.slides)-1
         self.counter = self.max_counter
-        self.update_text(self.slides[self.counter])
         self.lbl_update_counter.config(
             text=f"Browse slides from 0 to {self.max_counter}")
+        if self.produce_slides == True:
+            self.update_text(self.slides[self.counter])
 
     def clear_start_coordinates(self, event):
         if self.start_coordinates_entry.get() == "E.g. 1,1":

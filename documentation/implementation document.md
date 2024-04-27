@@ -24,6 +24,8 @@ The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is
 `algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. Both algorithms are first fed the map, and only then called with `find_shortest_path`. It allows the user to choose different coordinates and run them on the same map.<br />
 
 # Achieved time and space requirements (e.g. O-analyses of pseudocode)
+Time testing 
+# On empiric testing of algorithms 
 In week 5 I finally got around to measuring the execution time of the algorithms and I found a challenge.<br/> 
 *Time complexity formula* for Dijkstra is O(V+E log V) where *E* is number of edges and *v* is number of nodes.<br/>
 This means that execution time of Dijkstra depends both on the number of nodes and the number of edges. <br/>

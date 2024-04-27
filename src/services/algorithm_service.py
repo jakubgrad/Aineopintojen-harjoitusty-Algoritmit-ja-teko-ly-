@@ -86,7 +86,7 @@ class AlgorithmService():
         Returns:
             The total number of vertices in the map.
         """
-        
+
         map = create_map(map_path)
         algorithm = Dijkstra(map)
         return len(algorithm.vertices)

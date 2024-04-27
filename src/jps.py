@@ -286,21 +286,18 @@ class JPS:
         '''
         nodes = []
         start_node = Node(start_coordinates)
+
         # below should be refactored and used function 
         # add_node_to_open_set_if_new
-        for x in surrounding_squares:
-            node_position = self.add_tuples(start_coordinates, x)
+        for coords in surrounding_squares:
+            node_position = self.add_tuples(start_coordinates, coords)
             if self.available(node_position):
-                nodes.append(
-                    Node(
+                heappush(self.open_set, Node(
                         node_position,
                         parent=start_node,
-                        direction=x
+                        direction=coords
                     )
                 )
-
-        for node in nodes:
-            heappush(self.open_set, node)
 
     def straight(self, vector):
         """ A handy function that tells whether a vector goes 
@@ -313,12 +310,6 @@ class JPS:
         is a diagonal or a straight line
         """
         return vector[0]*vector[1] == 0
-
-    def turn_counterclockwise_90_degrees(self, vector):
-        return (-vector[1], vector[0])
-
-    def turn_clockwise_90_degrees(self, vector):
-        return (vector[1], -vector[0])
 
     def produce_neighbours(self, current_node):
         """ Produce the neighbours of the node currently being expanded.
@@ -370,26 +361,6 @@ class JPS:
         neighbours = tuple(self.add_tuples(neighbour, p)
                            for neighbour in neighbours)
 
-        return neighbours
-
-        # copying the node to not introduce changes to the original one
-        # when producing neighbours
-        node = current_node.copy()
-        if not self.straight(node.direction):
-            node.direction = self.turn_45_clockwise(node.direction)
-        b1 = self.subtract_tuples(node.position, node.direction)
-        b2 = node.position
-        b3 = self.add_tuples(node.position, node.direction)
-        c2 = self.add_tuples(
-            node.position, self.turn_counterclockwise_90_degrees(node.direction))
-        c3 = self.add_tuples(c2, node.direction)
-        a1 = self.subtract_tuples(self.add_tuples(b2, b2), c3)
-        a2 = self.add_tuples(
-            node.position, self.turn_clockwise_90_degrees(node.direction))
-        a3 = self.add_tuples(a2, node.direction)
-        c1 = self.subtract_tuples(self.add_tuples(b2, b2), a3)
-
-        neighbours = (a1, a2, a3, b1, b2, b3, c1, c2, c3)
         return neighbours
 
     def add_slide(self):
@@ -495,22 +466,6 @@ class JPS:
         next_node.length = node.length+1
         if self.scan_straight(next_node) == 1:
             return 1
-
-    def turn_45_counterclockwise(self, vector):
-        values = {(1, 1): (0, 1), (-1, 1): (-1, 0),
-                  (-1, -1): (0, -1), (1, -1): (1, 0)}
-        return values.get(vector)
-
-    def turn_45_clockwise(self, vector):
-        values = {(1, 1): (1, 0), (1, -1): (0, -1),
-                  (-1, -1): (-1, 0), (-1, 1): (0, 1)}
-        return values.get(vector)
-
-    def turn_counterclockwise_90_degrees(self, coordinates):
-        return (-coordinates[1], coordinates[0])
-
-    def turn_clockwise_90_degrees(self, coordinates):
-        return (coordinates[1], -coordinates[0])
 
     def distance_between_points(self,point1, point2):
         x1, y1 = point1

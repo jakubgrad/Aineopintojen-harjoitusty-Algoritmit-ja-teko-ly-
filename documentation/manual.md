@@ -20,7 +20,7 @@ Choosing a map takes place in the graphical interface. As mentioned, there are a
 Files `JPS.py` and `Dijkstra.py` are directly responsible for how the program executes, but it's only possible to use the algorithms through through running `poetry run invoke start` and involving the graphical interface. For more instructions, go to [README.md](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/README.md).<br>
 # Time testing
 Because the program uses creates snapshots of execution (so-called *slides*) of the algorithms at runtime, the execution times that you will get inside the *Log* window will be inaccurate by default. It might also be, that for bigger maps the program freezes, because it tries to create lots and lots of snapshots of execution. To get accurate times and run the algorithms on bigger maps, click on 
-![image](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/d40985ca-ef33-495e-800f-1c56ea7460a5)
+![image](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/d40985ca-ef33-495e-800f-1c56ea7460a5)<br>
 And you should be good
 
 

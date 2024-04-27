@@ -22,6 +22,7 @@ To answer the required questions:<br /><br />
      - Space complexity of usual Dijkstra implementaiton is [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/). Although perhaps this could be improved for my implementation to O(d²) since not all vertices need to be in memory to find the shortest path in a grid, the current implementation doesn't take advantage of that fact and intializes arrays for the entire size of the map.
         
 # Achieved time complexity
+View in the [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/47788b979b7686d32f6e5a7fe06f5656647169a3/documentation/implementation%20document.md?plain=1#L26)
 
 # References
 **JPS** http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf <br />

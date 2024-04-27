@@ -2,18 +2,21 @@
 
 The program is written in `Python`. It has the following directory structure at the moment:<br />
 <br /> 
-├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool 
-├── src                     &emsp;&emsp;&emsp;# code files 
-│   ├── tests               &emsp;&emsp;&emsp;# test files 
-│   ├── create_map.py       &emsp;&emsp;&emsp;# turns a map into an array of rows 
-│   ├── dijkstra.py         &emsp;&emsp;&emsp;# implementation of Dijkstra 
-│   ├── jps.py              &emsp;&emsp;&emsp;# implementation of JPS 
-│   ├── config.py           &emsp;&emsp;&emsp;# provides useful variables like path to root directory 
-│   └── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user 
+├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool <br />
+├── src                     &emsp;&emsp;&emsp;# code files <br />
+│   ├── tests               &emsp;&emsp;&emsp;#test files <br />
+│   ├── create_map.py       &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
+│   ├── dijkstra.py         &emsp;&emsp;&emsp;# implementation of Dijkstra<br /> 
+│   ├── jps.py              &emsp;&emsp;&emsp;# implementation of JPS<br /> 
+│   ├── config.py           &emsp;&emsp;&emsp;# provides useful variables like<br /> 
+│   │                       &emsp;&emsp;&emsp;# path to root directory<br /> 
+│   ├── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br />
 │   └── services            &emsp;&emsp;&emsp;#  
-│       └── algorithm_service.py &emsp;&emsp;&emsp;# responsible for interaction between UI and algorithms 
-└── ui                      &emsp;&emsp;&emsp;# ui files 
-    └── ui.py               &emsp;&emsp;&emsp;# main and only ui file 
+│       └── algorithm_service.py &emsp;&emsp;&emsp;# responsible <br />
+│                           &emsp;&emsp;&emsp;# for interaction between UI and algorithms <br />
+├── ui                      &emsp;&emsp;&emsp;# ui files <br />
+│   └── ui.py               &emsp;&emsp;&emsp;# main and only ui file<br />
+└── ...<br /> 
 
 <br /> 
 # Structure

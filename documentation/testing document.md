@@ -1,7 +1,7 @@
 # Testing document = Testatusdokumentti
 
 1. Unit testing coverage report.<br />
-   - [x] [Week 4](https://jakubgrad.github.io/coverage/aineo/week4/index.html). Other coverage reports hosted elsewhere in case the first link doesn't work: [week 4](http://jakubgrad.ddns.net:2231/htmlcov4/), [week 4](http://87.92.126.250:2231/htmlcov4/), [week 3](http://87.92.126.250:2231/htmlcov/), [week 3](http://jakubgrad.ddns.net:2231/htmlcov/),[week 2](http://87.92.126.250:2231/HTML%20coverage/), [week 2](http://jakubgrad.ddns.net:2231/HTML%20coverage/).
+   - [x] [Week 6](https://jakubgrad.github.io/coverage/aineo/week6/index.html)<br>[Week 4](https://jakubgrad.github.io/coverage/aineo/week4/index.html)<br>
 2. What has been tested, how was this done?<br />
    - [x] There is a lot of tests for **JPS** and much less for **Dijkstra**. For **JPS**: <br />
      - I created a few maps like `t1.map`, `t2.map` to test different situations. Specifically, I want to see if **JPS** notices *forced neighbours* and adds them to the open set for further expansion. At the end of week 4 it seems that it can find all *forced neighbours* and hence all the *jumpoints*. The tests also include neat commented out pictures of the map with marked start and goal coordinates and the desired *forced neighbour*, which makes it super easy to understand the purpose of each of this type of tests.<br />

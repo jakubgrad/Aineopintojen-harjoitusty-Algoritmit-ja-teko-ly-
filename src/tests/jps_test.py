@@ -49,9 +49,9 @@ class TestJPS(unittest.TestCase):
     #    self.assertEqual(
     #        str(node), 'coordinates (3, 8), parent coordinates (2, 7), direction (1, 0)')
 
-    def test_if_goal_node_is_not_within_map_0_is_returned(self):
+    def test_if_goal_node_is_not_within_map_minus1_is_returned(self):
         result = self.algorithm.find_shortest_path((-5, -2), (4, 7))
-        self.assertEqual(result, 0)
+        self.assertEqual(result, -1)
 
     def comparing_nodes_works_as_expected(self):
         parent_node = Node((2, 7), parent=None, direction=(1, 1))

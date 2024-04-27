@@ -230,6 +230,11 @@ class Dijkstra:
                 if u == b:
                     break
 
+
+        self.mark(start_coordinates, "S")
+        self.mark(end_coordinates, "G")
+        self.add_slide()
+
         if distance[b] == 10000:
             distance[b] = -1
         return round(distance[b], 2)

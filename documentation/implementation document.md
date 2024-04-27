@@ -37,6 +37,7 @@ I haven't done actual space complexity testing, but my estimates are:
 - O(E) for JPS, since it potentially creates a node for each square, in every of 8 directions, if it doesn't find the path to the goal coordinate.
 
 # Notes
+-worst case time complexity of dijkstra could be driven down to average, if the algorithm gives up after not finding the coordinate 🧠
 -Dijkstra takes  O((E + V)log(V)) to find all nodes on the map, but your implementation finishes earlier. Find out when!!!
 -would be nice to you notation e.g. read_map(map_name: str) -> list: to make clearer what inputs and outputs are for a given function
 - After loading a file to the user interface, it shows up in the naked form of a *.map file, and worse even, it is not rotated correctly. It can be very confusing to the user, and because there is no error log for choosing coordinates out of the map, it might seem like the UI doesn't work!

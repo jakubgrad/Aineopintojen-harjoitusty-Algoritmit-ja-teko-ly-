@@ -3,6 +3,7 @@
 1. Unit testing coverage report.<br />
    - [x] [Week 6](https://jakubgrad.github.io/coverage/aineo/week6/index.html)<br>[Week 4](https://jakubgrad.github.io/coverage/aineo/week4/index.html)<br>
 2. What has been tested, how was this done?<br />
+   - [x] **Time complexity tests'** results, achieved time complexity etc. are in [the specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md)
    - [x] There is a lot of tests for **JPS** and much less for **Dijkstra**. For **JPS**: <br />
      - I created a few maps like `t1.map`, `t2.map` to test different situations. Specifically, I want to see if **JPS** notices *forced neighbours* and adds them to the open set for further expansion. At the end of week 4 it seems that it can find all *forced neighbours* and hence all the *jumpoints*. The tests also include neat commented out pictures of the map with marked start and goal coordinates and the desired *forced neighbour*, which makes it super easy to understand the purpose of each of this type of tests.<br />
      - The tests find if correct nodes are added initially to the open set <br />

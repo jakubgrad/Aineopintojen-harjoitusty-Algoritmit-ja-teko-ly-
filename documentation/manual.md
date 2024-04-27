@@ -16,24 +16,22 @@ As first steps, I would recommend clicking on `Default JPS`. A visualization of 
 
 ## Explanations of symbols
 Regular, thin arrows on the slides of the animation show where JPS has scanned already and in what direction. White, thicker arrows on the other hand are *jumppoints* created by the algorithm. Jumppoints also have their directions. Jumppoints are expanded based on which one is the most promising, i.e. which one has the smallest total path to the starting coordinates and euclidean distance to end coordinates. Start coordinates are marked with letter *S* and goal coordinates with letter *G*. The path found by JPS is marked with the currency sign *¤*. Obstacles are marked with *T* and free fields with *.*. Squares visited by Dijkstra are marked with *v*
-Scan arrows around the starting point *S*.<br>
-
 <table>
   <tr>
     <td><img src="https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/38c0bc69-b629-4219-b1ee-cf0c258343a9" alt="image"></td>
-    <td>Two white jump point arrows created as a result of being forced neighbours:</td>
+    <td>Scan arrows around the starting point *S*</td>
   </tr>
   <tr>
     <td><img src="https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/c9273efd-3b43-426f-b368-3d04f0cd2e1c" alt="image"></td>
-    <td>Path to the goal node found by JPS:</td>
+    <td>Two white jump point arrows created as a result of being forced neighbors.</td>
   </tr>
   <tr>
     <td><img src="https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/7cfb82e0-19bb-46cc-b2cf-d646b3b7184e" alt="image"></td>
-    <td>Start, end coordinates and the nodes visited by Dijkstra to find the minimum distance between them:</td>
+    <td>Path to the goal node found by JPS.</td>
   </tr>
   <tr>
     <td><img src="https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/6a544e17-e0a6-4af6-b851-2cf00ffa3f5b" alt="image"></td>
-    <td></td>
+    <td>Start, end coordinates and the nodes visited by Dijkstra to find the minimum distance between them.</td>
   </tr>
 </table>
 

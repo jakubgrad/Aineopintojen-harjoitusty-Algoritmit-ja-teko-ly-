@@ -27,7 +27,7 @@ The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is
 I did the following tests following the [instructions in the manual](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md#time-testing):<br>
 
 `arena.map` 49x49 <br>
-Distance is 56.7 from (2,2) to (33,46)` <br>
+Distance is 56.7 from (2,2) to (33,46) <br>
 JPS executes in `0.00684 s` <br>
 Dijkstra executes in `0.0636 s` <br><br>
 

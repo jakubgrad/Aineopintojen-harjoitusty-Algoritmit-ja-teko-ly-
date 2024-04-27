@@ -44,7 +44,8 @@ JPS executes in `0.0695 s`, still tenfold faster than Dijkstra<br><br>
 `medium_brc.map` 182x124<br>
 Distance is 184.8 from (10,10) to (100,100)<br>
 JPS executes in `1.76811 s`<br>
-Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my implementation initializes an array for all squares on the map. <br>
+Dijkstra executes in `6.734957218170166 s`, very likely due to the fact that my implementation initializes an array for all squares on the map. <br><br>
+Based on these it seems that the time complexities in the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) match the tests and the algorithms behave predictably.
 
 # On empiric testing of algorithms 
 In week 5 I finally got around to measuring the execution time of the algorithms and I found a challenge.<br/> 

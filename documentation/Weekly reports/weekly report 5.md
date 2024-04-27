@@ -1,4 +1,4 @@
-# Weekly Report 4 
+# Weekly Report  5
 1. What have I been up to this week? <br />
    - [x] I worked on a few features. I created a button for turning off making slides, and added time measuring for the algorithms. I found that actually most of the time is spent on initializing the algorithms, which distorted my first tests, but for making graphs I took that into account. I expanded the log to include time the algorithm takes to complete, the number of vertices, the number of edges, and the prediction made using the formulas in the implementation document. This way, I could collect the actual time performance of the algorithm and compare them to the formulas to see if my **time complexity** matches the one in specification document 
 2. How has the program progressed? <br />

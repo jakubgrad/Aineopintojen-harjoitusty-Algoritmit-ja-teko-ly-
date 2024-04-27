@@ -5,7 +5,7 @@ A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly 
 [Implementation document = Toteutusdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md) <br>
 [Manual = Käyttöohje](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md) <br>
 
-To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
+To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/).
 To test out the app simply download the repository, then <br />
 ```
 cd Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/ 

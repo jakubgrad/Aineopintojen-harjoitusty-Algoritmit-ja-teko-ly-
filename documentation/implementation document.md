@@ -51,7 +51,7 @@ Based on these it seems that the time complexities in the [specification documen
 
 
 # Targeted time and space requirements (e.g. O-analyses)
-A lot more on both in [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md), please check it out if you're interested in targeted and achieved time and space requierements.
+A lot more on both in [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md), please check it out if you're interested in targeted time and space requierements.
 - **JPS**: [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
   - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
 - **Djikstra**:<br />

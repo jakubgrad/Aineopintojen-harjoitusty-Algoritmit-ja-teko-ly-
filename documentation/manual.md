@@ -15,6 +15,16 @@ poetry run invoke start
 As first steps, I would recommend clicking on `Default JPS`. A visualization of the end result should appear. You can make it smaller or bigger with the purple `-` and `+` and see every step of the execution by updating the slide counter or by pressing the buttons. It's also possible to animate the visualization, showing every step of execution from the start or from a chosen frame. The animation can only be stopped by clicking on *Stop animation*<br/>
 Regular, thin arrows on the slides of the animation show where JPS has scanned already and in what direction. White, thicker arrows on the other hand are *jumppoints* created by the algorithm. Jumppoints also have their directions. Jumppoints are expanded based on which one is the most promising, i.e. which one has the smallest total path to the starting coordinates and euclidean distance to end coordinates. Start coordinates are marked with letter *S* and goal coordinates with letter *G*. The path found by JPS is marked with the currency sign *¤*. Obstacles are marked with *T* and free fields with *.*. Squares visited by Dijkstra are marked with *v*
 Scan arrows around the starting point *S*:<br>
+<style>
+  table {
+    border-collapse: collapse;
+  }
+
+  td {
+    border: none;
+    padding: 5px; /* Add padding for spacing */
+  }
+</style>
 <table>
   <tr>
     <td>![image](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/assets/113715885/38c0bc69-b629-4219-b1ee-cf0c258343a9)</td>

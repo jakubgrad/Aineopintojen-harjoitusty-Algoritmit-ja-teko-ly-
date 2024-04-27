@@ -2,23 +2,23 @@
 
 The program is written in `Python`. It has the following directory structure at the moment:<br />
 <br /> 
-├── maps                    &emsp;&emsp;&emsp;# maps used to test the tool <br />
-├── src                     &emsp;&emsp;&emsp;# code files <br />
-│   ├── tests               &emsp;&emsp;&emsp;#test files <br />
-│   ├── create_map.py       &emsp;&emsp;&emsp;# turns a map into an array of rows <br />
-│   ├── dijkstra.py         &emsp;&emsp;&emsp;# implementation of Dijkstra<br /> 
-│   ├── jps.py              &emsp;&emsp;&emsp;# implementation of JPS<br /> 
-│   ├── config.py           &emsp;&emsp;&emsp;# provides useful variables like<br /> 
-│   │                       &emsp;&emsp;&emsp;# path to root directory<br /> 
-│   ├── main.py             &emsp;&emsp;&emsp;# allows running the tool as a user<br />
-│   └── services            &emsp;&emsp;&emsp;#  
-│       └── algorithm_service.py &emsp;&emsp;&emsp;# responsible <br />
-│                           &emsp;&emsp;&emsp;# for interaction between UI and algorithms <br />
-├── ui                      &emsp;&emsp;&emsp;# ui files <br />
-│   └── ui.py               &emsp;&emsp;&emsp;# main and only ui file<br />
+├── maps                    &emsp;&emsp;&emsp; maps used to test the tool <br />
+├── src                     &emsp;&emsp;&emsp; code files <br />
+│   ├── tests               &emsp;&emsp;&emsp;test files <br />
+│   ├── create_map.py       &emsp;&emsp;&emsp; turns a map into an array of rows <br />
+│   ├── dijkstra.py         &emsp;&emsp;&emsp; implementation of Dijkstra<br /> 
+│   ├── jps.py              &emsp;&emsp;&emsp; implementation of JPS<br /> 
+│   ├── config.py           &emsp;&emsp;&emsp; provides useful variables like<br /> 
+│   │                       &emsp;&emsp;&emsp; path to root directory<br /> 
+│   ├── main.py             &emsp;&emsp;&emsp; allows running the tool as a user<br />
+│   └── services            &emsp;&emsp;&emsp;  
+│       └── algorithm_service.py &emsp;&emsp;&emsp; responsible <br />
+│                           &emsp;&emsp;&emsp; for interaction between UI and algorithms <br />
+├── ui                      &emsp;&emsp;&emsp; ui files <br />
+│   └── ui.py               &emsp;&emsp;&emsp; main and only ui file<br />
 └── ...<br /> 
 
-<br /> 
+<br> <br> 
 # Structure
 Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, which contains references to algorith_service. Initially no algorithm is run, and the user needs to choose their own start/goal coordinates, map and JPS or Dijkstra or choose a default run of either of the two. I created the default option to simplify testing the program, but it's probably easiest to test the functioning of the program with these default options.<br />
 <br /> `algorithm_service.py` handles things like converting the string input of the user and the proper conversion of the map as well as directly calling the algorithms with appropriate algorithms. Because there is a lot of buttons in the UI it might seem like `algorithm_service.py` is pretty short, and in fact I would like to see feedback on how to improve it. (The UI could probably use some refactoring as well). <br />

@@ -288,7 +288,7 @@ class JPS:
         """
 
         i, j = coordinates
-        free_tiles = [".", "-", "|", "x"]
+        free_tiles = [".", "-", "|", "x", "J"]
         not_free_tiles = ["T"]
         return self.map[i][j] not in not_free_tiles
 
@@ -465,6 +465,7 @@ class JPS:
 
         if self.visual:
             arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+
             i, j = coordinates
             if type(character) == tuple:
                 character = arrows[character]
@@ -510,6 +511,8 @@ class JPS:
         if b3 == self.goal_coordinates:
             final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
+            self.add_node_to_open_set_if_new(node, self.goal_coordinates)
+            print("added goal coordinates to open set")
             self.update_min_distance(final_node)
             return 1
 
@@ -563,6 +566,9 @@ class JPS:
         distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
         distance_travelled = current_node.length
         heuristic = distance_to_goal + distance_travelled 
+        if square == self.goal_coordinates:
+            heuristic = 0
+            print("Assigned heuristic 0 bc it's a goal node")
         print(f"heuristic: {heuristic}")
 
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
@@ -573,6 +579,8 @@ class JPS:
         else:
             heappush(self.open_set, open_node)
             print(f"Heappushed node"+str(open_node))
+            self.mark(
+                (open_node.position), "J")
             return True
 
     def scan_diagonally(self, node):
@@ -650,7 +658,7 @@ class JPS:
 
         if not self.available(a2):
             if self.available(b3):
-                self.add_node_to_open_set_if_new(node, c1)
+                self.add_node_to_open_set_if_new(node, b3)
             if self.available(c2):
                 self.add_node_to_open_set_if_new(node, c2)
             if self.available(c3):
@@ -755,8 +763,12 @@ class JPS:
             if len(self.open_set) == 0:
                 print("Jump points have been exhausted")
                 print("Ended execution due to break statement")
+                print("Perhaps there is no path to the goal coordinates")
                 break
             current_node = heappop(self.open_set)
+            if current_node.position == self.goal_coordinates:
+                print("Found goal node from the open set")
+                break
             self.closed_set.append(
                 (current_node.position, current_node.direction))
             print(str(f"Current node: {current_node}"))

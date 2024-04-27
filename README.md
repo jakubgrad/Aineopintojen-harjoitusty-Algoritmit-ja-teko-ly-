@@ -13,9 +13,7 @@ poetry shell
 poetry install
 poetry run invoke start
 ```
-You can also look into the [manual](/documentation/manual.md) for tips.<br />
 Doing that should open a GUI tool with a welcoming interface. <br />
-
 A window like the one below should open <br/><br/>
 ![image](/documentation/pictures/program.png)<br/>
 Now that the tool is open you can try it. I recommend first trying out `Default JPS` and `Default Dijkstra`, since these examples have predefined start and goal coordinates and maps that I know to work well.<br/>

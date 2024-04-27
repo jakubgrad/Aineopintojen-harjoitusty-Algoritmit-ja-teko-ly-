@@ -44,6 +44,6 @@ export PYTHONPATH=~/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algo
 export PYTHONPATH=~/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
 ```
 Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at any of it!<br>
-[Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)
-Peer review 2
+[Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)<br>
+[Peer review 2](https://github.com/levitesuo/algoritmit-harjoitusty-/issues/2)
 

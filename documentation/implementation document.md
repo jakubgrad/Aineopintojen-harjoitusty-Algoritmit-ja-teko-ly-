@@ -19,10 +19,11 @@
 └── ...<br /> 
 
 <br> <br> 
-The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the UI, which contains references to algorith_service. Initially no algorithm is run, and the user needs to choose their own start/goal coordinates, map and JPS or Dijkstra or choose a default run of either of the two. I created the default option to simplify testing the program, but it's probably easiest to test the functioning of the program with these default options.<br />
-# Important functions
-<br /> `algorithm_service.py` handles things like converting the string input of the user and the proper conversion of the map as well as directly calling the algorithms with appropriate algorithms. Because there is a lot of buttons in the UI it might seem like `algorithm_service.py` is pretty short, and in fact I would like to see feedback on how to improve it. (The UI could probably use some refactoring as well). <br />
-`algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. Both algorithms are first fed the map, and only then called with `find_shortest_path`. It allows the user to choose different coordinates and run them on the same map.<br />
+The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is called. `main.py` starts the single file `UI.py` inside `/UI`, which contains references to `algorith_service`. Initially no algorithm is run, and the user needs to choose their own start/goal coordinates, map and JPS or Dijkstra or choose a default settings for either of the two. I created the default option to simplify testing the program and it's also the easiest way to find that the program works.<br /><br>
+`algorithm_service.py` handles things like converting the string input of the user and the proper conversion of the map as well as directly calling the algorithms with appropriate algorithms. It also produces messages for the log, including information like "Distance of the path found to be 140.3", the number of nodes and vertices in the graph etc. <br><br>
+Following user interaction in the UI, `algorithm_service.py` calls the appropriate algorithm with user-chosen start/goal coordinates and map. One algorithm is run at a time. Both algorithms are first fed the map, and only then called with `find_shortest_path`. This is not a necessary feature and there isn't much benefit to it. Possibly next week this will be simplified.<br><br>
+`config.py` specifies useful paths in the repository such as the path to the maps directory and the paths of default maps for Dijkstra and JPS.<br><br>
+`create_map.py` takes a text file (or equivalently a `.map` file) and converts it into a list of lists, effectively a 2d array that can be used by both JPS and Dijkstra.
 
 # Achieved time and space requirements (e.g. O-analyses of pseudocode)
 I did the following tests following the [instructions in the manual](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md#time-testing):<br>

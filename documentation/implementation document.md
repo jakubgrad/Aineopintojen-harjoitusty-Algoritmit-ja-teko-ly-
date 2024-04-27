@@ -51,13 +51,14 @@ Based on these it seems that the time complexities in the [specification documen
 
 
 # Targeted time and space requirements (e.g. O-analyses)
-   - [x] **JPS**:<br />
-     - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. **I need to conduct time complexity testing myself still**<br />
-     - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
-   - [x] **Djikstra**:<br />
-     - Time complexity of [O(V+E*log V)](https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/tutorial/#:~:text=Time%20Complexity%20of%20Dijkstra's%20Algorithm,E%20l%20o%20g%20V%20) when implemented with min-priority queue
-     - Space complexity of [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/)
-
+A lot more on both in [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md), please check it out if you're interested in targeted and achieved time and space requierements.
+- **JPS**: [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />
+  - Space complexity: [O(b^d)](https://en.wikipedia.org/wiki/A*_search_algorithm)
+- **Djikstra**:<br />
+  - **Worst-case time complexity** of [O(V + E)](https://techsauce.medium.com/time-complexity-and-space-complexity-of-dfs-and-bfs-algorithms-671217e43d58#:~:text=Breadth%20First%20Search%20%E2%80%94%20Time%20Complexity&text=In%20the%20worst%20case%20(as,of%20edges%20in%20the%20graph.), 
+  - **Average time complexity** of O(d²)
+  - Space complexity of [O(V)](https://www.geeksforgeeks.org/time-and-space-complexity-of-dijkstras-algorithm/).
+  
 # Use of large language models 
 The only LLM I've used was Chatgpt 3.5. I used it a lot to interpret the bugs in the console, e.g. "cannot import module". It was especially useful when dealing with GUI, because I have close to zero experience on it and the error messages just don't tell me anything understandable. This way it was so much faster to debug, because often it's just something that I didn't notice and ChatGPT almost always picks it up. I also found ChatGPT great for suggesting different programming tricks, like e.g. the ANSI color codes and reminding how lambda, list comprehension etc. work. In other cases it was utterly useless, maybe because it cannot even conceptualize folder structure or how my algorithm would actually be used (it's not started by just calling the class for instance.). Also, with larger and multiple files, ChatGPT was too confused about what's what and couldn't help at all. With well formulated questions there is significant benefit. E.g., it's suggested me to use exceptions when I asked what can end a deep recursion. 
 

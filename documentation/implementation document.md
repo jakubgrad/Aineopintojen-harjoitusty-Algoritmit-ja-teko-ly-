@@ -26,13 +26,13 @@ The program is written in `Python`. Upon `poetry run invoke start`, `main.py` is
 # Achieved time and space requirements (e.g. O-analyses of pseudocode)
 I did the following tests following the [instructions in the manual](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md#time-testing):<br>
 
-`arena.map` 49x49<br>
-Distance is 56.7 from (2,2) to (33,46)`<br>
-JPS executes in `0.00684 s``<br>
-Dijkstra executes in `0.0636 s``<br><br>
+`arena.map` 49x49 <br>
+Distance is 56.7 from (2,2) to (33,46)` <br>
+JPS executes in `0.00684 s` <br>
+Dijkstra executes in `0.0636 s` <br><br>
 
-`smaller_brc.map` 130x54<br>
-Distance is 116 from (9,12) to (9,128)<br>
+`smaller_brc.map` 130x54 <br>
+Distance is 116 from (9,12) to (9,128) <br>
 Dijkstra executes in `0.551 s`<br>
 JPS executes in `0.00193 s`, since the first scan goes straight from start coordinates to goal coordinates. Over 200 times faster than Dijkstra for these settings.<br><br>
 

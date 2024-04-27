@@ -196,15 +196,17 @@ class JPS:
         return total_distance
 
     def recreate_path(self, final_node):
-        """ Function used to mark in the slides the path taken by
-            the algorithm and to set as self.min_distance the length
-            of the path from start coordinates to goal_coordinates
+        """ Function used to return the path from start coordinates
+            to goal coordinates, which is the position of the final 
+            node. 
 
         Args:
             final_node: the node in position of goal coordinates
 
-        Returns: the length of the path taken by the JPS algorithm
+        Returns: 
+            the length of the path taken by the JPS algorithm
         """
+
         distance = 0
         last_node = final_node
         path = []
@@ -287,8 +289,6 @@ class JPS:
         nodes = []
         start_node = Node(start_coordinates)
 
-        # below should be refactored and used function 
-        # add_node_to_open_set_if_new
         for coords in surrounding_squares:
             node_position = self.add_tuples(start_coordinates, coords)
             if self.available(node_position):
@@ -419,8 +419,6 @@ class JPS:
         return self.within_map(coordinates) and self.free(coordinates)
 
     def scan_straight(self, node):
-        if node.length > self.min_distance:
-            return
         ''' A function that allows JPS to scan along rows and columns
 
         Args:
@@ -467,19 +465,19 @@ class JPS:
         if self.scan_straight(next_node) == 1:
             return 1
 
-    def distance_between_points(self,point1, point2):
+    def distance_between_points(self, point1, point2):
         x1, y1 = point1
         x2, y2 = point2
         return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
     def add_node_to_open_set_if_new(self, current_node, square):
-        distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
-        distance_travelled = current_node.length
-        heuristic = distance_to_goal + distance_travelled 
+
         if square == self.goal_coordinates:
-            heuristic = 0
-            print("Assigned heuristic 0 bc it's a goal node")
-        print(f"heuristic: {heuristic}")
+            heuristic = 0 
+        else: 
+            distance_to_goal = self.distance_between_points(current_node.position, self.goal_coordinates)
+            distance_travelled = current_node.length
+            heuristic = distance_to_goal + distance_travelled 
 
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
             square, current_node.position), length=current_node.length, heuristic=heuristic)
@@ -488,14 +486,11 @@ class JPS:
             return False
         else:
             heappush(self.open_set, open_node)
-            print(f"Heappushed node"+str(open_node))
             self.mark(
-                (open_node.position), open_node.direction, jumppoint=True)
+                open_node.position, open_node.direction, jumppoint=True)
             return True
 
     def scan_diagonally(self, node):
-        if node.length > self.min_distance:
-            return
         """ A function that allows JPS to scan across diagonals.
 
         Args:
@@ -513,32 +508,23 @@ class JPS:
         """
 
         self.add_slide()
-        print("Scanning diagonally from node "+str(node))
+
         neighbours = self.produce_neighbours(
             node)
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if c3 == self.goal_coordinates:
-            final_node = Node(self.goal_coordinates,
+            self.final_node = Node(self.goal_coordinates,
                               parent=node, direction=None)
-
-            self.final_node = final_node
-            self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
-            #self.update_min_distance(final_node)
+            self.add_node_to_open_set_if_new(self.final_node, self.goal_coordinates)
             return 1
-
-        # if self.goal_coordinates in neighbours:
-        #    final_node = Node(self.goal_coordinates,
-        #                      parent=node, direction=None)
-        #    self.update_min_distance(final_node)
-        #    return 1
 
         scan_right_node = node.copy()
         scan_right_node.direction = self.subtract_tuples(b3, b2)
         scan_right_node.parent = node
         scan_right_node.length = node.length+1
-        # print(f"scan_right_node.direction=self.subtract_tuples({b3},{b2})")
-        #exit recursion
+
+        #exiting recursion if goal found
         if self.scan_straight(scan_right_node) == 1:
             return 1
         
@@ -546,13 +532,14 @@ class JPS:
         scan_up_node.direction = self.subtract_tuples(c2, b2)
         scan_up_node.parent = node
         scan_up_node.length = node.length+1
-        # print(f"scan_up_node.direction=self.subtract_tuples({c2},{b2})")
 
-        #exit recursion
+        #exiting recursion if goal found
         if self.scan_straight(scan_up_node) == 1:
             return 1
+
         self.mark(
-            (node.position), node.direction)
+            node.position, node.direction)
+
         if not self.available(b1):
             if self.available(c1):
                 self.add_node_to_open_set_if_new(node, c1)
@@ -592,8 +579,11 @@ class JPS:
         next_node.position = self.add_tuples(
             next_node.position, node.direction)
 
-        next_node.length = node.length+1
-        self.scan_diagonally(next_node)
+        next_node.length = node.length+1.41
+
+        #exiting recursion if goal found
+        if self.scan_diagonally(next_node) == 1:
+            return 1
 
     def print_for_cli(self, start_coordinates, goal_coordinates, slides=[], visual=False):
         """A legacy function that supports using cli.py

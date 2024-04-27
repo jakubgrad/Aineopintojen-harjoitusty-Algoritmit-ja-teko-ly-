@@ -45,21 +45,17 @@ class AlgorithmService():
         n_of_edges = self.count_edges(map_path)
         n_of_vertices = self.count_vertices(map_path)
 
-        jps_branching_factor = 8
-        dijkstra_branching_factor = n_of_edges/n_of_vertices
+        jps_branching_factor = 3 
 
-        dijkstra_time_complexity = n_of_vertices + \
-            n_of_edges * log(10, n_of_vertices)
-        jps_time_complexity = jps_branching_factor**distance
+        dijkstra_time_complexity = distance ** 2
+        #jps_time_complexity = jps_branching_factor**distance
 
         message = (f"Distance is {distance}\n"
                    f"Execution time is {execution_time}\n"
                    f"Number of edges is {n_of_edges}\n"
                    f"Number of vertices is {n_of_vertices}\n"
-                   f"JPS worst branching factor is {jps_branching_factor}\n"
-                   f"Dijkstra branching factor is {dijkstra_branching_factor}\n"
-                   f"Dijkstra time complexity of [O(V+E*log V)] = {dijkstra_time_complexity}\n"
-                   f"JPS worst time complexity of [O(b^d)] = {jps_time_complexity}")
+                   f"JPS branching factor assumed to be {jps_branching_factor}\n"
+                   f"Dijkstra time complexity of O(d^2) = {dijkstra_time_complexity}\n")
 
         return distance, execution_time, message
 

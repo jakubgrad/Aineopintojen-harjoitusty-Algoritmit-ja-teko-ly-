@@ -585,43 +585,6 @@ class JPS:
         if self.scan_diagonally(next_node) == 1:
             return 1
 
-    def print_for_cli(self, start_coordinates, goal_coordinates, slides=[], visual=False):
-        """A legacy function that supports using cli.py
-
-        Args:
-            start_coordinates
-            goal_coordinates
-            slides
-            visual
-
-        Returns: prints a map with coordinates for the user
-        """
-
-        self.start_coordinates = start_coordinates
-        self.goal_coordinates = goal_coordinates
-        if not self.within_map(start_coordinates) or not self.within_map(goal_coordinates):
-            print("Start or goal coordinates are out of bounds")
-            return 0
-        self.mark(start_coordinates, "S")
-        self.mark(goal_coordinates, "G")
-        if self.start_coordinates == self.goal_coordinates:
-            print("Start and goal positions are the same")
-            return 0
-        rotated_regular_map = [
-            [''] * self.num_rows for _ in range(self.len_row)]
-
-        for i in range(self.num_rows):
-            for j in range(self.len_row):
-                rotated_regular_map[self.len_row - j - 1][i] = self.map[i][j]
-
-        rmap = ""
-        for i, row in enumerate(rotated_regular_map):
-            row_with_numbers = [str(self.len_row-i - 1)] + row
-            rmap += " ".join(row_with_numbers) + "\n"
-        last_row = " ".join(str(i) for i in range(self.num_rows))
-        rmap += "  "+last_row + "\n"
-        print(rmap)
-
     def view_map(self):
         rotated_regular_map = [
             [''] * self.num_rows for _ in range(self.len_row)]

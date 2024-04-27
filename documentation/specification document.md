@@ -10,7 +10,7 @@ To answer the required questions:<br /><br />
 2. What problem are you solving?
    - [x] 1. Finding whether **JPS** or **Djikstra** is better at finding optimal paths in a short time in a grid-like environment, 2. Whether this is always so or if there is cases in which the less optimal algorithm outperforms anyway (a mathematical proof would be required for that, so instead I’ll test various scenarios), 3. *Optionally* find which algorithm performs better at finding shortest paths in a hexagonal network mapped onto a globe.<br />
 3. What inputs does the program receive and how are they used?<br />
-   - [x] The program receives a **bitmap** *or a text file for the time being* showing which squares are traversable and which aren’t together with the size of the **bitmap** (e.g. 50x50 or 25x100)
+   - [x] The program receives a **bitmap** *or a text file for the time being* showing which squares are traversable and which aren’t together with the size of the **bitmap** (e.g. 5x7, 50x50 or 25x100)
 4. Targeted time and space requirements (e.g. O-analyses)
    - [x] **JPS**:<br />
      - Time complexity: I found it hard to find time and space complexities for **JPS**. At the very least, it’s expected to work faster than A*, and A*’s time complexity of A* depends on the heuristic, in the worst case being [“O(b^d), where b is the branching factor (the average number of successors per state)”](https://en.wikipedia.org/wiki/A*_search_algorithm), and d the distance from start point to destination point. <br />

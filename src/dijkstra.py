@@ -51,6 +51,7 @@ class Dijkstra:
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.len_row = len(self.map[0])
         self.vertices = []
+        self.visual = False
         heapify(self.vertices)
         self.create_edges_from_map()
 
@@ -166,27 +167,21 @@ class Dijkstra:
         """
 
         nrows = len(self.map)
-        for i in range(len(self.map)):
-            nrows = nrows-1
+        for i in range(nrows):
             for j in range(self.len_row):
                 if self.map[i][j] == "T":
                     continue
-                if self.within_map((i, j+1)):
-                    if j < self.len_row:
-                        if self.map[i][j+1] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i, j+1), 1)
+                if self.within_map((i, j+1)) and j < self.len_row and self.map[i][j+1] == ".":
+                    self.add_edge(self.edge_number(i, j),
+                                  self.edge_number(i, j+1), 1)
 
-                if self.within_map((i+1, j)):
-                    if nrows != 0:
-                        if self.map[i+1][j] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i+1, j), 1)
+                if self.within_map((i+1, j)) and self.map[i+1][j] == ".":
+                    self.add_edge(self.edge_number(i, j),
+                                  self.edge_number(i+1, j), 1)
 
-                    if self.within_map((i+1, j+1)):
-                        if self.map[i+1][j+1] == ".":
-                            self.add_edge(self.edge_number(i, j),
-                                          self.edge_number(i+1, j+1), 1.41)
+                if self.within_map((i+1, j+1)) and self.map[i+1][j+1] == ".":
+                    self.add_edge(self.edge_number(i, j),
+                                  self.edge_number(i+1, j+1), 1.41)
 
     def find_shortest_path(self, start_coordinates, end_coordinates, slides=False, visual=False):
         """Actual implementation of the Dijkstra algorithm
@@ -201,11 +196,13 @@ class Dijkstra:
 
         self.slides = slides
         self.visual = visual
+
         a = self.edge_number(*start_coordinates)
         b = self.edge_number(*end_coordinates)
 
         if a == b:
-            return
+            return None
+
         processed = [False] * self.number_of_nodes
         distance = [10000] * self.number_of_nodes
         distance[a] = 0
@@ -216,17 +213,16 @@ class Dijkstra:
         while len(h) > 0:
             next_node = heappop(h)
             u = next_node[1]
-            if not processed[u]:
-                processed[u] = True
-                self.mark(self.coordinates(u), "V")
-                self.add_slide()
-                for edge in self.adjacencylist[u]:
-                    v = edge.end
-                    if distance[v] > distance[u] + edge.weight:
-                        distance[v] = distance[u] + edge.weight
-                        heappush(h, (distance[v], v))
-                if u == b:
-                    break
+            processed[u] = True
+            self.mark(self.coordinates(u), "V")
+            self.add_slide()
+            for edge in self.adjacencylist[u]:
+                v = edge.end
+                if distance[v] > distance[u] + edge.weight:
+                    distance[v] = distance[u] + edge.weight
+                    heappush(h, (distance[v], v))
+            if u == b:
+                break
 
         self.mark(start_coordinates, "S")
         self.mark(end_coordinates, "G")

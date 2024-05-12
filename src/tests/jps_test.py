@@ -6,10 +6,10 @@ from create_map import create_map
 
 class TestJPS(unittest.TestCase):
     def setUp(self):
-        print("Set up goes here")
         path = "maps/wall.map"
         lines = create_map(path)
         self.wall_map = create_map("maps/wall.map")
+        self.no_path_map = create_map("maps/no_path.map")
         self.arena_map = create_map("maps/arena.map")
         self.arena2_map = create_map("maps/arena2.map")
         self.up_lines = create_map("maps/up.map")
@@ -481,13 +481,18 @@ class TestJPS(unittest.TestCase):
 
         self.assertAlmostEqual(float(result), 23.5, places=1)
 
-    def test_dijkstra_finds_distance_on_arena_map(self):
+    def test_jps_finds_distance_on_arena_map(self):
         algorithm = JPS(self.arena_map)
         distance = algorithm.find_shortest_path((2, 2), (40, 40))
         self.assertAlmostEqual(float(distance), 55.9, places=1)
 
-    def test_dijkstra_finds_distance_on_arena_map_2(self):
+    def test_jps_finds_distance_on_arena_map_2(self):
         algorithm = JPS(self.arena2_map)
         distance = algorithm.find_shortest_path((1, 2), (5, 20))
         self.assertGreaterEqual(float(distance), 20)
         self.assertLessEqual(float(distance), 21)
+
+    def test_jps_returns_minus_one_when_no_path_possible(self):
+        algorithm = JPS(self.no_path_map)
+        distance = algorithm.find_shortest_path((6, 6), (18, 30))
+        self.assertGreaterEqual(distance, -1)

@@ -5,15 +5,12 @@ from create_map import create_map
 
 class TestDijkstra(unittest.TestCase):
     def setUp(self):
-        print("Set up goes here")
-        # path = "../../maps/arena.map"
         self.arena_map = create_map("maps/arena.map")
         self.arena2_map = create_map("maps/arena2.map")
+        self.no_path_map = create_map("maps/no_path.map")
 
         slides = []
         self.algorithm = Dijkstra(self.arena_map)
-        # a = args.start_node
-        # b = args.end_node
 
     def test_dijkstra_initializes_properly(self):
         self.assertEqual(str(self.algorithm), 'Number of nodes: 2401')
@@ -48,13 +45,12 @@ class TestDijkstra(unittest.TestCase):
         self.assertGreaterEqual(float(distance), 21)
         self.assertLessEqual(float(distance), 22)
 
+    def test_dijkstra_returns_minus_one_when_no_path_possible(self):
+        algorithm = Dijkstra(self.no_path_map)
+        distance = algorithm.find_shortest_path((6, 6), (18, 30))
+        self.assertGreaterEqual(distance, -1)
 
-'''
-    def test_dijkstra_works_for_small_graphs_out_of_maps(self):
-        self.algorithm.add_edge(1,2,2)
-        self.assertEqual(self.algorithm.find_shortest_path(1,3), -1)
-        self.algorithm.add_edge(1,3,5)
-        self.assertEqual(self.algorithm.find_shortest_path(1,3), 5)
-        self.algorithm.add_edge(2,3,1)
-        self.assertEqual(self.algorithm.find_shortest_path(2,3), 1)
-'''
+    def test_dijkstra_returns_None_when_start_and_goal_nodes_are_the_same(self):
+        algorithm = Dijkstra(self.arena_map)
+        distance = algorithm.find_shortest_path((6, 6), (6, 6))
+        self.assertEqual(distance, None)

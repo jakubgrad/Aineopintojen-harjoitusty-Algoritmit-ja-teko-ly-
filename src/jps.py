@@ -62,9 +62,11 @@ class Node:
 
         if isinstance(other, Node):
             if other.heuristic == self.heuristic:
-                priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0)                              : 5, (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
+                priorities = {(0, 1): 8, (1, 0): 7, (0, -1): 6, (-1, 0): 5,
+                              (1, 1): 4, (1, -1): 3, (-1, -1): 2, (-1, 1): 1}
                 return priorities[self.direction] > priorities[other.direction]
             return other.heuristic > self.heuristic
+        return False
 
     def __eq__(self, other):
         """ Another comparison method for nodes
@@ -101,13 +103,13 @@ class JPS:
 
     """
 
-    def __init__(self, map):
+    def __init__(self, source_map):
         """JPS's class constructor
 
         Args:   
             map: the map on which to run Dijkstra
         """
-        self.map = map
+        self.map = source_map
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.open_set = []
@@ -145,14 +147,14 @@ class JPS:
         """
 
         if start_coordinates == end_coordinates:
-            return None
+            return
 
         vector = self.subtract_tuples(end_coordinates, start_coordinates)
 
         if self.straight(vector):
             length = abs(vector[0]+vector[1])
             if length == 1:
-                return None
+                return
             if vector[0] == 0:
                 unit_vector = (0, 1) if vector[1] > 0 else (0, -1)
             else:
@@ -160,7 +162,7 @@ class JPS:
         else:
             length = abs(vector[0])
             if length == 1:
-                return None
+                return
             unit_vector = (vector[0]/length, vector[1]/length)
 
         for i in range(0, length):
@@ -182,9 +184,11 @@ class JPS:
         """
 
         total_distance = 0
-        def straight_distance(p1, p2): return abs(p2[0]-p1[0]+p2[1]-p1[1])
-        def diagonal_distance(p1, p2): return 1.41 * \
-            max(abs(p2[0] - p1[0]), abs(p2[1] - p1[1]))
+        def straight_distance(p1, p2):
+            return abs(p2[0] - p1[0] + p2[1] - p1[1])
+
+        def diagonal_distance(p1, p2):
+            return 1.41 * max(abs(p2[0] - p1[0]), abs(p2[1] - p1[1]))
 
         for i in range(len(path) - 1):
             if self.straight(self.subtract_tuples(path[i], path[i+1])):
@@ -213,14 +217,13 @@ class JPS:
         while True:
             i = last_node.parent
 
-            if i == None:
+            if i is None:
                 break
-            else:
-                path.append(i.position)
-                self.mark(i.position, "¤")
-                self._mark_points_between(last_node.position, i.position)
-                self.add_slide()
-                last_node = i
+            path.append(i.position)
+            self.mark(i.position, "¤")
+            self._mark_points_between(last_node.position, i.position)
+            self.add_slide()
+            last_node = i
 
         distance = self.find_distance(path)
         self.mark(self.start_coordinates, "S")
@@ -237,7 +240,7 @@ class JPS:
         """
 
         i, j = coordinates
-        return True if 0 <= i < self.num_rows and 0 <= j < self.len_row else False
+        return 0 <= i < self.num_rows and 0 <= j < self.len_row
 
     def free(self, coordinates):
         """ A handy function that tells whether a coordinate is an obstacle or not
@@ -252,7 +255,6 @@ class JPS:
         """
 
         i, j = coordinates
-        free_tiles = [".", "-", "|", "x", "J"]
         not_free_tiles = ["T"]
         return self.map[i][j] not in not_free_tiles
 
@@ -270,20 +272,22 @@ class JPS:
             start_coordinates: where the algorithm begins
         """
 
-        numbers = list(range(1, 9))
         surrounding_squares = [((x % 3)-1, 1-(x//3)) for x in range(0, 9)]
+
+        # pylint: disable=pointless-string-statement
         '''surrounding_squares:
         (-1, 1), ( 0, 1), ( 1, 1),
         (-1, 0), ( 0, 0), ( 1, 0),
         (-1,-1), ( 0,-1), ( 1,-1),
         '''
         surrounding_squares.remove((0, 0))
+        # pylint: disable=pointless-string-statement
         '''surrounding_squares:
         (-1, 1), ( 0, 1), ( 1, 1),
         (-1, 0),          ( 1, 0),
         (-1,-1), ( 0,-1), ( 1,-1),
         '''
-        nodes = []
+
         start_node = Node(start_coordinates)
 
         for coords in surrounding_squares:
@@ -331,22 +335,22 @@ class JPS:
         d = current_node.direction
         p = current_node.position
 
-        if d == (1, 0) or d == (1, 1):
+        if d in ((1, 0), (1, 1)):
             neighbours = ((-1, -1), (0, -1), (1, -1),
                           (-1, 0), (0, 0), (1, 0),
                           (-1, 1), (0, 1), (1, 1))
 
-        if d == (0, 1) or d == (-1, 1):
+        if d in ((0, 1), (-1, 1)):
             neighbours = ((1, -1), (1, 0), (1, 1),
                           (0, -1), (0, 0), (0, 1),
                           (-1, -1), (-1, 0), (-1, 1))
 
-        if d == (-1, 0) or d == (-1, -1):
+        if d in ((-1, 0), (-1, -1)):
             neighbours = ((1, 1), (0, 1), (-1, 1),
                           (1, 0), (0, 0), (-1, 0),
                           (1, -1), (0, -1), (-1, -1))
 
-        if d == (0, -1) or d == (1, -1):
+        if d in ((0, -1), (1, -1)):
             neighbours = ((-1, 1), (-1, 0), (-1, -1),
                           (0, 1), (0, 0), (0, -1),
                           (1, 1), (1, 0), (1, -1))
@@ -390,9 +394,10 @@ class JPS:
         if self.visual:
             i, j = coordinates
 
-            if type(character) == tuple:
-                if jumppoint == False:
-                    arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1)                              : "↖", (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
+            if isinstance(character,tuple):
+                if jumppoint is False:
+                    arrows = {(1, 1): "↗", (1, -1): "↘", (-1, -1): "↙", (-1, 1): "↖",
+                              (1, 0): "→", (-1, 0): "←", (0, 1): "↑", (0, -1): "↓"}
                 else:
                     arrows = {(0, 0): "G", (1, 1): "⬀", (1, -1): "⬂", (-1, -1): "⬃",
                               (-1, 1): "⬁", (1, 0): "⇨", (-1, 0): "⇦", (0, 1): "⇧", (0, -1): "⇩"}
@@ -401,6 +406,7 @@ class JPS:
 
             map_list = self.map[i]
             map_list[j] = character
+            self.add_slide()
 
     def available(self, coordinates):
         """ A handy function that checks if coordinates are both free and
@@ -432,6 +438,8 @@ class JPS:
         self.add_slide()
 
         neighbours = self.produce_neighbours(node)
+
+        # pylint: disable=unused-variable
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if b3 == self.goal_coordinates:
@@ -439,11 +447,11 @@ class JPS:
 
         if not self.available(b3):
             return 0
-        else:
-            if self.available(c3) and not self.available(c2):
-                self.add_node_to_open_set_if_new(node, c3)
-            if self.available(a3) and not self.available(a2):
-                self.add_node_to_open_set_if_new(node, a3)
+
+        if self.available(c3) and not self.available(c2):
+            self.add_node_to_open_set_if_new(node, c3)
+        if self.available(a3) and not self.available(a2):
+            self.add_node_to_open_set_if_new(node, a3)
 
         next_node = node.copy()
         next_node.position = self.add_tuples(
@@ -452,6 +460,7 @@ class JPS:
         next_node.length = node.length+1
         if self.scan_straight(next_node) == 1:
             return 1
+        return 0
 
     def distance_between_points(self, point1, point2):
         x1, y1 = point1
@@ -475,7 +484,8 @@ class JPS:
         open_node = Node(square, parent=current_node, direction=self.subtract_tuples(
             square, current_node.position), length=current_node.length, heuristic=heuristic)
 
-        if (open_node.position, open_node.direction) in self.closed_set or open_node in self.open_set:
+        if ((open_node.position, open_node.direction) in self.closed_set or
+                open_node in self.open_set):
             return False
 
         heappush(self.open_set, open_node)
@@ -489,9 +499,10 @@ class JPS:
         heappush(self.open_set, self.final_node)
         return 1
 
+        # pylint: disable=too-many-statements,too-many-branches
     def _find_forced_diagonal_neighbours(self,node,neighbours):
-
-        _, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
+        # pylint: disable=unused-variable
+        a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if not self.available(b1):
             if self.available(c1):
@@ -542,27 +553,19 @@ class JPS:
 
         """
 
-        self.add_slide()
-
-        neighbours = self.produce_neighbours(
-            node)
-        _, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
+        neighbours = self.produce_neighbours(node)
+        # pylint: disable=unused-variable
+        a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if c3 == self.goal_coordinates:
             self.found_goal(node)
 
-        scan_right_node = node.copy()
-        scan_right_node.direction = self.subtract_tuples(b3, b2)
-        scan_right_node.parent = node
-        scan_right_node.length = node.length+1
+        scan_right_node = Node(node.position, node, self.subtract_tuples(b3, b2),node.length+1)
 
         if self.scan_straight(scan_right_node) == 1:
             return 1
 
-        scan_up_node = node.copy()
-        scan_up_node.direction = self.subtract_tuples(c2, b2)
-        scan_up_node.parent = node
-        scan_up_node.length = node.length+1
+        scan_up_node = Node(node.position, node, self.subtract_tuples(c2, b2),node.length+1)
 
         if self.scan_straight(scan_up_node) == 1:
             return 1
@@ -582,6 +585,7 @@ class JPS:
 
         if self.scan_diagonally(next_node) == 1:
             return 1
+        return 0
 
     def view_map(self):
         rotated_regular_map = [
@@ -634,7 +638,7 @@ class JPS:
         self.goal_coordinates = goal_coordinates
 
         if self.initialize_map() is not True:
-            return self.initialize_map() 
+            return self.initialize_map()
 
         self.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
 
@@ -642,7 +646,7 @@ class JPS:
 
         while True:
             if len(self.open_set) == 0:
-               break
+                break
 
             current_node = heappop(self.open_set)
 

@@ -1,8 +1,11 @@
 # JPS vs Dijkstra
 A repository for the course Aineopintojen harjoitustyö: Algoritmit ja tekoäly (period 4) Laboratoriotyöskentely<br /><br />
+[Specification document = Määrittelydokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) <br>
+[Testing document = Testausdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/testing%20document.md) <br>
+[Implementation document = Toteutusdokumentti](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md) <br>
+[Manual = Käyttöohje](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/manual.md) <br>
 
-The tool has a working UI and measures execution times of **JPS** and **Dijkstra**. Currently the implementation for **JPS** isn't fully optimized and for larger graphs (over 70x70 tiles) only **Dijkstra** can be run. For details, make sure to look into the [specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md) and [implementation document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/implementation%20document.md)<br /><br />
-To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/)
+To understand `JPS` better I recommend reading [this article](https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/) and [this blogpost](https://www.gamedev.net/tutorials/programming/artificial-intelligence/jump-point-search-fast-a-pathfinding-for-uniform-cost-grids-r4220/).
 To test out the app simply download the repository, then <br />
 ```
 cd Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/ 
@@ -10,13 +13,14 @@ poetry shell
 poetry install
 poetry run invoke start
 ```
-You can also look into the [manual](/documentation/manual.md) for tips.<br />
 Doing that should open a GUI tool with a welcoming interface. <br />
 
-A window like the one below should open <br/><br/>
-![image](/documentation/pictures/program.png)<br/>
+<p align="center">
+    <img src="/documentation/pictures/program.png" width="50%" alt="UI image">
+</p>
+
 Now that the tool is open you can try it. I recommend first trying out `Default JPS` and `Default Dijkstra`, since these examples have predefined start and goal coordinates and maps that I know to work well.<br/>
-Once you run a regular or a default algorithm, using the UI you can change the size of the display, see every step of execution by updating the counter and even animate the execution from any point.<br/><br/>
+Once you run a regular or a default algorithm, using the UI you can change the size of the display, see every step of execution by updating the counter and even animate the execution from any point. <br/><br/>
 Other useful commands are:
 ```
 poetry run invoke test #runs pytest on the code
@@ -43,7 +47,7 @@ If there are import problems with python, which is unlikely to occur in the firs
 export PYTHONPATH=~/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/
 export PYTHONPATH=~/home/x/Documents/Algorithms\ and\ AI/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/src/services
 ```
-Currently the code isn't the nicest and needs a lot of refactoring, but feel free to take a look at any of it!<br>
+Currently the code isn't the nicest and needs a lot of refactoring and linting, but feel free to take a look at any of it!<br><br>
 [Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)<br>
 [Peer review 2](https://github.com/levitesuo/algoritmit-harjoitusty-/issues/2)
 

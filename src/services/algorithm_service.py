@@ -42,7 +42,6 @@ class AlgorithmService():
 
         execution_time = end_time - start_time
 
-        n_of_edges = self.count_edges(map_path)
         n_of_vertices = self.count_vertices(map_path)
 
         jps_branching_factor = 3 
@@ -52,26 +51,11 @@ class AlgorithmService():
 
         message = (f"Distance is {distance}\n"
                    f"Execution time is {execution_time}\n"
-                   f"Number of edges is {n_of_edges}\n"
                    f"Number of vertices is {n_of_vertices}\n"
                    f"JPS branching factor assumed to be {jps_branching_factor}\n"
                    f"Dijkstra time complexity of O(d^2) = {dijkstra_time_complexity}\n")
 
         return distance, execution_time, message
-
-    def count_edges(self, map_path):
-        """Count the number of edges between tiles in the map
-
-        Args:
-            map_path (str): The path to the map file.
-
-        Returns:
-            The total number of edges in the map.
-        """
-
-        map = create_map(map_path)
-        algorithm = Dijkstra(map)
-        return algorithm.edge_counter
 
     def count_vertices(self, map_path):
         """Count the number of vertices in the map represented by the given map path.
@@ -87,20 +71,45 @@ class AlgorithmService():
         algorithm = Dijkstra(map)
         return len(algorithm.vertices)
 
-    def coordinates_ok(self, start, goal):
+    def coordinates_ok(self, start, goal, map_path):
         """Check if start and goal coordinates are in a valid format.
 
         Args:
             start (str): The coordinates of the starting point in the format "x,y".
             goal (str): The coordinates of the goal point in the format "x,y".
+            map (str): a filepath that contains the map
 
         Returns:
-            True if both coordinates are in a valid format, False otherwise.
+            True if both coordinates are in a valid format and within the map,
+            False otherwise.
         """
+
+        map = create_map(map_path)
 
         start = self.coordinates_extract(start)
         goal = self.coordinates_extract(goal)
         if start == False or goal == False:
+            return False
+
+        rows = len(map)
+        cols = len(map[0])
+
+        x, y = start
+        if not (0 <= x < rows and 0 <= y < cols):
+            return False
+
+        x, y = goal
+        if not (0 <= x < rows and 0 <= y < cols):
+            return False
+
+        return True
+
+    def test_coordinates(self, start, goal):
+        start = self.coordinates_extract(start)
+        goal = self.coordinates_extract(goal)
+        if start == False or goal == False:
+            return False
+        if not self.is_within_map(start) or not self.is_within_map(goal):
             return False
         return True
 

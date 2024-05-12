@@ -213,7 +213,6 @@ class UI:
             return
         self.txt_edit.delete("1.0", tk.END)
         preview = self.algorithm_service.view_map(self.filepath)
-        print(f"preview:{preview}")
         with open(self.filepath, mode="r", encoding="utf-8") as input_file:
             text = input_file.read()
             # self.txt_edit.insert(tk.END, text)
@@ -250,10 +249,15 @@ class UI:
         start = start if start else self.start_coordinates_entry.get()
         goal = goal if goal else self.goal_coordinates_entry.get()
 
-        if not self.algorithm_service.coordinates_ok(start, goal):
+        map = map if map else self.filepath
+        if map == "":
+            self.update_log("Map not selected")
             return
 
-        map = map if map else self.filepath
+        if not self.algorithm_service.coordinates_ok(start, goal, map):
+            self.update_log("Coordinates out of range or not in the form x,y")
+            return
+
         self.slides = []
 
         distance, execution_time, message = self.algorithm_service.run_algorithm(
@@ -298,7 +302,6 @@ class UI:
             job_id = self.window.after(
                 (idx - start) * time, lambda s=slide, c=idx: self.update_text_and_counter(s, c))
             self.update_counter(self.counter+1)
-            # print(f"self.counter{self.counter}")
             self.lbl_update_counter.config(
                 text=f"Browse slides from 0 to {self.max_counter}, current is {self.counter}")
             self.job_ids.append(job_id)  # Store the job ID

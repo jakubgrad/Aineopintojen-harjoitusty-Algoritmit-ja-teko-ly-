@@ -19,7 +19,6 @@ def create_map(path):
         file.readline()
         for l in file:
             line = l.strip()
-            # print(line)
             lines.append(line)
     map = [list(row) for row in lines]
     return map

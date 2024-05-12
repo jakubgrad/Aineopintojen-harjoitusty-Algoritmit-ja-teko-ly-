@@ -1,6 +1,5 @@
 from heapq import heapify, heappush, heappop
 
-
 class Edge:
     """A class with which we can keep track of what edges and with what weights
        are the neighbours of a node
@@ -52,7 +51,6 @@ class Dijkstra:
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
         self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
-        self.edge_counter = 0
         self.vertices = []
         heapify(self.vertices)
         self.create_edges_from_map()
@@ -116,7 +114,6 @@ class Dijkstra:
         if b not in self.vertices:
             heappush(self.vertices,  b)
 
-        self.edge_counter = self.edge_counter+1
         self.adjacencylist[a].append(Edge(b, x))
         self.adjacencylist[b].append(Edge(a, x))
 
@@ -207,6 +204,7 @@ class Dijkstra:
         self.visual = visual
         a = self.edge_number(*start_coordinates)
         b = self.edge_number(*end_coordinates)
+
         if a == b:
             return
         processed = [False] * self.number_of_nodes
@@ -215,6 +213,7 @@ class Dijkstra:
         h = []
         heapify(h)
         heappush(h, (0, a))
+
         while len(h) > 0:
             next = heappop(h)
             u = next[1]
@@ -229,7 +228,6 @@ class Dijkstra:
                         heappush(h, (distance[v], v))
                 if u == b:
                     break
-
 
         self.mark(start_coordinates, "S")
         self.mark(end_coordinates, "G")

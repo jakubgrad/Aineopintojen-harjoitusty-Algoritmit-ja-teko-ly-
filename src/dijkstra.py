@@ -49,7 +49,6 @@ class Dijkstra:
         self.slides = []
         self.number_of_nodes = len(source_map)*len(source_map[0])
         self.adjacencylist = [[] for _ in range(self.number_of_nodes)]
-        self.num_rows = len(self.map)
         self.len_row = len(self.map[0])
         self.vertices = []
         heapify(self.vertices)
@@ -78,9 +77,9 @@ class Dijkstra:
 
         if self.visual:
             rotated_regular_map = [
-                [''] * self.num_rows for _ in range(self.len_row)]
+                [''] * len(self.map) for _ in range(self.len_row)]
 
-            for i in range(self.num_rows):
+            for i in range(len(self.map)):
                 for j in range(self.len_row):
                     rotated_regular_map[self.len_row -
                                         j - 1][i] = self.slide_map[i][j]
@@ -156,7 +155,7 @@ class Dijkstra:
         """
 
         i, j = coordinates
-        if 0 <= i < self.num_rows and 0 <= j < self.len_row:
+        if 0 <= i < len(self.map) and 0 <= j < self.len_row:
             return True
         return False
 
@@ -166,7 +165,7 @@ class Dijkstra:
         Is only run once during the initialization of the class
         """
 
-        nrows = self.num_rows
+        nrows = len(self.map)
         for i in range(len(self.map)):
             nrows = nrows-1
             for j in range(self.len_row):
@@ -179,7 +178,7 @@ class Dijkstra:
                                           self.edge_number(i, j+1), 1)
 
                 if self.within_map((i+1, j)):
-                    if self.num_rows != 0:
+                    if nrows != 0:
                         if self.map[i+1][j] == ".":
                             self.add_edge(self.edge_number(i, j),
                                           self.edge_number(i+1, j), 1)
@@ -215,8 +214,8 @@ class Dijkstra:
         heappush(h, (0, a))
 
         while len(h) > 0:
-            next = heappop(h)
-            u = next[1]
+            next_node = heappop(h)
+            u = next_node[1]
             if not processed[u]:
                 processed[u] = True
                 self.mark(self.coordinates(u), "V")

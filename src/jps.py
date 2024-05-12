@@ -222,7 +222,6 @@ class JPS:
                 self.mark(i.position, "¤")
                 self.mark_points_between(last_node.position, i.position)
                 self.add_slide()
-                print(i.position)
                 last_node = i
 
         distance = self.find_distance(path)
@@ -431,8 +430,6 @@ class JPS:
         a ■	
           1  2  3       '''
 
-        # print("Scanning straight from node "+str(node))
-
         self.mark((node.position), node.direction)
         self.add_slide()
 
@@ -618,13 +615,12 @@ class JPS:
             passes the snapshots of execution to the UI
         """
         if not self.within_map(start_coordinates):
-            print("Start coordinates lie outside of map")
             return -1
         if not self.within_map(goal_coordinates):
-            print("Goal coordinates lie outside of map")
             return -1
 
         self.add_slide()
+
         self.visual = visual
         self.slides = slides
         self.start_coordinates = start_coordinates
@@ -634,7 +630,6 @@ class JPS:
         self.mark(goal_coordinates, "G")
 
         if self.start_coordinates == self.goal_coordinates:
-            print("Start and goal positions are the same")
             return 0
 
         self.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
@@ -644,7 +639,6 @@ class JPS:
 
         while True:
             if len(self.open_set) == 0:
-                print("No path to goal coordinates")
                 break
 
             current_node = heappop(self.open_set)

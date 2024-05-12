@@ -1,7 +1,5 @@
 from heapq import heapify, heappush, heappop
-import time
 import math
-
 
 class Node:
     def __init__(self, coordinates, parent=None, direction=None, length=0, heuristic=1000):
@@ -131,7 +129,7 @@ class JPS:
 
         return f'Number of rows: {self.num_rows}, Length of a row: {self.len_row}'
 
-    def mark_points_between(self, start_coordinates, end_coordinates):
+    def _mark_points_between(self, start_coordinates, end_coordinates):
         """ A function used to mark the path between some start and goal coordinates 
             that lie together on straight or diagonal line.
             Used to mark the path between consecutive jumppoints of JPS after the 
@@ -220,7 +218,7 @@ class JPS:
             else:
                 path.append(i.position)
                 self.mark(i.position, "¤")
-                self.mark_points_between(last_node.position, i.position)
+                self._mark_points_between(last_node.position, i.position)
                 self.add_slide()
                 last_node = i
 
@@ -229,7 +227,7 @@ class JPS:
         self.add_slide()
         return distance
 
-    def within_map(self, coordinates):
+    def _within_map(self, coordinates):
         """A handy function that tells whether coordinates lie within the map
 
         Args: 
@@ -414,7 +412,7 @@ class JPS:
         Returns: whether the tile is free of obstacles and inside the map
         """
 
-        return self.within_map(coordinates) and self.free(coordinates)
+        return self._within_map(coordinates) and self.free(coordinates)
 
     def scan_straight(self, node):
         ''' A function that allows JPS to scan along rows and columns
@@ -437,11 +435,7 @@ class JPS:
         a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if b3 == self.goal_coordinates:
-            self.final_node = Node(self.goal_coordinates,
-                                   parent=node, direction=(0, 0), heuristic=0)
-            heappush(self.open_set, self.final_node)
-            # self.add_node_to_open_set_if_new(final_node, self.goal_coordinates)
-            return 1
+            self.found_goal(node)
 
         if not self.available(b3):
             return 0
@@ -489,56 +483,15 @@ class JPS:
             open_node.position, open_node.direction, jumppoint=True)
         return True
 
-    def scan_diagonally(self, node):
-        """ A function that allows JPS to scan across diagonals.
+    def found_goal(self,node):
+        self.final_node = Node(self.goal_coordinates,
+                               parent=node, direction=(0, 0), heuristic=0)
+        heappush(self.open_set, self.final_node)
+        return 1
 
-        Args:
-            node: node that is being expanded
+    def _find_forced_diagonal_neighbours(self,node,neighbours):
 
-        Returns:
-            0 when it finishes, i.e. it hits a wall or an obstacle
-
-                        I imagine the scan as going right and up in this grid
-        c ■  	
-        b ■  ↗          The black squares were already covered.
-        a ■  ■	■       They are the so-called natural neigbours.
-          1  2  3
-
-        """
-
-        self.add_slide()
-
-        neighbours = self.produce_neighbours(
-            node)
-        a1, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
-
-        if c3 == self.goal_coordinates:
-            self.final_node = Node(self.goal_coordinates,
-                                   parent=node, direction=(0, 0), heuristic=0)
-            heappush(self.open_set, self.final_node)
-            # self.add_node_to_open_set_if_new(self.final_node, self.goal_coordinates)
-            return 1
-
-        scan_right_node = node.copy()
-        scan_right_node.direction = self.subtract_tuples(b3, b2)
-        scan_right_node.parent = node
-        scan_right_node.length = node.length+1
-
-        # exiting recursion if goal found
-        if self.scan_straight(scan_right_node) == 1:
-            return 1
-
-        scan_up_node = node.copy()
-        scan_up_node.direction = self.subtract_tuples(c2, b2)
-        scan_up_node.parent = node
-        scan_up_node.length = node.length+1
-
-        # exiting recursion if goal found
-        if self.scan_straight(scan_up_node) == 1:
-            return 1
-
-        self.mark(
-            node.position, node.direction)
+        _, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
 
         if not self.available(b1):
             if self.available(c1):
@@ -572,6 +525,52 @@ class JPS:
             if self.available(a3):
                 self.add_node_to_open_set_if_new(node, a3)
 
+    def scan_diagonally(self, node):
+        """ A function that allows JPS to scan across diagonals.
+
+        Args:
+            node: node that is being expanded
+
+        Returns:
+            0 when it finishes, i.e. it hits a wall or an obstacle
+
+                        I imagine the scan as going right and up in this grid
+        c ■  	
+        b ■  ↗          The black squares were already covered.
+        a ■  ■	■       They are the so-called natural neigbours.
+          1  2  3
+
+        """
+
+        self.add_slide()
+
+        neighbours = self.produce_neighbours(
+            node)
+        _, a2, a3, b1, b2, b3, c1, c2, c3 = neighbours
+
+        if c3 == self.goal_coordinates:
+            self.found_goal(node)
+
+        scan_right_node = node.copy()
+        scan_right_node.direction = self.subtract_tuples(b3, b2)
+        scan_right_node.parent = node
+        scan_right_node.length = node.length+1
+
+        if self.scan_straight(scan_right_node) == 1:
+            return 1
+
+        scan_up_node = node.copy()
+        scan_up_node.direction = self.subtract_tuples(c2, b2)
+        scan_up_node.parent = node
+        scan_up_node.length = node.length+1
+
+        if self.scan_straight(scan_up_node) == 1:
+            return 1
+
+        self.mark(node.position, node.direction)
+
+        self._find_forced_diagonal_neighbours(node,neighbours)
+
         if not self.available(c3):
             return 0
 
@@ -581,7 +580,6 @@ class JPS:
 
         next_node.length = node.length+1.41
 
-        # exiting recursion if goal found
         if self.scan_diagonally(next_node) == 1:
             return 1
 
@@ -601,12 +599,27 @@ class JPS:
         rmap += "  "+last_row + "\n"
         return rmap
 
-    def find_shortest_path(self, start_coordinates, goal_coordinates, slides=[], visual=False):
+    def initialize_map(self):
+        if not self._within_map(self.start_coordinates):
+            return -1
+
+        if not self._within_map(self.goal_coordinates):
+            return -1
+
+        if self.start_coordinates == self.goal_coordinates:
+            return 0
+
+        self.mark(self.start_coordinates, "S")
+        self.mark(self.goal_coordinates, "G")
+
+        self.add_slide()
+
+        return True
+
+    def find_shortest_path(self, start_coordinates, goal_coordinates, slides=None, visual=False):
         """Function that can be called after initializing JPS to find the shortest path
 
         Args: 
-            start_coordinates
-            goal_coordinates
             slides: used for presenting snapshots of the algorithm to the UI
             visual: a flag that tells JPS if it should create slides
 
@@ -614,37 +627,27 @@ class JPS:
             The length of the shortest path, and mutating the list in place,
             passes the snapshots of execution to the UI
         """
-        if not self.within_map(start_coordinates):
-            return -1
-        if not self.within_map(goal_coordinates):
-            return -1
-
-        self.add_slide()
 
         self.visual = visual
         self.slides = slides
         self.start_coordinates = start_coordinates
         self.goal_coordinates = goal_coordinates
 
-        self.mark(start_coordinates, "S")
-        self.mark(goal_coordinates, "G")
-
-        if self.start_coordinates == self.goal_coordinates:
-            return 0
+        if self.initialize_map() is not True:
+            return self.initialize_map() 
 
         self.add_neighbours_of_start_coordinates_to_open_set(start_coordinates)
-        distance = 0
 
-        GOAL_FOUND = False
+        goal_found = False
 
         while True:
             if len(self.open_set) == 0:
-                break
+               break
 
             current_node = heappop(self.open_set)
 
             if current_node.position == self.goal_coordinates:
-                GOAL_FOUND = True
+                goal_found = True
                 break
 
             self.closed_set.append(
@@ -655,6 +658,6 @@ class JPS:
             else:
                 self.scan_diagonally(current_node)
 
-        if GOAL_FOUND:
+        if goal_found:
             return self.recreate_path(self.final_node)
         return -1

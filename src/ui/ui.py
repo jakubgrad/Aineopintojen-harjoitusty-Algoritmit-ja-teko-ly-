@@ -261,7 +261,7 @@ class UI:
         self.slides = []
 
         distance, execution_time, message = self.algorithm_service.run_algorithm(
-            start, goal, map, self.slides, dijkstra=dijkstra, jps=jps, visual=self.produce_slides)
+            start, goal, map, self.slides, jps=jps, visual=self.produce_slides)
 
         self.clear_log()
         self.update_log(message)

@@ -1,7 +1,9 @@
 # Testing document = Testatusdokumentti
 
 1. Unit testing coverage report.<br />
-   - [x] [Week 6](https://jakubgrad.github.io/coverage/aineo/week6/index.html)<br>[Week 4](https://jakubgrad.github.io/coverage/aineo/week4/index.html)<br>
+   - [x] [Week 7](https://jakubgrad.github.io/coverage/aineo/week7/index.html)<br>
+   [Week 6](https://jakubgrad.github.io/coverage/aineo/week6/index.html)<br>
+   [Week 4](https://jakubgrad.github.io/coverage/aineo/week4/index.html)<br>
 2. What has been tested, how was this done?<br />
    - [x] **Time complexity tests'** results, achieved time complexity etc. are in [the specification document](https://github.com/jakubgrad/Aineopintojen-harjoitusty-Algoritmit-ja-teko-ly-/blob/main/documentation/specification%20document.md). The testing was done on University of Helsinki's VMware Cubbli
    - [x] There is a lot of tests for **JPS** and much less for **Dijkstra**. For **JPS**: <br />

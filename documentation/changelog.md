@@ -16,7 +16,8 @@ might not be necessary anymore
 - Added logging of time, predicted time complexities, number of edges and vertices to the UI
 - refactored creating log messages to `algorithm_service`
 
-## Week 6 
+## Week 7 / final return week
 - Thought that some checks can be perform already in the `algorithm_service`, e.g. checking if the start and goal coordinates are the same. So i implemented e.g. checking that the coordinates lie within the map already in `algorithm_service`. But because there is tests e.g. for returning 0 when coordinates are the same for JPS and Dijkstra, I didn't remove checking for this situation inside `JPS` and `Dijkstra`
 - Added message to the log when a map is not selected
 - Deleted all debugging printouts and code comments
+- 

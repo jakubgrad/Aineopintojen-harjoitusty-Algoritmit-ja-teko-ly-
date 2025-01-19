@@ -51,3 +51,5 @@ Currently the code isn't the nicest and needs a lot of refactoring and linting, 
 [Peer review 1](https://github.com/Wincewind/tiralabra/issues/1)<br>
 [Peer review 2](https://github.com/levitesuo/algoritmit-harjoitusty-/issues/2)
 
+Example execution:
+![image](https://github.com/user-attachments/assets/f01d4d5f-2de7-4328-a01d-e26369e4064f)
